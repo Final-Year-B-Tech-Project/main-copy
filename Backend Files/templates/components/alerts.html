@@ -1,0 +1,346 @@
+<!-- Modern Flash Messages Container -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <div class="flash-messages-container">
+            {% for category, message in messages %}
+                {% set alert_config = {
+                    'error': {'class': 'alert-error', 'icon': 'fas fa-exclamation-triangle', 'bg': 'var(--error-50)', 'border': 'var(--error-200)', 'color': 'var(--error-700)'},
+                    'warning': {'class': 'alert-warning', 'icon': 'fas fa-exclamation-circle', 'bg': 'var(--warning-50)', 'border': 'var(--warning-200)', 'color': 'var(--warning-600)'},
+                    'info': {'class': 'alert-info', 'icon': 'fas fa-info-circle', 'bg': 'var(--primary-50)', 'border': 'var(--primary-200)', 'color': 'var(--primary-700)'},
+                    'success': {'class': 'alert-success', 'icon': 'fas fa-check-circle', 'bg': 'var(--success-50)', 'border': 'var(--success-200)', 'color': 'var(--success-700)'}
+                }.get(category, {
+                    'class': 'alert-info', 'icon': 'fas fa-info-circle', 'bg': 'var(--primary-50)', 'border': 'var(--primary-200)', 'color': 'var(--primary-700)'
+                }) %}
+                
+                <div class="alert alert-modern {{ alert_config.class }} animate-slide-up" role="alert" 
+                     style="background: {{ alert_config.bg }}; border-color: {{ alert_config.border }}; color: {{ alert_config.color }};">
+                    <div class="container-fluid px-4">
+                        <div class="d-flex align-items-center">
+                            <!-- Alert Icon -->
+                            <div class="alert-icon me-3" style="width: 40px; height: 40px; border-radius: var(--radius-lg); background: rgba(255, 255, 255, 0.8); display: flex; align-items: center; justify-content: center;">
+                                <i class="{{ alert_config.icon }}" style="font-size: 1.1rem;"></i>
+                            </div>
+                            
+                            <!-- Message Content -->
+                            <div class="flex-grow-1">
+                                <div class="alert-message fw-500">{{ message }}</div>
+                            </div>
+                            
+                            <!-- Close Button -->
+                            <button type="button" class="btn-close-modern ms-3" onclick="this.closest('.alert').remove()" aria-label="Close">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
+
+<!-- Custom Alert Templates for JavaScript -->
+<template id="alert-template-modern">
+    <div class="alert alert-modern animate-slide-up" role="alert">
+        <div class="container-fluid px-4">
+            <div class="d-flex align-items-center">
+                <div class="alert-icon me-3">
+                    <i class="alert-icon-element"></i>
+                </div>
+                <div class="flex-grow-1">
+                    <div class="alert-message fw-500"></div>
+                </div>
+                <button type="button" class="btn-close-modern ms-3" onclick="this.closest('.alert').remove()" aria-label="Close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+// Modern alert system
+window.showAlert = function(message, category = 'info', timeout = 5000) {
+    const template = document.getElementById('alert-template-modern');
+    const alertElement = template.content.cloneNode(true);
+    const alertDiv = alertElement.querySelector('.alert');
+    const icon = alertElement.querySelector('.alert-icon-element');
+    const iconContainer = alertElement.querySelector('.alert-icon');
+    const messageDiv = alertElement.querySelector('.alert-message');
+    
+    // Alert configurations
+    const alertConfigs = {
+        'error': {
+            class: 'alert-error',
+            icon: 'fas fa-exclamation-triangle',
+            bg: 'var(--error-50)',
+            border: 'var(--error-200)',
+            color: 'var(--error-700)'
+        },
+        'warning': {
+            class: 'alert-warning',
+            icon: 'fas fa-exclamation-circle',
+            bg: 'var(--warning-50)',
+            border: 'var(--warning-200)',
+            color: 'var(--warning-600)'
+        },
+        'success': {
+            class: 'alert-success',
+            icon: 'fas fa-check-circle',
+            bg: 'var(--success-50)',
+            border: 'var(--success-200)',
+            color: 'var(--success-700)'
+        },
+        'info': {
+            class: 'alert-info',
+            icon: 'fas fa-info-circle',
+            bg: 'var(--primary-50)',
+            border: 'var(--primary-200)',
+            color: 'var(--primary-700)'
+        }
+    };
+    
+    const config = alertConfigs[category] || alertConfigs['info'];
+    
+    // Apply styling
+    alertDiv.classList.add(config.class);
+    alertDiv.style.background = config.bg;
+    alertDiv.style.borderColor = config.border;
+    alertDiv.style.color = config.color;
+    
+    icon.className = config.icon;
+    iconContainer.style.width = '40px';
+    iconContainer.style.height = '40px';
+    iconContainer.style.borderRadius = 'var(--radius-lg)';
+    iconContainer.style.background = 'rgba(255, 255, 255, 0.8)';
+    iconContainer.style.display = 'flex';
+    iconContainer.style.alignItems = 'center';
+    iconContainer.style.justifyContent = 'center';
+    
+    messageDiv.textContent = message;
+    
+    // Insert into page
+    let container = document.querySelector('.flash-messages-container');
+    if (!container) {
+        container = document.createElement('div');
+        container.className = 'flash-messages-container';
+        
+        const navbar = document.querySelector('nav.navbar');
+        if (navbar) {
+            navbar.insertAdjacentElement('afterend', container);
+        } else {
+            document.body.insertBefore(container, document.body.firstChild);
+        }
+    }
+    
+    container.appendChild(alertElement);
+    
+    // Auto-hide for success and info messages
+    if ((category === 'success' || category === 'info') && timeout > 0) {
+        setTimeout(function() {
+            const alertToRemove = container.querySelector('.alert:last-child');
+            if (alertToRemove) {
+                alertToRemove.style.opacity = '0';
+                alertToRemove.style.transform = 'translateY(-20px)';
+                setTimeout(function() {
+                    alertToRemove.remove();
+                    if (container.children.length === 0) {
+                        container.remove();
+                    }
+                }, 300);
+            }
+        }, timeout);
+    }
+};
+
+// Enhanced utility functions
+window.clearAlerts = function() {
+    const container = document.querySelector('.flash-messages-container');
+    if (container) {
+        container.innerHTML = '';
+    }
+};
+
+window.showLoadingAlert = function(message = 'Processing...') {
+    clearAlerts();
+    showAlert(message, 'info', 0);
+    showLoading();
+};
+
+window.hideLoadingWithResult = function(message, category = 'success') {
+    hideLoading();
+    clearAlerts();
+    showAlert(message, category);
+};
+
+window.showSuccessAlert = function(message) {
+    showAlert(message, 'success');
+};
+
+window.showErrorAlert = function(message) {
+    showAlert(message, 'error', 8000);
+};
+
+window.showWarningAlert = function(message) {
+    showAlert(message, 'warning', 6000);
+};
+
+window.showInfoAlert = function(message) {
+    showAlert(message, 'info');
+};
+</script>
+
+<style>
+/* Modern Alert System Styles */
+.flash-messages-container {
+    position: relative;
+    z-index: 1040;
+}
+
+.alert-modern {
+    margin-bottom: 0;
+    border: 1px solid;
+    border-radius: 0;
+    padding: var(--space-4) 0;
+    transition: all var(--transition-normal);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.alert-modern:not(:last-child) {
+    border-bottom: none;
+}
+
+.alert-modern:first-child {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.alert-modern:last-child {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.alert-message {
+    font-size: var(--text-sm);
+    line-height: 1.5;
+    margin: 0;
+}
+
+.btn-close-modern {
+    background: none;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: inherit;
+    opacity: 0.6;
+    transition: all var(--transition-fast);
+    cursor: pointer;
+}
+
+.btn-close-modern:hover {
+    opacity: 1;
+    background: rgba(0, 0, 0, 0.1);
+    transform: scale(1.1);
+}
+
+.btn-close-modern i {
+    font-size: 0.875rem;
+}
+
+/* Alert Animations */
+@keyframes slideInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-slide-up {
+    animation: slideInDown 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Alert Icon Animations */
+.alert-icon {
+    animation: bounceIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+@keyframes bounceIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.3);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.05);
+    }
+    70% {
+        transform: scale(0.9);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .alert-modern .container-fluid {
+        padding-left: var(--space-3);
+        padding-right: var(--space-3);
+    }
+    
+    .alert-icon {
+        width: 32px !important;
+        height: 32px !important;
+    }
+    
+    .alert-icon i {
+        font-size: 0.9rem !important;
+    }
+    
+    .alert-message {
+        font-size: var(--text-xs);
+    }
+}
+
+/* Toast-style alerts for mobile */
+@media (max-width: 576px) {
+    .flash-messages-container {
+        position: fixed;
+        top: 80px;
+        left: var(--space-4);
+        right: var(--space-4);
+        z-index: 1050;
+    }
+    
+    .alert-modern {
+        border-radius: var(--radius-xl) !important;
+        margin-bottom: var(--space-2);
+        box-shadow: var(--shadow-lg);
+    }
+    
+    .alert-modern:not(:last-child) {
+        border-bottom: 1px solid;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .alert-icon {
+        background: rgba(0, 0, 0, 0.2) !important;
+    }
+    
+    .btn-close-modern:hover {
+        background: rgba(255, 255, 255, 0.1) !important;
+    }
+}
+</style>

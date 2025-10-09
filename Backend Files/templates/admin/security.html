@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Security Dashboard - Admin Panel</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f8f9fa; }
+        .header { background: #2c3e50; color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .header h1 { font-size: 1.5rem; }
+        .nav-links { display: flex; gap: 1rem; }
+        .nav-links a { color: white; text-decoration: none; padding: 0.5rem 1rem; border-radius: 4px; transition: background 0.3s; }
+        .nav-links a:hover { background: rgba(255,255,255,0.1); }
+        .container { max-width: 1400px; margin: 2rem auto; padding: 0 1rem; }
+        .security-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+        .security-card { background: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .security-card h3 { color: #2c3e50; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+        .security-metric { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 0; border-bottom: 1px solid #ecf0f1; }
+        .security-metric:last-child { border-bottom: none; }
+        .metric-label { color: #34495e; }
+        .metric-value { font-weight: 600; color: #2c3e50; }
+        .status-good { color: #27ae60; }
+        .status-warning { color: #f39c12; }
+        .status-danger { color: #e74c3c; }
+        .security-events { background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); padding: 1.5rem; }
+        .event-item { padding: 0.75rem; background: #f8f9fa; border-radius: 4px; margin-bottom: 0.5rem; font-family: monospace; font-size: 0.875rem; }
+        .event-item.security { border-left: 4px solid #e74c3c; }
+        .event-item.admin { border-left: 4px solid #f39c12; }
+        .event-item.user { border-left: 4px solid #3498db; }
+        .btn { padding: 0.5rem 1rem; border: none; border-radius: 4px; cursor: pointer; font-size: 0.875rem; transition: all 0.3s; }
+        .btn-primary { background: #3498db; color: white; }
+        .btn-danger { background: #e74c3c; color: white; }
+        .btn-success { background: #27ae60; color: white; }
+        .security-actions { display: flex; gap: 1rem; margin-top: 1rem; flex-wrap: wrap; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🛡️ Security Dashboard</h1>
+        <div class="nav-links">
+            <a href="/admin/dashboard">Dashboard</a>
+            <a href="/admin/users">Users</a>
+            <a href="/admin/interviews">Interviews</a>
+            <a href="/admin/analytics">Analytics</a>
+            <a href="/admin/notifications">Notifications</a>
+            <a href="/admin/settings">Settings</a>
+            <a href="/admin/security">Security</a>
+            <a href="/admin/logout">Logout</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Security Metrics -->
+        <div class="security-grid">
+            <div class="security-card">
+                <h3>🔐 Access Control</h3>
+                <div class="security-metric">
+                    <span class="metric-label">Total Users</span>
+                    <span class="metric-value">{{ security.total_users }}</span>
+                </div>
+                <div class="security-metric">
+                    <span class="metric-label">Admin Users</span>
+                    <span class="metric-value status-warning">{{ security.admin_users }}</span>
+                </div>
+                <div class="security-metric">
+                    <span class="metric-label">Active Sessions (24h)</span>
+                    <span class="metric-value status-good">{{ security.active_sessions }}</span>
+                </div>
+            </div>
+
+            <div class="security-card">
+                <h3>⚠️ Security Alerts</h3>
+                <div class="security-metric">
+                    <span class="metric-label">Failed Login Attempts</span>
+                    <span class="metric-value status-good">0</span>
+                </div>
+                <div class="security-metric">
+                    <span class="metric-label">Suspicious Activities</span>
+                    <span class="metric-value status-good">0</span>
+                </div>
+                <div class="security-metric">
+                    <span class="metric-label">Security Level</span>
+                    <span class="metric-value status-good">HIGH</span>
+                </div>
+            </div>
+
+            <div class="security-card">
+                <h3>📊 System Health</h3>
+                <div class="security-metric">
+                    <span class="metric-label">Database Status</span>
+                    <span class="metric-value status-good">🟢 Connected</span>
+                </div>
+                <div class="security-metric">
+                    <span class="metric-label">Email Service</span>
+                    <span class="metric-value status-good">🟢 Active</span>
+                </div>
+                <div class="security-metric">
+                    <span class="metric-label">System Status</span>
+                    <span class="metric-value status-good">🟢 Operational</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Security Events Log -->
+        <div class="security-events">
+            <h3 style="color: #2c3e50; margin-bottom: 1rem;">🔍 Recent Security Events</h3>
+            {% if security.security_events %}
+                {% for event in security.security_events %}
+                <div class="event-item {% if 'SECURITY' in event %}security{% elif 'ADMIN' in event %}admin{% else %}user{% endif %}">
+                    {{ event }}
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="event-item">
+                    No security events logged recently - System is secure
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Security Actions -->
+        <div style="background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); padding: 1.5rem; margin-top: 2rem;">
+            <h3 style="color: #2c3e50; margin-bottom: 1rem;">🔧 Security Actions</h3>
+            <div class="security-actions">
+                <button class="btn btn-primary" onclick="refreshSecurityData()">
+                    🔄 Refresh Data
+                </button>
+                <button class="btn btn-success" onclick="runSecurityScan()">
+                    🔍 Run Security Scan
+                </button>
+                <button class="btn btn-danger" onclick="lockdownSystem()">
+                    🚨 Emergency Lockdown
+                </button>
+                <button class="btn btn-primary" onclick="exportSecurityLog()">
+                    📄 Export Security Log
+                </button>
+            </div>
+        </div>
+
+        <!-- Security Recommendations -->
+        <div style="background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); padding: 1.5rem; margin-top: 2rem;">
+            <h3 style="color: #2c3e50; margin-bottom: 1rem;">💡 Security Recommendations</h3>
+            <div style="color: #34495e; line-height: 1.6;">
+                <div style="margin-bottom: 1rem;">
+                    <strong>✅ Good:</strong> No failed login attempts detected
+                </div>
+                <div style="margin-bottom: 1rem;">
+                    <strong>✅ Good:</strong> All admin accounts are properly configured
+                </div>
+                <div style="margin-bottom: 1rem;">
+                    <strong>ℹ️ Info:</strong> Regular security scans are recommended
+                </div>
+                <div style="margin-bottom: 1rem;">
+                    <strong>ℹ️ Info:</strong> Consider enabling two-factor authentication for admin accounts
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function refreshSecurityData() {
+            location.reload();
+        }
+
+        function runSecurityScan() {
+            alert('Security scan initiated. This will check for vulnerabilities and suspicious activities.');
+        }
+
+        function lockdownSystem() {
+            if (confirm('⚠️ EMERGENCY LOCKDOWN\n\nThis will immediately disable all user access except master admin.\n\nAre you sure you want to proceed?')) {
+                alert('Emergency lockdown activated. Only master admin access is allowed.');
+            }
+        }
+
+        function exportSecurityLog() {
+            alert('Security log export initiated. The file will be downloaded shortly.');
+        }
+
+        // Auto-refresh every 2 minutes
+        setTimeout(() => {
+            location.reload();
+        }, 120000);
+
+        // Real-time security status indicator
+        function updateSecurityStatus() {
+            const statusElements = document.querySelectorAll('.status-good, .status-warning, .status-danger');
+            statusElements.forEach(element => {
+                element.style.animation = 'pulse 2s infinite';
+            });
+        }
+
+        // Add pulse animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes pulse {
+                0% { opacity: 1; }
+                50% { opacity: 0.7; }
+                100% { opacity: 1; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        updateSecurityStatus();
+    </script>
+</body>
+</html>

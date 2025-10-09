@@ -1,0 +1,328 @@
+/* Clean White Theme with Perfect Contrast */
+
+/* Base Colors */
+:root {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8fafc;
+    --bg-tertiary: #f1f5f9;
+    --text-primary: #1a202c;
+    --text-secondary: #2d3748;
+    --text-muted: #4a5568;
+    --border-color: #e2e8f0;
+    --accent-blue: #2563eb;
+    --accent-green: #059669;
+    --accent-red: #dc2626;
+    --accent-orange: #ea580c;
+}
+
+/* Body and Base Elements */
+body {
+    background-color: var(--bg-secondary) !important;
+    color: var(--text-secondary) !important;
+    font-weight: 400 !important;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+    color: var(--text-primary) !important;
+    font-weight: 700 !important;
+}
+
+p, span, div, td, th, li, label {
+    color: var(--text-secondary) !important;
+}
+
+.text-muted, .text-secondary, small, .small {
+    color: var(--text-muted) !important;
+}
+
+/* Links */
+a {
+    color: var(--accent-blue) !important;
+    text-decoration: none !important;
+}
+
+a:hover {
+    color: #1d4ed8 !important;
+    text-decoration: underline !important;
+}
+
+/* Cards - Clean White */
+.card, .modal-content, .dropdown-menu {
+    background-color: var(--bg-primary) !important;
+    border: 1px solid var(--border-color) !important;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06) !important;
+}
+
+.card-header, .card-footer {
+    background-color: var(--bg-tertiary) !important;
+    border-color: var(--border-color) !important;
+    color: var(--text-secondary) !important;
+}
+
+.card-title {
+    color: var(--text-primary) !important;
+    font-weight: 600 !important;
+}
+
+.card-text {
+    color: var(--text-secondary) !important;
+}
+
+/* Forms */
+.form-control, .form-select {
+    background-color: var(--bg-primary) !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-secondary) !important;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--accent-blue) !important;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1) !important;
+}
+
+.form-control::placeholder {
+    color: #9ca3af !important;
+}
+
+.form-label {
+    color: var(--text-primary) !important;
+    font-weight: 500 !important;
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: var(--accent-blue) !important;
+    border-color: var(--accent-blue) !important;
+    color: white !important;
+}
+
+.btn-primary:hover {
+    background-color: #1d4ed8 !important;
+    border-color: #1d4ed8 !important;
+}
+
+.btn-secondary {
+    background-color: var(--bg-tertiary) !important;
+    border-color: var(--border-color) !important;
+    color: var(--text-secondary) !important;
+}
+
+.btn-secondary:hover {
+    background-color: #e2e8f0 !important;
+    color: var(--text-primary) !important;
+}
+
+.btn-success {
+    background-color: var(--accent-green) !important;
+    border-color: var(--accent-green) !important;
+    color: white !important;
+}
+
+.btn-warning {
+    background-color: var(--accent-orange) !important;
+    border-color: var(--accent-orange) !important;
+    color: white !important;
+}
+
+.btn-danger {
+    background-color: var(--accent-red) !important;
+    border-color: var(--accent-red) !important;
+    color: white !important;
+}
+
+/* Tables */
+.table {
+    background-color: var(--bg-primary) !important;
+}
+
+.table th {
+    background-color: var(--bg-tertiary) !important;
+    color: var(--text-primary) !important;
+    font-weight: 600 !important;
+    border-color: var(--border-color) !important;
+}
+
+.table td {
+    color: var(--text-secondary) !important;
+    border-color: var(--border-color) !important;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: var(--bg-secondary) !important;
+}
+
+/* Badges */
+.badge-primary {
+    background-color: #dbeafe !important;
+    color: var(--accent-blue) !important;
+}
+
+.badge-success {
+    background-color: #d1fae5 !important;
+    color: var(--accent-green) !important;
+}
+
+.badge-warning {
+    background-color: #fed7aa !important;
+    color: var(--accent-orange) !important;
+}
+
+.badge-danger {
+    background-color: #fee2e2 !important;
+    color: var(--accent-red) !important;
+}
+
+/* Alerts */
+.alert-success {
+    background-color: #f0fdf4 !important;
+    border-color: #bbf7d0 !important;
+    color: #166534 !important;
+}
+
+.alert-info {
+    background-color: #eff6ff !important;
+    border-color: #bfdbfe !important;
+    color: #1e40af !important;
+}
+
+.alert-warning {
+    background-color: #fffbeb !important;
+    border-color: #fde68a !important;
+    color: #92400e !important;
+}
+
+.alert-danger {
+    background-color: #fef2f2 !important;
+    border-color: #fecaca !important;
+    color: #991b1b !important;
+}
+
+/* Navigation */
+.breadcrumb-item a {
+    color: var(--text-muted) !important;
+}
+
+.breadcrumb-item.active {
+    color: var(--text-primary) !important;
+    font-weight: 500 !important;
+}
+
+/* Dropdown */
+.dropdown-item {
+    color: var(--text-secondary) !important;
+}
+
+.dropdown-item:hover, .dropdown-item:focus {
+    background-color: var(--bg-secondary) !important;
+    color: var(--text-primary) !important;
+}
+
+/* Modal */
+.modal-title {
+    color: var(--text-primary) !important;
+    font-weight: 600 !important;
+}
+
+.modal-body {
+    color: var(--text-secondary) !important;
+}
+
+/* Dashboard Components */
+.dashboard-title {
+    color: var(--text-primary) !important;
+    font-weight: 700 !important;
+}
+
+.dashboard-subtitle {
+    color: var(--text-muted) !important;
+}
+
+.stat-value {
+    color: var(--text-primary) !important;
+    font-weight: 700 !important;
+}
+
+.stat-label {
+    color: var(--text-muted) !important;
+    font-weight: 500 !important;
+}
+
+/* Interview Components */
+.interview-title {
+    color: var(--text-primary) !important;
+    font-weight: 600 !important;
+}
+
+.interview-meta {
+    color: var(--text-muted) !important;
+}
+
+/* Loading and Utility */
+.loading-text {
+    color: var(--text-muted) !important;
+}
+
+.text-muted-modern {
+    color: var(--text-muted) !important;
+}
+
+/* Ensure proper backgrounds */
+.main-content {
+    background-color: var(--bg-secondary) !important;
+    min-height: calc(100vh - 200px) !important;
+}
+
+/* Override any remaining issues */
+.bg-light {
+    background-color: var(--bg-tertiary) !important;
+    color: var(--text-secondary) !important;
+}
+
+.bg-white {
+    background-color: var(--bg-primary) !important;
+    color: var(--text-secondary) !important;
+}
+
+/* File upload styling */
+.file-upload-label {
+    background-color: var(--bg-tertiary) !important;
+    border-color: var(--border-color) !important;
+    color: var(--text-muted) !important;
+}
+
+.file-upload:hover .file-upload-label {
+    background-color: #e0f2fe !important;
+    border-color: var(--accent-blue) !important;
+    color: var(--accent-blue) !important;
+}
+
+/* Navigation tabs */
+.nav-tabs-modern {
+    background-color: var(--bg-tertiary) !important;
+}
+
+.nav-tabs-modern .nav-link {
+    color: var(--text-muted) !important;
+}
+
+.nav-tabs-modern .nav-link.active {
+    background-color: var(--bg-primary) !important;
+    color: var(--text-primary) !important;
+}
+
+/* Progress bars */
+.progress-modern {
+    background-color: var(--bg-tertiary) !important;
+}
+
+/* Ensure all interactive elements have proper contrast */
+button, .btn {
+    font-weight: 500 !important;
+}
+
+/* Focus states for accessibility */
+.btn:focus, .form-control:focus, .nav-link:focus {
+    outline: 2px solid var(--accent-blue) !important;
+    outline-offset: 2px !important;
+}

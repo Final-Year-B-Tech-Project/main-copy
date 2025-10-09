@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Management - Admin Panel</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f8f9fa; }
+        .header { background: #2c3e50; color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .header h1 { font-size: 1.5rem; }
+        .nav-links { display: flex; gap: 1rem; }
+        .nav-links a { color: white; text-decoration: none; padding: 0.5rem 1rem; border-radius: 4px; transition: background 0.3s; }
+        .nav-links a:hover { background: rgba(255,255,255,0.1); }
+        .container { max-width: 1400px; margin: 2rem auto; padding: 0 1rem; }
+        .section { background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 2rem; }
+        .section-header { padding: 1rem 1.5rem; border-bottom: 1px solid #ecf0f1; display: flex; justify-content: space-between; align-items: center; }
+        .section-header h2 { color: #2c3e50; }
+        .section-content { padding: 1.5rem; }
+        .filters { display: flex; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap; }
+        .filters select, .filters input { padding: 0.5rem; border: 1px solid #ddd; border-radius: 4px; }
+        .users-table { width: 100%; border-collapse: collapse; }
+        .users-table th, .users-table td { padding: 0.75rem; text-align: left; border-bottom: 1px solid #ecf0f1; }
+        .users-table th { background: #f8f9fa; font-weight: 600; color: #2c3e50; }
+        .users-table tr:hover { background: #f8f9fa; }
+        .btn { padding: 0.5rem 1rem; border: none; border-radius: 4px; cursor: pointer; font-size: 0.875rem; transition: all 0.3s; }
+        .btn-primary { background: #3498db; color: white; }
+        .btn-success { background: #27ae60; color: white; }
+        .btn-danger { background: #e74c3c; color: white; }
+        .btn-warning { background: #f39c12; color: white; }
+        .status-badge { padding: 0.25rem 0.5rem; border-radius: 12px; font-size: 0.75rem; font-weight: 500; }
+        .status-active { background: #d4edda; color: #155724; }
+        .status-inactive { background: #f8d7da; color: #721c24; }
+        .role-badge { padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 500; }
+        .role-master { background: #6f42c1; color: white; }
+        .role-admin { background: #dc3545; color: white; }
+        .role-developer { background: #28a745; color: white; }
+        .role-user { background: #6c757d; color: white; }
+        .actions { display: flex; gap: 0.5rem; }
+        .pagination { display: flex; justify-content: center; gap: 0.5rem; margin-top: 1rem; }
+        .pagination a { padding: 0.5rem 1rem; background: #f8f9fa; border: 1px solid #ddd; text-decoration: none; color: #2c3e50; }
+        .pagination a.active { background: #3498db; color: white; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>👥 User Management</h1>
+        <div class="nav-links">
+            <a href="/admin/dashboard">Dashboard</a>
+            <a href="/admin/users">Users</a>
+            <a href="/admin/interviews">Interviews</a>
+            <a href="/admin/activity-log">Activity Log</a>
+            <a href="/admin/system-stats">System Stats</a>
+            <a href="/admin/logout">Logout</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="section">
+            <div class="section-header">
+                <h2>🔍 User Search & Filter</h2>
+            </div>
+            <div class="section-content">
+                <form method="GET" class="filters">
+                    <input type="text" name="search" placeholder="Search users..." value="{{ search_query }}" />
+                    <select name="user_type">
+                        <option value="">All User Types</option>
+                        <option value="student" {% if user_type_filter == 'student' %}selected{% endif %}>Student</option>
+                        <option value="hr" {% if user_type_filter == 'hr' %}selected{% endif %}>HR</option>
+                        <option value="admin" {% if user_type_filter == 'admin' %}selected{% endif %}>Admin</option>
+                    </select>
+                    <select name="role">
+                        <option value="">All Roles</option>
+                        <option value="user" {% if role_filter == 'user' %}selected{% endif %}>User</option>
+                        <option value="admin" {% if role_filter == 'admin' %}selected{% endif %}>Admin</option>
+                        <option value="developer" {% if role_filter == 'developer' %}selected{% endif %}>Developer</option>
+                        <option value="master_admin" {% if role_filter == 'master_admin' %}selected{% endif %}>Master Admin</option>
+                    </select>
+                    <select name="status">
+                        <option value="">All Status</option>
+                        <option value="active" {% if status_filter == 'active' %}selected{% endif %}>Active</option>
+                        <option value="inactive" {% if status_filter == 'inactive' %}selected{% endif %}>Inactive</option>
+                    </select>
+                    <button type="submit" class="btn btn-primary">🔍 Search</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <h2>📋 Users ({{ users.total }} total)</h2>
+            </div>
+            <div class="section-content">
+                <table class="users-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Role</th>
+                            <th>Status</th>
+                            <th>Created</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users.items %}
+                        <tr>
+                            <td>{{ user.id }}</td>
+                            <td>{{ user.username }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>{{ user.full_name }}</td>
+                            <td>{{ user.user_type }}</td>
+                            <td>
+                                <span class="role-badge role-{{ user.role or 'user' }}">
+                                    {{ (user.role or 'user').title() }}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="status-badge status-{{ 'active' if user.is_active else 'inactive' }}">
+                                    {{ 'Active' if user.is_active else 'Inactive' }}
+                                </span>
+                            </td>
+                            <td>{{ user.created_at.strftime('%Y-%m-%d') if user.created_at else 'N/A' }}</td>
+                            <td>
+                                {% if current_user.role == 'master_admin' %}
+                                <div class="actions">
+                                    {% if user.is_active %}
+                                    <button class="btn btn-danger" onclick="terminateUser({{ user.id }})" title="Terminate">🚫</button>
+                                    {% else %}
+                                    <button class="btn btn-success" onclick="activateUser({{ user.id }})" title="Activate">✅</button>
+                                    {% endif %}
+                                    <button class="btn btn-warning" onclick="resetPassword({{ user.id }})" title="Reset Password">🔑</button>
+                                    {% if user.id != current_user.id and user.role != 'master_admin' %}
+                                    <button class="btn btn-danger" onclick="deleteUser({{ user.id }})" title="Delete User">🗑️</button>
+                                    {% endif %}
+                                    <select class="btn" onchange="updateRole({{ user.id }}, this.value)">
+                                        <option value="">Change Role</option>
+                                        <option value="user">User</option>
+                                        <option value="admin">Admin</option>
+                                        <option value="developer">Developer</option>
+                                        {% if user.id != current_user.id %}
+                                        <option value="master_admin">Master Admin</option>
+                                        {% endif %}
+                                    </select>
+                                </div>
+                                {% else %}
+                                <span>View Only</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <!-- Pagination -->
+                {% if users.pages > 1 %}
+                <div class="pagination">
+                    {% if users.has_prev %}
+                    <a href="{{ url_for('admin.manage_users', page=users.prev_num, search=search_query, user_type=user_type_filter, role=role_filter, status=status_filter) }}">&laquo; Previous</a>
+                    {% endif %}
+                    
+                    {% for page_num in users.iter_pages() %}
+                        {% if page_num %}
+                            {% if page_num != users.page %}
+                            <a href="{{ url_for('admin.manage_users', page=page_num, search=search_query, user_type=user_type_filter, role=role_filter, status=status_filter) }}">{{ page_num }}</a>
+                            {% else %}
+                            <a href="#" class="active">{{ page_num }}</a>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                    
+                    {% if users.has_next %}
+                    <a href="{{ url_for('admin.manage_users', page=users.next_num, search=search_query, user_type=user_type_filter, role=role_filter, status=status_filter) }}">Next &raquo;</a>
+                    {% endif %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updateRole(userId, newRole) {
+            if (!newRole) return;
+            
+            if (confirm(`Are you sure you want to change this user's role to ${newRole}?`)) {
+                fetch('/admin/user/' + userId + '/role', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ role: newRole })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Role updated successfully! Email notification sent to user.');
+                        location.reload();
+                    } else {
+                        alert('Error: ' + data.message);
+                    }
+                });
+            }
+        }
+
+        function terminateUser(userId) {
+            if (confirm('Are you sure you want to terminate this user? They will receive an email notification.')) {
+                fetch('/admin/user/' + userId + '/terminate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('User terminated successfully! Email notification sent.');
+                        location.reload();
+                    } else {
+                        alert('Error: ' + data.message);
+                    }
+                });
+            }
+        }
+
+        function activateUser(userId) {
+            if (confirm('Are you sure you want to activate this user?')) {
+                fetch('/admin/user/' + userId + '/activate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('User activated successfully! Email notification sent.');
+                        location.reload();
+                    } else {
+                        alert('Error: ' + data.message);
+                    }
+                });
+            }
+        }
+
+        function resetPassword(userId) {
+            if (confirm('Are you sure you want to reset this user\'s password? A new password will be sent to their email.')) {
+                fetch('/admin/user/' + userId + '/reset-password', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Password reset successfully! New password sent to user email.');
+                    } else {
+                        alert('Error: ' + data.message);
+                    }
+                });
+            }
+        }
+
+        function deleteUser(userId) {
+            if (confirm('WARNING: This will permanently delete the user and all their data. This action cannot be undone. The user will be notified via email. Are you sure?')) {
+                fetch('/admin/user/' + userId + '/delete', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('User deleted successfully! Email notification sent.');
+                        location.reload();
+                    } else {
+                        alert('Error: ' + data.message);
+                    }
+                });
+            }
+        }
+    </script>
+</body>
+</html>

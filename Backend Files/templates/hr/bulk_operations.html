@@ -1,0 +1,713 @@
+{% extends "base.html" %}
+
+{% block title %}Bulk Operations - AI Interview Agent{% endblock %}
+
+{% block additional_css %}
+<style>
+.bulk-operations {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 2rem 0;
+}
+
+.operations-header {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.operation-card {
+    background: white;
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+    transition: all 0.3s ease;
+}
+
+.operation-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.operation-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: white;
+    margin-bottom: 1rem;
+}
+
+.operation-icon.schedule { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+.operation-icon.email { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+.operation-icon.export { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+.operation-icon.import { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+
+.form-section {
+    background: #f8fafc;
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.file-upload-area {
+    border: 2px dashed #e2e8f0;
+    border-radius: 10px;
+    padding: 2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.file-upload-area:hover {
+    border-color: #667eea;
+    background: #f8fafc;
+}
+
+.file-upload-area.dragover {
+    border-color: #667eea;
+    background: #e0e7ff;
+}
+
+.progress-container {
+    display: none;
+    margin-top: 1rem;
+}
+
+.progress-bar {
+    height: 8px;
+    border-radius: 4px;
+    background: #e2e8f0;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #667eea, #764ba2);
+    width: 0%;
+    transition: width 0.3s ease;
+}
+
+.results-container {
+    display: none;
+    margin-top: 2rem;
+}
+
+.result-item {
+    display: flex;
+    justify-content: between;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.result-item:last-child {
+    border-bottom: none;
+}
+
+.result-status {
+    padding: 0.25rem 0.75rem;
+    border-radius: 15px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.result-status.success { background: #dcfce7; color: #166534; }
+.result-status.error { background: #fee2e2; color: #991b1b; }
+.result-status.warning { background: #fef3c7; color: #92400e; }
+
+.action-btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 10px;
+    border: none;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.action-btn.primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.action-btn.primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    color: white;
+}
+
+.action-btn.secondary {
+    background: #f1f5f9;
+    color: #64748b;
+}
+
+.action-btn.secondary:hover {
+    background: #e2e8f0;
+    color: #1e293b;
+}
+
+.email-template {
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.email-template:hover {
+    border-color: #667eea;
+    background: #f8fafc;
+}
+
+.email-template.selected {
+    border-color: #667eea;
+    background: #e0e7ff;
+}
+
+.template-preview {
+    background: #f8fafc;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-top: 1rem;
+    font-size: 0.875rem;
+    color: #64748b;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="bulk-operations">
+    <div class="container">
+        <!-- Operations Header -->
+        <div class="operations-header">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h1>Bulk Operations</h1>
+                    <p class="mb-0 opacity-90">Perform actions on multiple candidates at once</p>
+                </div>
+                <a href="{{ url_for('hr.enhanced_dashboard') }}" class="btn btn-outline-light">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                </a>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Bulk Interview Scheduling -->
+            <div class="col-lg-6">
+                <div class="operation-card">
+                    <div class="operation-icon schedule">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <h3>Bulk Interview Scheduling</h3>
+                    <p class="text-muted mb-4">Schedule interviews for multiple candidates simultaneously</p>
+
+                    <div class="form-section">
+                        <label class="form-label fw-medium">Select Job Drive</label>
+                        <select class="form-select" id="jobDriveSelect">
+                            <option value="">Choose a job drive...</option>
+                            {% for drive in job_drives %}
+                                <option value="{{ drive.id }}">{{ drive.title }} - {{ drive.job_role }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-section">
+                        <label class="form-label fw-medium">Upload Candidate List</label>
+                        <div class="file-upload-area" id="candidateUpload" onclick="document.getElementById('candidateFile').click()">
+                            <i class="fas fa-cloud-upload-alt fa-2x text-muted mb-2"></i>
+                            <p class="mb-1">Click to upload or drag and drop</p>
+                            <small class="text-muted">CSV file with candidate emails</small>
+                        </div>
+                        <input type="file" id="candidateFile" accept=".csv" style="display: none;">
+                    </div>
+
+                    <div class="form-section">
+                        <label class="form-label fw-medium">Interview Date & Time</label>
+                        <input type="datetime-local" class="form-control" id="interviewDateTime">
+                    </div>
+
+                    <div class="progress-container" id="scheduleProgress">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Scheduling interviews...</span>
+                            <span id="scheduleProgressText">0%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="scheduleProgressFill"></div>
+                        </div>
+                    </div>
+
+                    <button class="action-btn primary w-100" onclick="scheduleInterviews()">
+                        <i class="fas fa-calendar-plus me-2"></i>Schedule Interviews
+                    </button>
+
+                    <div class="results-container" id="scheduleResults">
+                        <h5>Scheduling Results</h5>
+                        <div id="scheduleResultsList"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bulk Email -->
+            <div class="col-lg-6">
+                <div class="operation-card">
+                    <div class="operation-icon email">
+                        <i class="fas fa-envelope-bulk"></i>
+                    </div>
+                    <h3>Bulk Email</h3>
+                    <p class="text-muted mb-4">Send emails to multiple candidates using templates</p>
+
+                    <div class="form-section">
+                        <label class="form-label fw-medium">Email Template</label>
+                        <div class="email-template" data-template="shortlist" onclick="selectTemplate(this)">
+                            <div class="fw-medium">Shortlist Notification</div>
+                            <small class="text-muted">Congratulations! You've been shortlisted...</small>
+                        </div>
+                        <div class="email-template" data-template="rejection" onclick="selectTemplate(this)">
+                            <div class="fw-medium">Application Update</div>
+                            <small class="text-muted">Thank you for your interest in our position...</small>
+                        </div>
+                        <div class="email-template" data-template="interview" onclick="selectTemplate(this)">
+                            <div class="fw-medium">Interview Invitation</div>
+                            <small class="text-muted">We would like to invite you for an interview...</small>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <label class="form-label fw-medium">Recipient List</label>
+                        <textarea class="form-control" rows="4" id="emailRecipients" 
+                                  placeholder="Enter email addresses, one per line or comma-separated"></textarea>
+                    </div>
+
+                    <div class="template-preview" id="templatePreview" style="display: none;">
+                        <strong>Preview:</strong>
+                        <div id="templateContent"></div>
+                    </div>
+
+                    <div class="progress-container" id="emailProgress">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Sending emails...</span>
+                            <span id="emailProgressText">0%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="emailProgressFill"></div>
+                        </div>
+                    </div>
+
+                    <button class="action-btn primary w-100" onclick="sendBulkEmails()">
+                        <i class="fas fa-paper-plane me-2"></i>Send Emails
+                    </button>
+
+                    <div class="results-container" id="emailResults">
+                        <h5>Email Results</h5>
+                        <div id="emailResultsList"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Data Export -->
+            <div class="col-lg-6">
+                <div class="operation-card">
+                    <div class="operation-icon export">
+                        <i class="fas fa-download"></i>
+                    </div>
+                    <h3>Data Export</h3>
+                    <p class="text-muted mb-4">Export candidate and interview data in various formats</p>
+
+                    <div class="form-section">
+                        <label class="form-label fw-medium">Export Type</label>
+                        <select class="form-select" id="exportType">
+                            <option value="candidates">Candidate List</option>
+                            <option value="interviews">Interview Results</option>
+                            <option value="analytics">Analytics Report</option>
+                            <option value="feedback">Interview Feedback</option>
+                        </select>
+                    </div>
+
+                    <div class="form-section">
+                        <label class="form-label fw-medium">Format</label>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="exportFormat" value="csv" id="csvFormat" checked>
+                                    <label class="form-check-label" for="csvFormat">CSV</label>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="exportFormat" value="json" id="jsonFormat">
+                                    <label class="form-check-label" for="jsonFormat">JSON</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <label class="form-label fw-medium">Date Range</label>
+                        <div class="row">
+                            <div class="col-6">
+                                <input type="date" class="form-control" id="exportStartDate">
+                            </div>
+                            <div class="col-6">
+                                <input type="date" class="form-control" id="exportEndDate">
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="action-btn primary w-100" onclick="exportData()">
+                        <i class="fas fa-file-export me-2"></i>Export Data
+                    </button>
+                </div>
+            </div>
+
+            <!-- Data Import -->
+            <div class="col-lg-6">
+                <div class="operation-card">
+                    <div class="operation-icon import">
+                        <i class="fas fa-upload"></i>
+                    </div>
+                    <h3>Data Import</h3>
+                    <p class="text-muted mb-4">Import candidate data from external sources</p>
+
+                    <div class="form-section">
+                        <label class="form-label fw-medium">Import Type</label>
+                        <select class="form-select" id="importType">
+                            <option value="candidates">Candidate Database</option>
+                            <option value="resumes">Resume Collection</option>
+                            <option value="linkedin">LinkedIn Export</option>
+                        </select>
+                    </div>
+
+                    <div class="form-section">
+                        <label class="form-label fw-medium">Upload File</label>
+                        <div class="file-upload-area" id="importUpload" onclick="document.getElementById('importFile').click()">
+                            <i class="fas fa-file-import fa-2x text-muted mb-2"></i>
+                            <p class="mb-1">Click to upload or drag and drop</p>
+                            <small class="text-muted">CSV, JSON, or ZIP files supported</small>
+                        </div>
+                        <input type="file" id="importFile" accept=".csv,.json,.zip" style="display: none;">
+                    </div>
+
+                    <div class="form-section">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="validateData" checked>
+                            <label class="form-check-label" for="validateData">
+                                Validate data before import
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="skipDuplicates" checked>
+                            <label class="form-check-label" for="skipDuplicates">
+                                Skip duplicate entries
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="progress-container" id="importProgress">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Importing data...</span>
+                            <span id="importProgressText">0%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="importProgressFill"></div>
+                        </div>
+                    </div>
+
+                    <button class="action-btn primary w-100" onclick="importData()">
+                        <i class="fas fa-file-import me-2"></i>Import Data
+                    </button>
+
+                    <div class="results-container" id="importResults">
+                        <h5>Import Results</h5>
+                        <div id="importResultsList"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block additional_js %}
+<script>
+let selectedTemplate = null;
+
+function selectTemplate(element) {
+    // Remove previous selection
+    document.querySelectorAll('.email-template').forEach(t => t.classList.remove('selected'));
+    
+    // Select current template
+    element.classList.add('selected');
+    selectedTemplate = element.dataset.template;
+    
+    // Show preview
+    showTemplatePreview(selectedTemplate);
+}
+
+function showTemplatePreview(template) {
+    const preview = document.getElementById('templatePreview');
+    const content = document.getElementById('templateContent');
+    
+    const templates = {
+        shortlist: "Congratulations! You've been shortlisted for the [Position] role at [Company]. We're impressed with your qualifications and would like to proceed to the next stage...",
+        rejection: "Thank you for your interest in the [Position] role at [Company]. After careful consideration, we've decided to move forward with other candidates...",
+        interview: "We would like to invite you for an interview for the [Position] role at [Company]. Please confirm your availability for [Date] at [Time]..."
+    };
+    
+    content.textContent = templates[template] || '';
+    preview.style.display = 'block';
+}
+
+function scheduleInterviews() {
+    const jobDrive = document.getElementById('jobDriveSelect').value;
+    const dateTime = document.getElementById('interviewDateTime').value;
+    const fileInput = document.getElementById('candidateFile');
+    
+    if (!jobDrive || !dateTime || !fileInput.files[0]) {
+        alert('Please fill in all required fields and upload a candidate file.');
+        return;
+    }
+    
+    // Show progress
+    const progressContainer = document.getElementById('scheduleProgress');
+    const progressFill = document.getElementById('scheduleProgressFill');
+    const progressText = document.getElementById('scheduleProgressText');
+    
+    progressContainer.style.display = 'block';
+    
+    // Simulate progress
+    let progress = 0;
+    const interval = setInterval(() => {
+        progress += Math.random() * 20;
+        if (progress >= 100) {
+            progress = 100;
+            clearInterval(interval);
+            showScheduleResults();
+        }
+        
+        progressFill.style.width = progress + '%';
+        progressText.textContent = Math.round(progress) + '%';
+    }, 500);
+}
+
+function showScheduleResults() {
+    const resultsContainer = document.getElementById('scheduleResults');
+    const resultsList = document.getElementById('scheduleResultsList');
+    
+    // Sample results
+    resultsList.innerHTML = `
+        <div class="result-item">
+            <div>
+                <div class="fw-medium">john.doe@example.com</div>
+                <small class="text-muted">Interview scheduled successfully</small>
+            </div>
+            <span class="result-status success">Success</span>
+        </div>
+        <div class="result-item">
+            <div>
+                <div class="fw-medium">jane.smith@example.com</div>
+                <small class="text-muted">Registration invitation sent</small>
+            </div>
+            <span class="result-status warning">Invited</span>
+        </div>
+        <div class="result-item">
+            <div>
+                <div class="fw-medium">invalid@email</div>
+                <small class="text-muted">Invalid email address</small>
+            </div>
+            <span class="result-status error">Error</span>
+        </div>
+    `;
+    
+    resultsContainer.style.display = 'block';
+}
+
+function sendBulkEmails() {
+    const recipients = document.getElementById('emailRecipients').value;
+    
+    if (!selectedTemplate || !recipients.trim()) {
+        alert('Please select a template and enter recipient emails.');
+        return;
+    }
+    
+    // Show progress
+    const progressContainer = document.getElementById('emailProgress');
+    const progressFill = document.getElementById('emailProgressFill');
+    const progressText = document.getElementById('emailProgressText');
+    
+    progressContainer.style.display = 'block';
+    
+    // Simulate progress
+    let progress = 0;
+    const interval = setInterval(() => {
+        progress += Math.random() * 15;
+        if (progress >= 100) {
+            progress = 100;
+            clearInterval(interval);
+            showEmailResults();
+        }
+        
+        progressFill.style.width = progress + '%';
+        progressText.textContent = Math.round(progress) + '%';
+    }, 300);
+}
+
+function showEmailResults() {
+    const resultsContainer = document.getElementById('emailResults');
+    const resultsList = document.getElementById('emailResultsList');
+    
+    // Sample results
+    resultsList.innerHTML = `
+        <div class="result-item">
+            <div>
+                <div class="fw-medium">john.doe@example.com</div>
+                <small class="text-muted">Email sent successfully</small>
+            </div>
+            <span class="result-status success">Sent</span>
+        </div>
+        <div class="result-item">
+            <div>
+                <div class="fw-medium">jane.smith@example.com</div>
+                <small class="text-muted">Email sent successfully</small>
+            </div>
+            <span class="result-status success">Sent</span>
+        </div>
+    `;
+    
+    resultsContainer.style.display = 'block';
+}
+
+function exportData() {
+    const exportType = document.getElementById('exportType').value;
+    const format = document.querySelector('input[name="exportFormat"]:checked').value;
+    
+    // Simulate export
+    const filename = `${exportType}_export_${new Date().toISOString().split('T')[0]}.${format}`;
+    
+    // Create and download dummy file
+    const data = { export_type: exportType, format: format, timestamp: new Date().toISOString() };
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    
+    alert(`Export completed: ${filename}`);
+}
+
+function importData() {
+    const importType = document.getElementById('importType').value;
+    const fileInput = document.getElementById('importFile');
+    
+    if (!fileInput.files[0]) {
+        alert('Please select a file to import.');
+        return;
+    }
+    
+    // Show progress
+    const progressContainer = document.getElementById('importProgress');
+    const progressFill = document.getElementById('importProgressFill');
+    const progressText = document.getElementById('importProgressText');
+    
+    progressContainer.style.display = 'block';
+    
+    // Simulate progress
+    let progress = 0;
+    const interval = setInterval(() => {
+        progress += Math.random() * 10;
+        if (progress >= 100) {
+            progress = 100;
+            clearInterval(interval);
+            showImportResults();
+        }
+        
+        progressFill.style.width = progress + '%';
+        progressText.textContent = Math.round(progress) + '%';
+    }, 400);
+}
+
+function showImportResults() {
+    const resultsContainer = document.getElementById('importResults');
+    const resultsList = document.getElementById('importResultsList');
+    
+    // Sample results
+    resultsList.innerHTML = `
+        <div class="result-item">
+            <div>
+                <div class="fw-medium">Data Import Summary</div>
+                <small class="text-muted">25 records processed, 23 imported, 2 skipped</small>
+            </div>
+            <span class="result-status success">Complete</span>
+        </div>
+    `;
+    
+    resultsContainer.style.display = 'block';
+}
+
+// File upload handling
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle file uploads
+    const fileInputs = ['candidateFile', 'importFile'];
+    
+    fileInputs.forEach(inputId => {
+        const input = document.getElementById(inputId);
+        input.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const uploadArea = input.previousElementSibling;
+                uploadArea.innerHTML = `
+                    <i class="fas fa-file-check fa-2x text-success mb-2"></i>
+                    <p class="mb-1">${file.name}</p>
+                    <small class="text-muted">${(file.size / 1024).toFixed(1)} KB</small>
+                `;
+            }
+        });
+    });
+    
+    // Drag and drop functionality
+    const uploadAreas = document.querySelectorAll('.file-upload-area');
+    
+    uploadAreas.forEach(area => {
+        area.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.classList.add('dragover');
+        });
+        
+        area.addEventListener('dragleave', function(e) {
+            e.preventDefault();
+            this.classList.remove('dragover');
+        });
+        
+        area.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.classList.remove('dragover');
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                const input = this.nextElementSibling;
+                input.files = files;
+                input.dispatchEvent(new Event('change'));
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

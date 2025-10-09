@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Personal Analytics - AI Interview System</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; }
+        .header { background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); padding: 1rem 2rem; box-shadow: 0 2px 20px rgba(0,0,0,0.1); }
+        .header-content { display: flex; justify-content: space-between; align-items: center; max-width: 1400px; margin: 0 auto; }
+        .logo { font-size: 1.5rem; font-weight: bold; color: #2c3e50; }
+        .nav-links { display: flex; gap: 1rem; }
+        .nav-links a { color: #2c3e50; text-decoration: none; padding: 0.5rem 1rem; border-radius: 8px; transition: all 0.3s; }
+        .nav-links a:hover, .nav-links a.active { background: #3498db; color: white; }
+        .container { max-width: 1400px; margin: 2rem auto; padding: 0 1rem; }
+        .page-header { background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); border-radius: 20px; padding: 2rem; margin-bottom: 2rem; text-align: center; }
+        .page-title { font-size: 2.5rem; color: #2c3e50; margin-bottom: 0.5rem; }
+        .page-subtitle { color: #7f8c8d; font-size: 1.2rem; }
+        .analytics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-bottom: 2rem; }
+        .analytics-card { background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); border-radius: 20px; padding: 2rem; }
+        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+        .card-title { font-size: 1.3rem; font-weight: bold; color: #2c3e50; }
+        .trend-indicator { padding: 0.25rem 0.75rem; border-radius: 15px; font-size: 0.8rem; font-weight: 500; }
+        .trend-improving { background: #d4edda; color: #155724; }
+        .trend-stable { background: #fff3cd; color: #856404; }
+        .trend-declining { background: #f8d7da; color: #721c24; }
+        .skill-meter { margin-bottom: 1.5rem; }
+        .skill-label { display: flex; justify-content: space-between; margin-bottom: 0.5rem; }
+        .skill-name { font-weight: 500; color: #2c3e50; }
+        .skill-score { font-weight: bold; color: #3498db; }
+        .skill-bar { height: 8px; background: #ecf0f1; border-radius: 4px; overflow: hidden; }
+        .skill-fill { height: 100%; border-radius: 4px; transition: width 0.8s ease; }
+        .skill-technical { background: linear-gradient(90deg, #3498db, #2980b9); }
+        .skill-communication { background: linear-gradient(90deg, #27ae60, #229954); }
+        .skill-confidence { background: linear-gradient(90deg, #f39c12, #e67e22); }
+        .skill-overall { background: linear-gradient(90deg, #9b59b6, #8e44ad); }
+        .chart-container { height: 250px; background: #f8f9fa; border-radius: 15px; padding: 1rem; display: flex; align-items: end; justify-content: space-around; }
+        .chart-bar { background: linear-gradient(to top, #3498db, #2980b9); border-radius: 4px 4px 0 0; min-height: 20px; width: 30px; position: relative; transition: height 0.8s ease; }
+        .chart-label { position: absolute; bottom: -25px; left: 50%; transform: translateX(-50%); font-size: 0.8rem; color: #7f8c8d; }
+        .stats-overview { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+        .stat-item { background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); border-radius: 15px; padding: 1.5rem; text-align: center; }
+        .stat-number { font-size: 2rem; font-weight: bold; color: #2c3e50; margin-bottom: 0.25rem; }
+        .stat-label { color: #7f8c8d; font-size: 0.9rem; }
+        .insights-section { background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); border-radius: 20px; padding: 2rem; }
+        .insight-item { display: flex; align-items: center; gap: 1rem; padding: 1rem; background: #f8f9fa; border-radius: 10px; margin-bottom: 1rem; }
+        .insight-icon { font-size: 1.5rem; }
+        .insight-text { flex: 1; }
+        .insight-title { font-weight: 500; color: #2c3e50; margin-bottom: 0.25rem; }
+        .insight-description { color: #7f8c8d; font-size: 0.9rem; }
+        .btn { padding: 0.75rem 1.5rem; border: none; border-radius: 10px; cursor: pointer; font-weight: 500; transition: all 0.3s; text-decoration: none; display: inline-block; }
+        .btn-primary { background: linear-gradient(135deg, #3498db, #2980b9); color: white; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">🎓 AI Interview System</div>
+            <nav class="nav-links">
+                <a href="/student/dashboard">Dashboard</a>
+                <a href="/student/practice">Practice</a>
+                <a href="/student/analytics" class="active">Analytics</a>
+                <a href="/student/learning-hub">Learning</a>
+                <a href="/student/social">Community</a>
+                <a href="/student/job-market">Jobs</a>
+                <a href="/student/settings">Settings</a>
+                <a href="/auth/logout">Logout</a>
+            </nav>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1 class="page-title">📊 Personal Analytics</h1>
+            <p class="page-subtitle">Track your progress and identify areas for improvement</p>
+        </div>
+
+        <!-- Stats Overview -->
+        <div class="stats-overview">
+            <div class="stat-item">
+                <div class="stat-number">{{ total_interviews }}</div>
+                <div class="stat-label">Total Interviews</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">{{ analytics.overall_avg }}%</div>
+                <div class="stat-label">Average Score</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">{{ analytics.technical_avg }}%</div>
+                <div class="stat-label">Technical Skills</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">{{ analytics.communication_avg }}%</div>
+                <div class="stat-label">Communication</div>
+            </div>
+        </div>
+
+        <!-- Analytics Grid -->
+        <div class="analytics-grid">
+            <!-- Skill Breakdown -->
+            <div class="analytics-card">
+                <div class="card-header">
+                    <h3 class="card-title">🎯 Skill Breakdown</h3>
+                </div>
+                
+                <div class="skill-meter">
+                    <div class="skill-label">
+                        <span class="skill-name">Technical Skills</span>
+                        <span class="skill-score">{{ analytics.technical_avg }}%</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-fill skill-technical" style="width: {{ analytics.technical_avg }}%;"></div>
+                    </div>
+                </div>
+
+                <div class="skill-meter">
+                    <div class="skill-label">
+                        <span class="skill-name">Communication</span>
+                        <span class="skill-score">{{ analytics.communication_avg }}%</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-fill skill-communication" style="width: {{ analytics.communication_avg }}%;"></div>
+                    </div>
+                </div>
+
+                <div class="skill-meter">
+                    <div class="skill-label">
+                        <span class="skill-name">Confidence</span>
+                        <span class="skill-score">{{ analytics.confidence_avg }}%</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-fill skill-confidence" style="width: {{ analytics.confidence_avg }}%;"></div>
+                    </div>
+                </div>
+
+                <div class="skill-meter">
+                    <div class="skill-label">
+                        <span class="skill-name">Overall Performance</span>
+                        <span class="skill-score">{{ analytics.overall_avg }}%</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-fill skill-overall" style="width: {{ analytics.overall_avg }}%;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Performance Trends -->
+            <div class="analytics-card">
+                <div class="card-header">
+                    <h3 class="card-title">📈 Performance Trends</h3>
+                </div>
+                
+                <div style="margin-bottom: 1rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                        <span>Technical Skills</span>
+                        <span class="trend-indicator trend-{{ analytics.technical_trend }}">
+                            {% if analytics.technical_trend == 'improving' %}📈 Improving
+                            {% elif analytics.technical_trend == 'declining' %}📉 Declining
+                            {% else %}➡️ Stable{% endif %}
+                        </span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                        <span>Communication</span>
+                        <span class="trend-indicator trend-{{ analytics.communication_trend }}">
+                            {% if analytics.communication_trend == 'improving' %}📈 Improving
+                            {% elif analytics.communication_trend == 'declining' %}📉 Declining
+                            {% else %}➡️ Stable{% endif %}
+                        </span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                        <span>Confidence</span>
+                        <span class="trend-indicator trend-{{ analytics.confidence_trend }}">
+                            {% if analytics.confidence_trend == 'improving' %}📈 Improving
+                            {% elif analytics.confidence_trend == 'declining' %}📉 Declining
+                            {% else %}➡️ Stable{% endif %}
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Monthly Progress -->
+            <div class="analytics-card">
+                <div class="card-header">
+                    <h3 class="card-title">📅 Monthly Progress</h3>
+                </div>
+                <div class="chart-container">
+                    {% for month in monthly_data %}
+                    <div class="chart-bar" style="height: {{ (month.count * 20 + 20) }}px;">
+                        <div class="chart-label">{{ month.month }}</div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Insights -->
+        <div class="insights-section">
+            <h3 style="color: #2c3e50; margin-bottom: 1.5rem; text-align: center;">🤖 AI-Powered Insights</h3>
+            
+            {% if analytics.overall_avg >= 80 %}
+            <div class="insight-item">
+                <div class="insight-icon">🎉</div>
+                <div class="insight-text">
+                    <div class="insight-title">Excellent Performance!</div>
+                    <div class="insight-description">You're performing exceptionally well. Keep up the great work!</div>
+                </div>
+            </div>
+            {% endif %}
+
+            {% if analytics.technical_trend == 'improving' %}
+            <div class="insight-item">
+                <div class="insight-icon">📈</div>
+                <div class="insight-text">
+                    <div class="insight-title">Technical Skills Improving</div>
+                    <div class="insight-description">Your technical interview skills are on an upward trend. Continue practicing coding problems.</div>
+                </div>
+            </div>
+            {% endif %}
+
+            {% if analytics.communication_avg < 70 %}
+            <div class="insight-item">
+                <div class="insight-icon">💬</div>
+                <div class="insight-text">
+                    <div class="insight-title">Focus on Communication</div>
+                    <div class="insight-description">Consider practicing articulation and clarity in your responses.</div>
+                </div>
+            </div>
+            {% endif %}
+
+            {% if analytics.confidence_avg < 70 %}
+            <div class="insight-item">
+                <div class="insight-icon">💪</div>
+                <div class="insight-text">
+                    <div class="insight-title">Build Confidence</div>
+                    <div class="insight-description">More practice sessions can help boost your confidence levels.</div>
+                </div>
+            </div>
+            {% endif %}
+
+            <div style="text-align: center; margin-top: 2rem;">
+                <a href="/student/practice" class="btn btn-primary">🎯 Start Targeted Practice</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Animate skill bars on load
+        document.addEventListener('DOMContentLoaded', function() {
+            const skillFills = document.querySelectorAll('.skill-fill');
+            
+            setTimeout(() => {
+                skillFills.forEach(fill => {
+                    const width = fill.style.width;
+                    fill.style.width = '0%';
+                    fill.style.transition = 'width 1.5s ease-out';
+                    
+                    setTimeout(() => {
+                        fill.style.width = width;
+                    }, 100);
+                });
+            }, 500);
+
+            // Animate chart bars
+            const chartBars = document.querySelectorAll('.chart-bar');
+            chartBars.forEach((bar, index) => {
+                const height = bar.style.height;
+                bar.style.height = '20px';
+                
+                setTimeout(() => {
+                    bar.style.height = height;
+                }, 800 + (index * 100));
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,752 @@
+{% extends "base.html" %}
+
+{% block title %}Interview Feedback - TalentSync{% endblock %}
+
+{% block additional_css %}
+<style>
+body {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    color: white;
+    font-family: 'Inter', sans-serif;
+}
+
+.feedback-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 2rem;
+}
+
+.candidate-header {
+    background: rgba(30, 41, 59, 0.8);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    border-radius: 16px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.candidate-info {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.candidate-avatar-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.candidate-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #3b82f6, #06b6d4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: 600;
+    border: 3px solid #3b82f6;
+    position: relative;
+    z-index: 2;
+    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+}
+
+.avatar-frame {
+    position: absolute;
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    border: 2px solid rgba(59, 130, 246, 0.3);
+    animation: pulse-ring 2s infinite;
+}
+
+@keyframes pulse-ring {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1.2);
+        opacity: 0;
+    }
+}
+
+.role-badge {
+    background: linear-gradient(135deg, #3b82f6, #06b6d4);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    display: inline-block;
+    margin: 0.5rem 0;
+}
+
+.date-info {
+    color: #94a3b8;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.score-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.score-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(6, 182, 212, 0.1));
+    border-radius: 16px;
+}
+
+.score-icon {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    opacity: 0.3;
+}
+
+.status-badge {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    margin-top: 1rem;
+    display: inline-block;
+    position: relative;
+    z-index: 1;
+}
+
+.status-excellent {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+}
+
+.status-good {
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    color: white;
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+}
+
+.status-satisfactory {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: white;
+    box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+}
+
+.status-needs_improvement {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: white;
+    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+}
+
+.candidate-details h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.candidate-details p {
+    margin: 0.5rem 0 0 0;
+    color: #94a3b8;
+}
+
+.score-card {
+    background: rgba(30, 41, 59, 0.8);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    border-radius: 16px;
+    padding: 2rem;
+    text-align: center;
+}
+
+.score-card h3 {
+    margin: 0 0 1rem 0;
+    font-size: 1rem;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.overall-score {
+    font-size: 3rem;
+    font-weight: 700;
+    color: white;
+    margin: 0;
+}
+
+.status-badge {
+    background: #10b981;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-top: 1rem;
+    display: inline-block;
+}
+
+.metrics-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.performance-card, .insights-card {
+    background: rgba(30, 41, 59, 0.8);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    border-radius: 16px;
+    padding: 2rem;
+}
+
+.card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.metric-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.metric-name {
+    color: #e2e8f0;
+}
+
+.metric-value {
+    font-weight: 600;
+    color: #10b981;
+}
+
+.metric-bar {
+    width: 100%;
+    height: 4px;
+    background: rgba(59, 130, 246, 0.2);
+    border-radius: 2px;
+    margin-top: 0.5rem;
+}
+
+.metric-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #10b981, #059669);
+    border-radius: 2px;
+}
+
+.chart-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    position: relative;
+}
+
+.donut-chart {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background: conic-gradient(#10b981 0deg 270deg, #3b82f6 270deg 324deg, #f59e0b 324deg 360deg);
+    position: relative;
+}
+
+.donut-chart::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80px;
+    height: 80px;
+    background: rgba(30, 41, 59, 1);
+    border-radius: 50%;
+}
+
+.transcript-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.transcript-card {
+    background: rgba(30, 41, 59, 0.8);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    border-radius: 16px;
+    padding: 2rem;
+}
+
+.highlight-item {
+    background: rgba(59, 130, 246, 0.1);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.highlight-positive {
+    border-color: rgba(16, 185, 129, 0.3);
+    background: rgba(16, 185, 129, 0.1);
+}
+
+.highlight-negative {
+    border-color: rgba(239, 68, 68, 0.3);
+    background: rgba(239, 68, 68, 0.1);
+}
+
+.highlight-text {
+    margin: 0 0 0.5rem 0;
+    font-size: 0.9rem;
+}
+
+.highlight-time {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    margin: 0;
+}
+
+.feedback-card {
+    background: rgba(30, 41, 59, 0.8);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    border-radius: 16px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.feedback-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #3b82f6, #06b6d4, #8b5cf6);
+}
+
+.enhanced-feedback {
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.9));
+    border: 1px solid rgba(59, 130, 246, 0.4);
+    box-shadow: 0 20px 60px rgba(59, 130, 246, 0.1);
+}
+
+.feedback-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+.feedback-text {
+    line-height: 1.7;
+    color: #e2e8f0;
+    font-size: 1rem;
+}
+
+.next-steps {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(6, 182, 212, 0.1));
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-top: 1rem;
+}
+
+.next-steps-text {
+    font-weight: 600;
+    color: #60a5fa;
+}
+
+.tips-card {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.1));
+    border-color: rgba(16, 185, 129, 0.3);
+}
+
+.tips-grid {
+    display: grid;
+    gap: 1rem;
+}
+
+.tip-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: rgba(16, 185, 129, 0.1);
+    border-radius: 8px;
+    border-left: 4px solid #10b981;
+}
+
+.tip-item i {
+    color: #10b981;
+    font-size: 1.2rem;
+}
+
+.skills-card {
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(124, 58, 237, 0.1));
+    border-color: rgba(139, 92, 246, 0.3);
+}
+
+.skills-grid {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.skill-item {
+    background: rgba(139, 92, 246, 0.1);
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid rgba(139, 92, 246, 0.2);
+}
+
+.skill-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.skill-name {
+    font-weight: 600;
+    color: #e2e8f0;
+}
+
+.skill-score {
+    font-weight: 700;
+    color: #8b5cf6;
+    font-size: 1.1rem;
+}
+
+.skill-bar {
+    width: 100%;
+    height: 8px;
+    background: rgba(139, 92, 246, 0.2);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.skill-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #8b5cf6, #a78bfa);
+    border-radius: 4px;
+    transition: width 1s ease-in-out;
+}
+
+.feedback-section {
+    margin-bottom: 1.5rem;
+}
+
+.feedback-section h4 {
+    color: #60a5fa;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.feedback-section h4 i {
+    color: #3b82f6;
+    font-size: 1rem;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.btn-custom {
+    padding: 0.8rem 2rem;
+    border-radius: 25px;
+    font-weight: 600;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-download {
+    background: #3b82f6;
+    color: white;
+}
+
+.btn-share {
+    background: #8b5cf6;
+    color: white;
+}
+
+.btn-schedule {
+    background: #10b981;
+    color: white;
+}
+
+.btn-exit {
+    background: #ef4444;
+    color: white;
+}
+
+.btn-custom:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    color: white;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Loading Screen - Only show if feedback is not available -->
+{% if not session.ai_feedback %}
+<div id="loadingScreen" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.95); z-index: 9999; display: flex; align-items: center; justify-content: center; flex-direction: column;">
+    <div style="text-align: center;">
+        <div style="width: 60px; height: 60px; border: 4px solid rgba(59, 130, 246, 0.3); border-top: 4px solid #3b82f6; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 2rem;"></div>
+        <h3 style="color: white; margin-bottom: 1rem;">Generating Your Feedback</h3>
+        <p style="color: #94a3b8;">Our AI is analyzing your interview responses...</p>
+    </div>
+</div>
+{% endif %}
+
+<style>
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+</style>
+
+<!-- Main content - Only show if feedback is available -->
+{% if session.ai_feedback %}
+<div class="feedback-container">
+    <!-- Candidate Header -->
+    <div class="candidate-header">
+        <div class="candidate-info">
+            <div class="candidate-avatar-container">
+                <div class="candidate-avatar">{{ session.candidate.full_name[0] }}</div>
+                <div class="avatar-frame"></div>
+            </div>
+            <div class="candidate-details">
+                <h2>{{ session.candidate.full_name }}</h2>
+                <p class="role-badge">{{ session.job_drive.job_role if session.job_drive else 'Practice Interview' }}</p>
+                <p class="date-info">{{ session.end_time.strftime('%B %d, %Y') if session.end_time else 'Recently Completed' }}</p>
+            </div>
+        </div>
+        <div class="score-card">
+            <div class="score-icon">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="TalentSync" style="width: 24px; height: 24px; border-radius: 4px;">
+            </div>
+            <h3>Overall Score</h3>
+            <div class="overall-score">{{ "%.0f"|format(feedback.overall_score or 85) }}%</div>
+            <div class="status-badge status-{{ feedback.status.lower() if feedback.status else 'good' }}">{{ feedback.status or 'GOOD' }}</div>
+        </div>
+    </div>
+
+    <!-- Performance Metrics -->
+    <div class="metrics-grid">
+        <div class="performance-card">
+            <h3 class="card-title">Performance Breakdown</h3>
+            
+            <div class="metric-item">
+                <span class="metric-name">Communication</span>
+                <span class="metric-value">{{ feedback.communication_score or 80 }}%</span>
+            </div>
+            <div class="metric-bar">
+                <div class="metric-fill" style="width: {{ feedback.communication_score or 80 }}%"></div>
+            </div>
+            
+            <div class="metric-item">
+                <span class="metric-name">Technical Knowledge</span>
+                <span class="metric-value">{{ feedback.technical_score or 90 }}%</span>
+            </div>
+            <div class="metric-bar">
+                <div class="metric-fill" style="width: {{ feedback.technical_score or 90 }}%"></div>
+            </div>
+            
+            <div class="metric-item">
+                <span class="metric-name">Problem-Solving</span>
+                <span class="metric-value">{{ feedback.problem_solving_score or 75 }}%</span>
+            </div>
+            <div class="metric-bar">
+                <div class="metric-fill" style="width: {{ feedback.problem_solving_score or 75 }}%"></div>
+            </div>
+            
+            <div class="metric-item">
+                <span class="metric-name">Confidence</span>
+                <span class="metric-value">{{ feedback.confidence_score or 88 }}%</span>
+            </div>
+            <div class="metric-bar">
+                <div class="metric-fill" style="width: {{ feedback.confidence_score or 88 }}%"></div>
+            </div>
+            
+            <div class="metric-item">
+                <span class="metric-name">Coding Proficiency</span>
+                <span class="metric-value">{{ feedback.coding_score or 92 }}%</span>
+            </div>
+            <div class="metric-bar">
+                <div class="metric-fill" style="width: {{ feedback.coding_score or 92 }}%"></div>
+            </div>
+        </div>
+
+        <div class="insights-card">
+            <h3 class="card-title">Visual Insights</h3>
+            <div class="chart-container">
+                <div class="donut-chart"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Transcript Highlights -->
+    <div class="transcript-grid">
+        <div class="transcript-card">
+            <h3 class="card-title">Transcript Highlights</h3>
+            
+            <div class="highlight-item highlight-positive">
+                <p class="highlight-text">✓ Candidate: My approach to the microservices architecture...</p>
+                <p class="highlight-time">0:15:30</p>
+            </div>
+        </div>
+
+        <div class="transcript-card">
+            <h3 class="card-title">Areas for Improvement</h3>
+            
+            <div class="highlight-item highlight-negative">
+                <p class="highlight-text">⚠ Fondisato the CAP theorem.</p>
+                <p class="highlight-time">0:18:30</p>
+            </div>
+            
+            <div class="highlight-item highlight-positive">
+                <p class="highlight-text">✓ AI: Explain the CAP theorem, Hoarctios states...</p>
+                <p class="highlight-time">0:19:15</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Comprehensive AI Feedback -->
+    <div class="feedback-card enhanced-feedback">
+        <div class="feedback-header">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="TalentSync AI" style="width: 32px; height: 32px; border-radius: 6px;">
+            <h3 class="card-title">AI-Powered Detailed Analysis</h3>
+        </div>
+        
+        {% if feedback.get('detailed_analysis') %}
+        <div class="feedback-section">
+            <h4><i class="fas fa-chart-line"></i> Interview Summary:</h4>
+            <p class="feedback-text">{{ feedback.detailed_analysis.get('interview_summary', 'Comprehensive interview analysis completed.') }}</p>
+        </div>
+        
+        <div class="feedback-section">
+            <h4><i class="fas fa-star"></i> Key Strengths:</h4>
+            <p class="feedback-text">{{ feedback.detailed_analysis.get('key_strengths', 'Demonstrated professional communication and engagement.') }}</p>
+        </div>
+        
+        <div class="feedback-section">
+            <h4><i class="fas fa-arrow-up"></i> Areas for Improvement:</h4>
+            <p class="feedback-text">{{ feedback.detailed_analysis.get('areas_for_improvement', 'Continue building experience and confidence.') }}</p>
+        </div>
+        
+        <div class="feedback-section">
+            <h4><i class="fas fa-code"></i> Technical Assessment:</h4>
+            <p class="feedback-text">{{ feedback.detailed_analysis.get('technical_assessment', 'Technical skills evaluation based on responses.') }}</p>
+        </div>
+        
+        <div class="feedback-section">
+            <h4><i class="fas fa-comments"></i> Communication Assessment:</h4>
+            <p class="feedback-text">{{ feedback.detailed_analysis.get('communication_assessment', 'Communication skills analysis.') }}</p>
+        </div>
+        
+        <div class="feedback-section">
+            <h4><i class="fas fa-lightbulb"></i> Personalized Recommendations:</h4>
+            <p class="feedback-text">{{ feedback.detailed_analysis.get('recommendations', 'Continue practicing and building your skills.') }}</p>
+        </div>
+        
+        <div class="feedback-section next-steps">
+            <h4><i class="fas fa-road"></i> Your Next Steps:</h4>
+            <p class="feedback-text next-steps-text">{{ feedback.detailed_analysis.get('next_steps', 'Keep practicing and building your experience.') }}</p>
+        </div>
+        {% else %}
+        <div class="feedback-section">
+            <h4><i class="fas fa-star"></i> Strengths:</h4>
+            <p class="feedback-text">{{ feedback.get('detailed_analysis', {}).get('technical_skills') or 'Excellent grasp of concepts and clear communication throughout the interview.' }}</p>
+        </div>
+        
+        <div class="feedback-section">
+            <h4><i class="fas fa-arrow-up"></i> Improvement Tips:</h4>
+            <p class="feedback-text">{{ feedback.get('detailed_analysis', {}).get('communication') or 'Continue practicing and building experience to enhance your interview performance.' }}</p>
+        </div>
+        {% endif %}
+    </div>
+    
+    <!-- Personalized Tips Section -->
+    {% if feedback.get('personalized_tips') %}
+    <div class="feedback-card tips-card">
+        <h3 class="card-title"><i class="fas fa-magic"></i> Personalized Tips for You</h3>
+        <div class="tips-grid">
+            {% for tip in feedback.personalized_tips %}
+            <div class="tip-item">
+                <i class="fas fa-check-circle"></i>
+                <span>{{ tip }}</span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+    
+    <!-- Skill Breakdown -->
+    {% if feedback.get('skill_breakdown') %}
+    <div class="feedback-card skills-card">
+        <h3 class="card-title"><i class="fas fa-chart-bar"></i> Detailed Skill Analysis</h3>
+        <div class="skills-grid">
+            {% for skill, score in feedback.skill_breakdown.items() %}
+            <div class="skill-item">
+                <div class="skill-header">
+                    <span class="skill-name">{{ skill.replace('_', ' ').title() }}</span>
+                    <span class="skill-score">{{ score }}%</span>
+                </div>
+                <div class="skill-bar">
+                    <div class="skill-fill" style="width: {{ score }}%"></div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+        <button class="btn-custom btn-download">Download Report (PDF)</button>
+        <button class="btn-custom btn-share">Share with HR</button>
+        <button class="btn-custom btn-schedule">Schedule Next Round</button>
+        <a href="{{ url_for('main.student_dashboard') }}" class="btn-custom btn-exit">Exit Dashboard</a>
+    </div>
+</div>
+{% endif %}
+
+<!-- Auto-refresh script for loading feedback -->
+{% if not session.ai_feedback %}
+<script>
+// Auto-refresh page every 3 seconds until feedback is available
+setTimeout(function() {
+    window.location.reload();
+}, 3000);
+</script>
+{% endif %}
+
+{% endblock %}

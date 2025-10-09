@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Dashboard - AI Interview System</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; }
+        .header { background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); padding: 1rem 2rem; box-shadow: 0 2px 20px rgba(0,0,0,0.1); }
+        .header-content { display: flex; justify-content: space-between; align-items: center; max-width: 1400px; margin: 0 auto; }
+        .logo { font-size: 1.5rem; font-weight: bold; color: #2c3e50; }
+        .nav-links { display: flex; gap: 1rem; }
+        .nav-links a { color: #2c3e50; text-decoration: none; padding: 0.5rem 1rem; border-radius: 8px; transition: all 0.3s; }
+        .nav-links a:hover, .nav-links a.active { background: #3498db; color: white; }
+        .container { max-width: 1400px; margin: 2rem auto; padding: 0 1rem; }
+        .welcome-section { background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); border-radius: 20px; padding: 2rem; margin-bottom: 2rem; text-align: center; }
+        .welcome-title { font-size: 2rem; color: #2c3e50; margin-bottom: 0.5rem; }
+        .welcome-subtitle { color: #7f8c8d; font-size: 1.1rem; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+        .stat-card { background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); border-radius: 15px; padding: 1.5rem; text-align: center; transition: transform 0.3s; }
+        .stat-card:hover { transform: translateY(-5px); }
+        .stat-icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
+        .stat-number { font-size: 2rem; font-weight: bold; color: #2c3e50; margin-bottom: 0.25rem; }
+        .stat-label { color: #7f8c8d; font-size: 0.9rem; }
+        .dashboard-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; margin-bottom: 2rem; }
+        .main-content { display: flex; flex-direction: column; gap: 1.5rem; }
+        .sidebar { display: flex; flex-direction: column; gap: 1.5rem; }
+        .card { background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); border-radius: 15px; padding: 1.5rem; }
+        .card-header { display: flex; justify-content: between; align-items: center; margin-bottom: 1rem; }
+        .card-title { font-size: 1.2rem; font-weight: 600; color: #2c3e50; }
+        .performance-chart { height: 200px; background: #f8f9fa; border-radius: 10px; display: flex; align-items: end; justify-content: space-around; padding: 1rem; }
+        .chart-bar { background: linear-gradient(to top, #3498db, #2980b9); border-radius: 4px 4px 0 0; min-height: 20px; width: 30px; position: relative; }
+        .chart-label { position: absolute; bottom: -25px; left: 50%; transform: translateX(-50%); font-size: 0.8rem; color: #7f8c8d; }
+        .achievement-item { display: flex; align-items: center; gap: 1rem; padding: 0.75rem; background: #f8f9fa; border-radius: 8px; margin-bottom: 0.5rem; }
+        .achievement-icon { font-size: 1.5rem; }
+        .achievement-info { flex: 1; }
+        .achievement-name { font-weight: 500; color: #2c3e50; }
+        .achievement-desc { font-size: 0.8rem; color: #7f8c8d; }
+        .interview-item { display: flex; justify-content: space-between; align-items: center; padding: 1rem; border-bottom: 1px solid #ecf0f1; }
+        .interview-item:last-child { border-bottom: none; }
+        .interview-info h4 { color: #2c3e50; margin-bottom: 0.25rem; }
+        .interview-info p { color: #7f8c8d; font-size: 0.9rem; }
+        .interview-score { font-weight: bold; color: #27ae60; }
+        .btn { padding: 0.75rem 1.5rem; border: none; border-radius: 10px; cursor: pointer; font-weight: 500; transition: all 0.3s; text-decoration: none; display: inline-block; text-align: center; }
+        .btn-primary { background: linear-gradient(135deg, #3498db, #2980b9); color: white; }
+        .btn-success { background: linear-gradient(135deg, #27ae60, #229954); color: white; }
+        .btn-warning { background: linear-gradient(135deg, #f39c12, #e67e22); color: white; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        .quick-actions { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+        .streak-display { text-align: center; padding: 1rem; background: linear-gradient(135deg, #f39c12, #e67e22); color: white; border-radius: 15px; }
+        .streak-number { font-size: 2.5rem; font-weight: bold; }
+        .streak-text { font-size: 0.9rem; opacity: 0.9; }
+        @media (max-width: 768px) {
+            .dashboard-grid { grid-template-columns: 1fr; }
+            .stats-grid { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">🎓 AI Interview System</div>
+            <nav class="nav-links">
+                <a href="/student/dashboard" class="active">Dashboard</a>
+                <a href="/student/practice">Practice</a>
+                <a href="/student/analytics">Analytics</a>
+                <a href="/student/learning-hub">Learning</a>
+                <a href="/student/social">Community</a>
+                <a href="/student/job-market">Jobs</a>
+                <a href="/student/settings">Settings</a>
+                <a href="/auth/logout">Logout</a>
+            </nav>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Welcome Section -->
+        <div class="welcome-section">
+            <h1 class="welcome-title">Welcome back, {{ current_user.first_name }}! 👋</h1>
+            <p class="welcome-subtitle">Ready to ace your next interview? Let's continue your journey to success!</p>
+        </div>
+
+        <!-- Statistics Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">🎯</div>
+                <div class="stat-number">{{ data.total_interviews }}</div>
+                <div class="stat-label">Total Interviews</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">✅</div>
+                <div class="stat-number">{{ data.completed_interviews }}</div>
+                <div class="stat-label">Completed</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📊</div>
+                <div class="stat-number">{{ data.average_score }}%</div>
+                <div class="stat-label">Average Score</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📈</div>
+                <div class="stat-number">{{ data.completion_rate }}%</div>
+                <div class="stat-label">Completion Rate</div>
+            </div>
+        </div>
+
+        <!-- Main Dashboard Grid -->
+        <div class="dashboard-grid">
+            <div class="main-content">
+                <!-- Performance Chart -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">📈 Performance Trend</h3>
+                    </div>
+                    <div class="performance-chart">
+                        {% for item in data.performance_data %}
+                        <div class="chart-bar" style="height: {{ (item.score * 2) }}px;">
+                            <div class="chart-label">{{ item.date }}</div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Recent Interviews -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">🎤 Recent Interviews</h3>
+                    </div>
+                    {% for interview in data.recent_interviews %}
+                    <div class="interview-item">
+                        <div class="interview-info">
+                            <h4>{{ interview.session_type.title() }} Interview</h4>
+                            <p>{{ interview.created_at.strftime('%B %d, %Y at %I:%M %p') }}</p>
+                        </div>
+                        <div class="interview-score">
+                            {% if interview.overall_score %}
+                            {{ interview.overall_score }}%
+                            {% else %}
+                            Pending
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">⚡ Quick Actions</h3>
+                    </div>
+                    <div class="quick-actions">
+                        <a href="/student/practice" class="btn btn-primary">🎯 Start Practice</a>
+                        <a href="/student/learning-hub" class="btn btn-success">📚 Study Materials</a>
+                        <a href="/student/social" class="btn btn-warning">👥 Find Study Partner</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <!-- Practice Streak -->
+                <div class="streak-display">
+                    <div class="streak-number">{{ data.practice_streak }}</div>
+                    <div class="streak-text">🔥 Day Practice Streak</div>
+                </div>
+
+                <!-- Achievements -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">🏆 Recent Achievements</h3>
+                    </div>
+                    {% for achievement in data.achievements[:3] %}
+                    <div class="achievement-item">
+                        <div class="achievement-icon">{{ achievement.icon }}</div>
+                        <div class="achievement-info">
+                            <div class="achievement-name">{{ achievement.name }}</div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    <a href="/student/achievements" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">View All</a>
+                </div>
+
+                <!-- Progress Summary -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">📊 This Week</h3>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 1.5rem; color: #3498db; margin-bottom: 0.5rem;">
+                            {{ data.completed_interviews }}
+                        </div>
+                        <div style="color: #7f8c8d; font-size: 0.9rem;">
+                            Interviews Completed
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Add some interactive animations
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate stat cards on load
+            const statCards = document.querySelectorAll('.stat-card');
+            statCards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(20px)';
+                    card.style.transition = 'all 0.5s ease';
+                    
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }, 100);
+                }, index * 100);
+            });
+
+            // Update time every minute
+            setInterval(() => {
+                const now = new Date();
+                const timeElements = document.querySelectorAll('.time-display');
+                timeElements.forEach(el => {
+                    el.textContent = now.toLocaleTimeString();
+                });
+            }, 60000);
+        });
+    </script>
+</body>
+</html>

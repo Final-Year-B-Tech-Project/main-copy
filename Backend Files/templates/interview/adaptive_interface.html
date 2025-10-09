@@ -1,0 +1,705 @@
+{% extends "base.html" %}
+
+{% block title %}AI Interview - {{ session.candidate.full_name }}{% endblock %}
+
+{% block additional_css %}
+<style>
+.interview-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+.interview-header {
+    background: var(--white);
+    border-radius: 8px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    text-align: center;
+    border: 1px solid var(--gray-200);
+}
+
+.interview-stage {
+    background: var(--primary);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    display: inline-block;
+    margin-bottom: 1rem;
+}
+
+.question-card {
+    background: var(--white);
+    border-radius: 8px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    border: 1px solid var(--gray-200);
+    min-height: 200px;
+}
+
+.question-text {
+    font-size: 1.125rem;
+    line-height: 1.6;
+    color: var(--gray-800);
+    margin-bottom: 2rem;
+}
+
+.answer-section {
+    background: var(--white);
+    border-radius: 8px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    border: 1px solid var(--gray-200);
+}
+
+.voice-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.voice-btn {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.voice-btn.record {
+    background: var(--danger);
+    color: white;
+}
+
+.voice-btn.record.recording {
+    animation: pulse 1.5s infinite;
+}
+
+.voice-btn.play {
+    background: var(--primary);
+    color: white;
+}
+
+.voice-btn.stop {
+    background: var(--secondary);
+    color: white;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.answer-textarea {
+    width: 100%;
+    min-height: 120px;
+    padding: 1rem;
+    border: 1px solid var(--gray-300);
+    border-radius: 6px;
+    font-size: 1rem;
+    line-height: 1.5;
+    resize: vertical;
+}
+
+.answer-textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.interview-controls {
+    background: var(--white);
+    border-radius: 8px;
+    padding: 1.5rem;
+    border: 1px solid var(--gray-200);
+    position: sticky;
+    bottom: 2rem;
+}
+
+.progress-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    font-size: 0.875rem;
+    color: var(--gray-600);
+}
+
+.interview-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--gray-600);
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--success);
+    animation: pulse 2s infinite;
+}
+
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.loading-content {
+    text-align: center;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--gray-200);
+    border-top: 3px solid var(--primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.conversation-history {
+    max-height: 300px;
+    overflow-y: auto;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    background: var(--gray-50);
+    border-radius: 6px;
+    font-size: 0.875rem;
+}
+
+.conversation-item {
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--gray-200);
+}
+
+.conversation-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.conversation-q {
+    font-weight: 600;
+    color: var(--primary);
+    margin-bottom: 0.5rem;
+}
+
+.conversation-a {
+    color: var(--gray-700);
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="interview-container">
+    <!-- Interview Header -->
+    <div class="interview-header">
+        <div class="interview-stage" id="currentStage">Getting Ready...</div>
+        <h2>AI Interview Session</h2>
+        <p>Welcome to your adaptive interview experience. This interview will adjust to your responses and cover different areas naturally.</p>
+        
+        <!-- Security Notice -->
+        <div style="background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 6px; padding: 1rem; margin: 1rem 0; color: #856404;">
+            <h5 style="margin: 0 0 0.5rem 0; color: #856404;">🔒 Security Notice</h5>
+            <p style="margin: 0; font-size: 0.875rem;">This interview will run in fullscreen mode for security. Exiting fullscreen or switching tabs will result in warnings and may auto-submit your interview.</p>
+        </div>
+        
+        <div class="status-indicator">
+            <div class="status-dot"></div>
+            <span>AI Interview Agent is ready</span>
+        </div>
+    </div>
+
+    <!-- Question Card -->
+    <div class="question-card" id="questionCard" style="display: none;">
+        <div class="question-text" id="questionText">
+            <!-- Question will be loaded here -->
+        </div>
+    </div>
+
+    <!-- Answer Section -->
+    <div class="answer-section" id="answerSection" style="display: none;">
+        <h4>Your Response</h4>
+        
+        <!-- Voice Controls -->
+        <div class="voice-controls">
+            <button class="voice-btn record" id="recordBtn" title="Start Recording">
+                <i class="fas fa-microphone"></i>
+            </button>
+            <button class="voice-btn play" id="playBtn" title="Play Recording" style="display: none;">
+                <i class="fas fa-play"></i>
+            </button>
+            <button class="voice-btn stop" id="stopBtn" title="Stop Recording" style="display: none;">
+                <i class="fas fa-stop"></i>
+            </button>
+        </div>
+
+        <!-- Text Answer -->
+        <textarea class="answer-textarea" id="answerText" placeholder="You can also type your answer here or use voice recording above..."></textarea>
+        
+        <!-- Conversation History -->
+        <div class="conversation-history" id="conversationHistory" style="display: none;">
+            <h5>Conversation So Far</h5>
+            <div id="conversationItems"></div>
+        </div>
+    </div>
+
+    <!-- Interview Controls -->
+    <div class="interview-controls">
+        <div class="progress-info">
+            <span>Stage: <span id="stageInfo">Preparation</span></span>
+            <span>Time: <span id="timeElapsed">00:00</span></span>
+            <span>Questions: <span id="questionCount">0</span></span>
+        </div>
+        
+        <div class="interview-actions">
+            <button class="btn btn-primary btn-lg" id="startBtn">
+                <i class="fas fa-play me-2"></i>Start Interview
+            </button>
+            <button class="btn btn-success btn-lg" id="nextBtn" style="display: none;">
+                <i class="fas fa-arrow-right me-2"></i>Next Question
+            </button>
+            <button class="btn btn-warning btn-lg" id="completeBtn" style="display: none;">
+                <i class="fas fa-check me-2"></i>Complete Interview
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Loading Overlay -->
+<div class="loading-overlay" id="loadingOverlay" style="display: none;">
+    <div class="loading-content">
+        <div class="spinner"></div>
+        <p>Processing your response...</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block additional_js %}
+<script src="{{ url_for('static', filename='js/fullscreen-security.js') }}"></script>
+<script>
+class AdaptiveInterview {
+    constructor(sessionId) {
+        this.sessionId = sessionId;
+        this.isRecording = false;
+        this.mediaRecorder = null;
+        this.audioChunks = [];
+        this.currentQuestion = null;
+        this.questionCount = 0;
+        this.startTime = null;
+        this.conversation = [];
+        this.securitySystem = null;
+        
+        this.initializeElements();
+        this.initializeEventListeners();
+        this.initializeVoiceRecognition();
+        this.initializeCustomSecurity();
+    }
+    
+    initializeElements() {
+        this.elements = {
+            startBtn: document.getElementById('startBtn'),
+            nextBtn: document.getElementById('nextBtn'),
+            completeBtn: document.getElementById('completeBtn'),
+            recordBtn: document.getElementById('recordBtn'),
+            playBtn: document.getElementById('playBtn'),
+            stopBtn: document.getElementById('stopBtn'),
+            questionCard: document.getElementById('questionCard'),
+            answerSection: document.getElementById('answerSection'),
+            questionText: document.getElementById('questionText'),
+            answerText: document.getElementById('answerText'),
+            currentStage: document.getElementById('currentStage'),
+            stageInfo: document.getElementById('stageInfo'),
+            timeElapsed: document.getElementById('timeElapsed'),
+            questionCount: document.getElementById('questionCount'),
+            conversationHistory: document.getElementById('conversationHistory'),
+            conversationItems: document.getElementById('conversationItems'),
+            loadingOverlay: document.getElementById('loadingOverlay')
+        };
+    }
+    
+    initializeEventListeners() {
+        this.elements.startBtn.addEventListener('click', () => this.startInterview());
+        this.elements.nextBtn.addEventListener('click', () => this.submitAnswer());
+        this.elements.completeBtn.addEventListener('click', () => this.completeInterview());
+        this.elements.recordBtn.addEventListener('click', () => this.toggleRecording());
+        this.elements.stopBtn.addEventListener('click', () => this.stopRecording());
+        
+        // Basic security (advanced security handled by FullscreenSecurity class)
+        document.addEventListener('contextmenu', (e) => e.preventDefault());
+    }
+    
+    initializeVoiceRecognition() {
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            this.recognition = new SpeechRecognition();
+            this.recognition.continuous = true;
+            this.recognition.interimResults = true;
+            this.recognition.lang = 'en-US';
+            
+            this.recognition.onresult = (event) => {
+                let finalTranscript = '';
+                for (let i = event.resultIndex; i < event.results.length; i++) {
+                    if (event.results[i].isFinal) {
+                        finalTranscript += event.results[i][0].transcript;
+                    }
+                }
+                if (finalTranscript) {
+                    this.elements.answerText.value += finalTranscript + ' ';
+                }
+            };
+        }
+    }
+    
+    initializeCustomSecurity() {
+        this.securitySystem = new FullscreenSecurity({
+            maxWarnings: 2,
+            onAutoSubmit: (reason) => {
+                console.log('Auto-submitting due to security violation:', reason);
+                this.autoSubmitInterview(reason);
+            },
+            onWarning: (reason, warningCount) => {
+                console.log(`Security warning ${warningCount}: ${reason}`);
+                // Log the warning for analytics
+                fetch(`/adaptive-interview/${this.sessionId}/security-warning`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        reason: reason,
+                        warning_count: warningCount,
+                        timestamp: new Date().toISOString()
+                    })
+                }).catch(error => console.error('Failed to log security warning:', error));
+            }
+        });
+    }
+    
+
+    
+    async autoSubmitInterview(reason) {
+        try {
+            this.showLoading('Interview auto-submitted due to security violations...');
+            
+            // Record the violation
+            const finalAnswer = this.elements.answerText.value.trim() || 'Interview terminated due to security violation';
+            
+            const response = await fetch(`/adaptive-interview/${this.sessionId}/complete`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    final_answer: finalAnswer,
+                    final_question: this.currentQuestion ? this.currentQuestion.question : '',
+                    security_violation: reason,
+                    auto_submitted: true
+                })
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                alert(`Interview has been automatically submitted due to security violations: ${reason}`);
+                window.location.href = data.redirect_url;
+            } else {
+                throw new Error(data.message);
+            }
+        } catch (error) {
+            console.error('Error auto-submitting interview:', error);
+            alert('Interview terminated due to security violations. Please contact support.');
+            window.location.href = '/';
+        }
+    }
+    
+
+    
+    async startInterview() {
+        try {
+            // Activate security system
+            if (this.securitySystem) {
+                this.securitySystem.activate();
+            }
+            
+            // Wait a moment for fullscreen to activate
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            this.showLoading('Starting your interview...');
+            
+            const response = await fetch(`/adaptive-interview/${this.sessionId}/start`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                this.startTime = new Date();
+                this.startTimer();
+                
+                // Show first question
+                this.displayQuestion(data.first_question);
+                
+                // Update UI
+                this.elements.startBtn.style.display = 'none';
+                this.elements.questionCard.style.display = 'block';
+                this.elements.answerSection.style.display = 'block';
+                this.elements.nextBtn.style.display = 'inline-flex';
+                this.elements.conversationHistory.style.display = 'block';
+                
+                this.updateStage('greeting');
+                
+                // Show security notice
+                if (this.securitySystem) {
+                    this.securitySystem.showCustomWarning(
+                        'Interview started successfully! Please remain in fullscreen mode throughout the interview. Any security violations will result in warnings.',
+                        'warning'
+                    );
+                }
+            } else {
+                throw new Error(data.message);
+            }
+        } catch (error) {
+            console.error('Error starting interview:', error);
+            alert('Failed to start interview. Please try again.');
+        } finally {
+            this.hideLoading();
+        }
+    }
+    
+    displayQuestion(questionData) {
+        this.currentQuestion = questionData;
+        this.elements.questionText.textContent = questionData.question;
+        this.elements.currentStage.textContent = this.formatStage(questionData.stage);
+        this.elements.stageInfo.textContent = this.formatStage(questionData.stage);
+        
+        // Clear previous answer
+        this.elements.answerText.value = '';
+        
+        // Update question count
+        this.questionCount++;
+        this.elements.questionCount.textContent = this.questionCount;
+        
+        // Show complete button if this is the final question
+        if (questionData.is_final) {
+            this.elements.nextBtn.style.display = 'none';
+            this.elements.completeBtn.style.display = 'inline-flex';
+        }
+        
+        // Speak the question if speech synthesis is available
+        this.speakText(questionData.question);
+    }
+    
+    async submitAnswer() {
+        const answer = this.elements.answerText.value.trim();
+        
+        if (!answer) {
+            alert('Please provide an answer before continuing.');
+            return;
+        }
+        
+        try {
+            this.showLoading('Processing your response...');
+            
+            // Add to conversation history
+            this.addToConversation(this.currentQuestion.question, answer);
+            
+            const response = await fetch(`/adaptive-interview/${this.sessionId}/next-question`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    answer: answer,
+                    previous_question: this.currentQuestion.question
+                })
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                const questionData = data.question_data;
+                this.displayQuestion(questionData);
+                this.updateStage(questionData.stage);
+            } else {
+                throw new Error(data.message);
+            }
+        } catch (error) {
+            console.error('Error submitting answer:', error);
+            alert('Failed to submit answer. Please try again.');
+        } finally {
+            this.hideLoading();
+        }
+    }
+    
+    async completeInterview() {
+        const finalAnswer = this.elements.answerText.value.trim();
+        
+        try {
+            this.showLoading('Completing your interview...');
+            this.isCompleted = true;
+            
+            if (finalAnswer) {
+                this.addToConversation(this.currentQuestion.question, finalAnswer);
+            }
+            
+            const response = await fetch(`/adaptive-interview/${this.sessionId}/complete`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    final_answer: finalAnswer,
+                    final_question: this.currentQuestion ? this.currentQuestion.question : ''
+                })
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                // Deactivate security system
+                if (this.securitySystem) {
+                    this.securitySystem.deactivate();
+                }
+                
+                window.location.href = data.redirect_url;
+            } else {
+                throw new Error(data.message);
+            }
+        } catch (error) {
+            console.error('Error completing interview:', error);
+            alert('Failed to complete interview. Please try again.');
+            this.hideLoading();
+        }
+    }
+    
+    toggleRecording() {
+        if (this.isRecording) {
+            this.stopRecording();
+        } else {
+            this.startRecording();
+        }
+    }
+    
+    startRecording() {
+        if (this.recognition) {
+            this.recognition.start();
+            this.isRecording = true;
+            this.elements.recordBtn.classList.add('recording');
+            this.elements.stopBtn.style.display = 'inline-flex';
+        }
+    }
+    
+    stopRecording() {
+        if (this.recognition && this.isRecording) {
+            this.recognition.stop();
+            this.isRecording = false;
+            this.elements.recordBtn.classList.remove('recording');
+            this.elements.stopBtn.style.display = 'none';
+        }
+    }
+    
+    addToConversation(question, answer) {
+        this.conversation.push({ question, answer });
+        
+        const conversationItem = document.createElement('div');
+        conversationItem.className = 'conversation-item';
+        conversationItem.innerHTML = `
+            <div class="conversation-q">Q: ${question}</div>
+            <div class="conversation-a">A: ${answer}</div>
+        `;
+        
+        this.elements.conversationItems.appendChild(conversationItem);
+        this.elements.conversationHistory.scrollTop = this.elements.conversationHistory.scrollHeight;
+    }
+    
+    updateStage(stage) {
+        const stageNames = {
+            'greeting': 'Introduction & Greeting',
+            'resume_review': 'Background Discussion',
+            'technical': 'Technical Assessment',
+            'behavioral': 'Behavioral Questions',
+            'closing': 'Interview Wrap-up'
+        };
+        
+        const stageName = stageNames[stage] || 'Interview';
+        this.elements.currentStage.textContent = stageName;
+        this.elements.stageInfo.textContent = stageName;
+    }
+    
+    formatStage(stage) {
+        return stage.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase());
+    }
+    
+    startTimer() {
+        setInterval(() => {
+            if (this.startTime) {
+                const elapsed = Math.floor((new Date() - this.startTime) / 1000);
+                const minutes = Math.floor(elapsed / 60);
+                const seconds = elapsed % 60;
+                this.elements.timeElapsed.textContent = 
+                    `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }
+        }, 1000);
+    }
+    
+    speakText(text) {
+        if ('speechSynthesis' in window) {
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.rate = 0.9;
+            utterance.pitch = 1;
+            speechSynthesis.speak(utterance);
+        }
+    }
+    
+    showLoading(message = 'Loading...') {
+        this.elements.loadingOverlay.querySelector('p').textContent = message;
+        this.elements.loadingOverlay.style.display = 'flex';
+    }
+    
+    hideLoading() {
+        this.elements.loadingOverlay.style.display = 'none';
+    }
+}
+
+// Initialize the adaptive interview
+document.addEventListener('DOMContentLoaded', function() {
+    const sessionId = {{ session.id }};
+    window.adaptiveInterview = new AdaptiveInterview(sessionId);
+});
+</script>
+{% endblock %}

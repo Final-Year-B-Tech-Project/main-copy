@@ -1,0 +1,61 @@
+{% extends "emails/base_email.html" %}
+
+{% block content %}
+<div class="greeting">
+    Data Export Complete 📊
+</div>
+
+<div class="message-content">
+    <p>Dear {{ recipient_name }},</p>
+    
+    <p>Your data export request has been completed successfully. Your personal data has been prepared and is ready for download.</p>
+    
+    <div class="highlight-box">
+        <h3><i class="fas fa-download"></i> Export Details</h3>
+        <p><strong>Export Date:</strong> {{ current_year }}</p>
+        <p><strong>Status:</strong> <span class="badge">Ready for Download</span></p>
+        <p><strong>Data Type:</strong> Complete Account Data</p>
+    </div>
+    
+    <h3 style="color: #1f2937; margin: 30px 0 15px 0;">📋 What's Included:</h3>
+    <ul class="feature-list">
+        <li>Personal profile information</li>
+        <li>Interview history and results</li>
+        <li>Practice session records</li>
+        <li>Job applications and responses</li>
+        <li>Account activity logs</li>
+        <li>Communication history</li>
+    </ul>
+    
+    <div style="text-align: center; margin: 30px 0;">
+        <a href="#" class="cta-button">
+            <i class="fas fa-download"></i> Download Your Data
+        </a>
+    </div>
+    
+    <h3 style="color: #1f2937; margin: 30px 0 15px 0;">🔒 Security Information:</h3>
+    <ul class="feature-list">
+        <li>Your data is encrypted and secure</li>
+        <li>Download links expire in 7 days for security</li>
+        <li>Keep your exported data secure and private</li>
+        <li>Contact support if you need assistance</li>
+    </ul>
+    
+    <div style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border: 2px solid #0ea5e9; border-radius: 12px; padding: 25px; margin: 25px 0; text-align: center;">
+        <h3 style="margin: 0 0 10px 0; color: #0369a1; font-size: 20px;">
+            <i class="fas fa-shield-alt"></i> Data Privacy
+        </h3>
+        <p style="margin: 0; color: #0c4a6e;">We respect your privacy and are committed to protecting your personal information.</p>
+    </div>
+    
+    <div class="divider"></div>
+    
+    <p style="text-align: center; margin: 25px 0; font-size: 16px; color: #4b5563;">
+        <strong>Questions?</strong> If you need help with your data export, please contact our support team.
+    </p>
+    
+    <p style="margin-top: 25px; font-style: italic; color: #6b7280; text-align: center;">
+        Thank you for using TalentSync! 📈
+    </p>
+</div>
+{% endblock %}

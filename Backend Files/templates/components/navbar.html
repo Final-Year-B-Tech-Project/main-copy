@@ -1,0 +1,85 @@
+<nav class="navbar navbar-expand-lg">
+    <div class="container-fluid px-4">
+        <!-- Brand -->
+        <a class="navbar-brand d-flex align-items-center" href="{{ url_for('main.index') }}">
+            <div class="me-2" style="width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="TalentSync" style="width: 32px; height: 32px; border-radius: 6px;">
+            </div>
+            <span class="fw-bold">TalentSync</span>
+        </a>
+
+        <!-- Navigation Links -->
+        <div class="d-flex align-items-center ms-auto" style="gap: 2rem;">
+            {% if current_user.is_authenticated %}
+                <a class="nav-link d-flex align-items-center" href="{{ url_for('main.dashboard') }}">
+                    <i class="fas fa-tachometer-alt me-2"></i>Dashboard
+                </a>
+                
+                {% if current_user.user_type == 'student' %}
+                    <a class="nav-link d-flex align-items-center" href="{{ url_for('main.practice_interview') }}">
+                        <i class="fas fa-play-circle me-2"></i>Practice
+                    </a>
+                {% elif current_user.user_type == 'hr' %}
+                    <a class="nav-link d-flex align-items-center" href="{{ url_for('main.hr_drives') }}">
+                        <i class="fas fa-briefcase me-2"></i>Job Drives
+                    </a>
+                {% endif %}
+                
+                <a class="nav-link d-flex align-items-center" href="{{ url_for('auth.profile') }}">
+                    <i class="fas fa-user me-2"></i>Profile
+                </a>
+                
+                <!-- User Dropdown -->
+                <div class="dropdown">
+                    <button class="btn btn-outline-primary dropdown-toggle d-flex align-items-center" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        {{ current_user.first_name }}
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><h6 class="dropdown-header">{{ current_user.full_name }}<br><small class="text-muted text-uppercase">{{ current_user.user_type }}</small></h6></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="{{ url_for('auth.profile') }}"><i class="fas fa-user me-2"></i>Profile Settings</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('main.dashboard') }}"><i class="fas fa-tachometer-alt me-2"></i>Dashboard</a></li>
+                        {% if current_user.is_admin() %}
+                        <li><a class="dropdown-item" href="{{ url_for('admin.dashboard') }}"><i class="fas fa-cog me-2"></i>Admin Panel</a></li>
+                        {% endif %}
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item text-danger" href="{{ url_for('auth.logout') }}"><i class="fas fa-sign-out-alt me-2"></i>Sign Out</a></li>
+                    </ul>
+                </div>
+                {% else %}
+                    <a class="nav-link" href="{{ url_for('auth.login') }}">Sign In</a>
+                    <a class="btn btn-primary btn-sm" href="{{ url_for('auth.register') }}">Get Started</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Breadcrumb -->
+{% if current_user.is_authenticated and request.endpoint != 'main.index' %}
+<nav class="breadcrumb">
+    <div class="container-fluid">
+        <div class="d-flex align-items-center" style="gap: 0.5rem; font-size: 0.875rem;">
+            <a href="{{ url_for('main.dashboard') }}" class="breadcrumb-item">
+                <i class="fas fa-home me-2"></i>Dashboard
+            </a>
+            <span style="color: var(--gray-400);">/</span>
+            
+            {% set breadcrumbs = {
+                'main.student_dashboard': 'Student Dashboard',
+                'main.hr_dashboard': 'HR Dashboard',
+                'main.practice_interview': 'Practice Interview',
+                'main.hr_drives': 'Job Drives',
+                'main.create_drive': 'Create Drive',
+                'auth.profile': 'Profile Settings',
+                'main.interview_interface': 'Interview'
+            } %}
+            
+            {% if request.endpoint in breadcrumbs %}
+                <span class="breadcrumb-item active">{{ breadcrumbs[request.endpoint] }}</span>
+            {% endif %}
+        </div>
+    </div>
+</nav>
+{% endif %}
+

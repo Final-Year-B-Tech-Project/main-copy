@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>System Settings - Admin Panel</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f8f9fa; }
+        .header { background: #2c3e50; color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .header h1 { font-size: 1.5rem; }
+        .nav-links { display: flex; gap: 1rem; }
+        .nav-links a { color: white; text-decoration: none; padding: 0.5rem 1rem; border-radius: 4px; transition: background 0.3s; }
+        .nav-links a:hover { background: rgba(255,255,255,0.1); }
+        .container { max-width: 1000px; margin: 2rem auto; padding: 0 1rem; }
+        .settings-section { background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 2rem; }
+        .section-header { padding: 1rem 1.5rem; border-bottom: 1px solid #ecf0f1; }
+        .section-header h3 { color: #2c3e50; }
+        .section-content { padding: 1.5rem; }
+        .setting-row { display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; border-bottom: 1px solid #ecf0f1; }
+        .setting-row:last-child { border-bottom: none; }
+        .setting-label { font-weight: 500; color: #2c3e50; }
+        .setting-description { color: #7f8c8d; font-size: 0.875rem; margin-top: 0.25rem; }
+        .setting-control input, .setting-control select { padding: 0.5rem; border: 1px solid #ddd; border-radius: 4px; }
+        .toggle-switch { position: relative; display: inline-block; width: 60px; height: 34px; }
+        .toggle-switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 34px; }
+        .slider:before { position: absolute; content: ""; height: 26px; width: 26px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background-color: #27ae60; }
+        input:checked + .slider:before { transform: translateX(26px); }
+        .btn { padding: 0.75rem 1.5rem; border: none; border-radius: 4px; cursor: pointer; font-size: 1rem; transition: all 0.3s; }
+        .btn-primary { background: #3498db; color: white; }
+        .btn-success { background: #27ae60; color: white; }
+        .btn-danger { background: #e74c3c; color: white; }
+        .btn:hover { opacity: 0.9; }
+        .save-actions { text-align: center; margin-top: 2rem; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>⚙️ System Settings</h1>
+        <div class="nav-links">
+            <a href="/admin/dashboard">Dashboard</a>
+            <a href="/admin/users">Users</a>
+            <a href="/admin/interviews">Interviews</a>
+            <a href="/admin/analytics">Analytics</a>
+            <a href="/admin/notifications">Notifications</a>
+            <a href="/admin/settings">Settings</a>
+            <a href="/admin/security">Security</a>
+            <a href="/admin/logout">Logout</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <form id="settingsForm">
+            <!-- General Settings -->
+            <div class="settings-section">
+                <div class="section-header">
+                    <h3>🏢 General Settings</h3>
+                </div>
+                <div class="section-content">
+                    <div class="setting-row">
+                        <div>
+                            <div class="setting-label">System Name</div>
+                            <div class="setting-description">Display name for the application</div>
+                        </div>
+                        <div class="setting-control">
+                            <input type="text" name="system_name" value="{{ settings.system_name }}" />
+                        </div>
+                    </div>
+                    
+                    <div class="setting-row">
+                        <div>
+                            <div class="setting-label">Maintenance Mode</div>
+                            <div class="setting-description">Temporarily disable system access for maintenance</div>
+                        </div>
+                        <div class="setting-control">
+                            <label class="toggle-switch">
+                                <input type="checkbox" name="maintenance_mode" {% if settings.maintenance_mode %}checked{% endif %} />
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interview Settings -->
+            <div class="settings-section">
+                <div class="section-header">
+                    <h3>🎤 Interview Settings</h3>
+                </div>
+                <div class="section-content">
+                    <div class="setting-row">
+                        <div>
+                            <div class="setting-label">Maximum Interview Duration</div>
+                            <div class="setting-description">Maximum time allowed for interviews (minutes)</div>
+                        </div>
+                        <div class="setting-control">
+                            <input type="number" name="max_interview_duration" value="{{ settings.max_interview_duration }}" min="15" max="180" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Security Settings -->
+            <div class="settings-section">
+                <div class="section-header">
+                    <h3>🔒 Security Settings</h3>
+                </div>
+                <div class="section-content">
+                    <div class="setting-row">
+                        <div>
+                            <div class="setting-label">Security Level</div>
+                            <div class="setting-description">Overall system security configuration</div>
+                        </div>
+                        <div class="setting-control">
+                            <select name="security_level">
+                                <option value="low" {% if settings.security_level == 'low' %}selected{% endif %}>Low</option>
+                                <option value="medium" {% if settings.security_level == 'medium' %}selected{% endif %}>Medium</option>
+                                <option value="high" {% if settings.security_level == 'high' %}selected{% endif %}>High</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notification Settings -->
+            <div class="settings-section">
+                <div class="section-header">
+                    <h3>📧 Notification Settings</h3>
+                </div>
+                <div class="section-content">
+                    <div class="setting-row">
+                        <div>
+                            <div class="setting-label">Email Notifications</div>
+                            <div class="setting-description">Send email notifications for system events</div>
+                        </div>
+                        <div class="setting-control">
+                            <label class="toggle-switch">
+                                <input type="checkbox" name="email_notifications" {% if settings.email_notifications %}checked{% endif %} />
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- System Actions -->
+            <div class="settings-section">
+                <div class="section-header">
+                    <h3>🔧 System Actions</h3>
+                </div>
+                <div class="section-content">
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                        <button type="button" class="btn btn-primary" onclick="backupSystem()">
+                            💾 Create Backup
+                        </button>
+                        <button type="button" class="btn btn-danger" onclick="clearAllLogs()">
+                            🗑️ Clear All Logs
+                        </button>
+                        <button type="button" class="btn btn-success" onclick="testEmailSystem()">
+                            📧 Test Email System
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <div class="save-actions">
+            <button type="button" class="btn btn-success" onclick="saveSettings()">
+                💾 Save All Settings
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function saveSettings() {
+            const form = document.getElementById('settingsForm');
+            const formData = new FormData(form);
+            const settings = {};
+            
+            // Convert form data to object
+            for (let [key, value] of formData.entries()) {
+                if (form.elements[key].type === 'checkbox') {
+                    settings[key] = form.elements[key].checked;
+                } else if (form.elements[key].type === 'number') {
+                    settings[key] = parseInt(value);
+                } else {
+                    settings[key] = value;
+                }
+            }
+            
+            // Handle unchecked checkboxes
+            const checkboxes = form.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                if (!checkbox.checked) {
+                    settings[checkbox.name] = false;
+                }
+            });
+            
+            fetch('/admin/settings', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(settings)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Settings saved successfully!');
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            });
+        }
+
+        function backupSystem() {
+            if (confirm('Create a system backup? This may take a few moments.')) {
+                fetch('/admin/backup-system', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Backup created successfully!');
+                    } else {
+                        alert('Backup failed: ' + data.message);
+                    }
+                });
+            }
+        }
+
+        function clearAllLogs() {
+            if (confirm('Are you sure you want to clear all system logs? This action cannot be undone.')) {
+                fetch('/admin/clear-logs', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ log_type: 'all' })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('All logs cleared successfully!');
+                    } else {
+                        alert('Error: ' + data.message);
+                    }
+                });
+            }
+        }
+
+        function testEmailSystem() {
+            alert('Email system test initiated. Check your email configuration.');
+        }
+    </script>
+</body>
+</html>

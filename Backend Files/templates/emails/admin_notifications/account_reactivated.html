@@ -1,0 +1,60 @@
+{% extends "emails/base_email.html" %}
+
+{% block content %}
+<div class="greeting">
+    Account Reactivated! ✅
+</div>
+
+<div class="message-content">
+    <p>Dear {{ recipient_name }},</p>
+    
+    <p>Great news! Your TalentSync account has been successfully reactivated and you now have full access to all platform features.</p>
+    
+    <div style="background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); border: 2px solid #10b981; border-radius: 12px; padding: 25px; margin: 25px 0; text-align: center;">
+        <h3 style="margin: 0 0 10px 0; color: #047857; font-size: 20px;">
+            <i class="fas fa-check-circle"></i> Account Restored
+        </h3>
+        <p style="margin: 0; color: #065f46; font-weight: 500;">Welcome back to TalentSync!</p>
+    </div>
+    
+    <div class="highlight-box">
+        <h3><i class="fas fa-info-circle"></i> Reactivation Details</h3>
+        <p><strong>Reactivation Date:</strong> {{ current_year }}</p>
+        <p><strong>Status:</strong> <span class="badge">Active</span></p>
+        <p><strong>Access Level:</strong> Full Platform Access</p>
+    </div>
+    
+    <h3 style="color: #1f2937; margin: 30px 0 15px 0;">🎉 What You Can Do Now:</h3>
+    <ul class="feature-list">
+        <li>Access your dashboard and profile</li>
+        <li>Participate in interviews and job drives</li>
+        <li>Schedule new practice sessions</li>
+        <li>Connect with potential employers or candidates</li>
+        <li>Update your profile information</li>
+    </ul>
+    
+    <h3 style="color: #1f2937; margin: 30px 0 15px 0;">📋 Important Reminders:</h3>
+    <ul class="feature-list">
+        <li>Please review our Terms of Service to avoid future issues</li>
+        <li>Maintain professional conduct on the platform</li>
+        <li>Keep your profile information up to date</li>
+        <li>Contact support if you have any questions</li>
+    </ul>
+    
+    <div style="text-align: center; margin: 30px 0;">
+        <a href="#" class="cta-button">
+            <i class="fas fa-tachometer-alt"></i> Go to Dashboard
+        </a>
+    </div>
+    
+    <div class="divider"></div>
+    
+    <p style="text-align: center; margin: 25px 0; font-size: 16px; color: #4b5563;">
+        <strong>Welcome back!</strong> We're excited to have you back on TalentSync.
+    </p>
+    
+    <p style="margin-top: 25px; font-style: italic; color: #6b7280; text-align: center;">
+        Thank you for your patience and understanding. 🌟
+    </p>
+</div>
+{% endblock %}

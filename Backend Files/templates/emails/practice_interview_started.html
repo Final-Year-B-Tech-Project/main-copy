@@ -1,0 +1,89 @@
+{% extends "emails/base_email.html" %}
+
+{% block content %}
+<div class="greeting">
+    Practice Interview Started! 🎯
+</div>
+
+<div class="message-content">
+    <p>Great news! You've successfully started a practice interview session. This is your opportunity to sharpen your skills and build confidence for real interviews.</p>
+    
+    <div class="highlight-box">
+        <h3><i class="fas fa-play-circle"></i> Session Details</h3>
+        <p><strong>Job Role:</strong> {{ job_role }}</p>
+        <p><strong>Started:</strong> {{ start_time }}</p>
+        <p><strong>Type:</strong> Practice Interview</p>
+        <p><strong>Status:</strong> <span class="badge">In Progress</span></p>
+    </div>
+    
+    <div style="text-align: center; margin: 30px 0;">
+        <a href="{{ interview_link }}" class="cta-button">
+            <i class="fas fa-microphone"></i> Continue Interview
+        </a>
+    </div>
+    
+    <h3 style="color: #1f2937; margin: 30px 0 15px 0;">💪 What This Practice Session Will Help You With:</h3>
+    
+    <div class="info-grid">
+        <div class="info-item">
+            <h4><i class="fas fa-comments"></i> Communication Skills</h4>
+            <p>Practice articulating your thoughts clearly and professionally</p>
+        </div>
+        <div class="info-item">
+            <h4><i class="fas fa-brain"></i> Technical Knowledge</h4>
+            <p>Test your technical skills with role-specific questions</p>
+        </div>
+        <div class="info-item">
+            <h4><i class="fas fa-smile"></i> Confidence Building</h4>
+            <p>Build interview confidence in a stress-free environment</p>
+        </div>
+        <div class="info-item">
+            <h4><i class="fas fa-chart-line"></i> Performance Tracking</h4>
+            <p>Get detailed feedback on your strengths and areas to improve</p>
+        </div>
+    </div>
+    
+    <h3 style="color: #1f2937; margin: 30px 0 15px 0;">🎯 Tips for a Successful Practice:</h3>
+    <ul class="feature-list">
+        <li>Find a quiet environment with minimal distractions</li>
+        <li>Speak clearly and at a moderate pace</li>
+        <li>Provide specific examples in your answers</li>
+        <li>Take your time to think before responding</li>
+        <li>Treat it like a real interview for maximum benefit</li>
+        <li>Don't worry about perfect answers - focus on improvement</li>
+    </ul>
+    
+    <div style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border: 2px solid #0ea5e9; border-radius: 12px; padding: 25px; margin: 25px 0; text-align: center;">
+        <h3 style="margin: 0 0 10px 0; color: #0369a1; font-size: 20px;">
+            <i class="fas fa-lightbulb"></i> Pro Tip
+        </h3>
+        <p style="margin: 0; color: #0c4a6e;">The more you practice, the better you'll perform in real interviews. Use this opportunity to experiment with different answer styles and approaches!</p>
+    </div>
+    
+    <h3 style="color: #1f2937; margin: 30px 0 15px 0;">📊 After Your Practice Session:</h3>
+    <ul class="feature-list">
+        <li>Receive comprehensive performance feedback</li>
+        <li>Get scores on communication, technical skills, and confidence</li>
+        <li>View detailed analytics of your performance</li>
+        <li>Access personalized improvement recommendations</li>
+        <li>Track your progress over time</li>
+    </ul>
+    
+    <div class="divider"></div>
+    
+    <p style="text-align: center; margin: 25px 0; font-size: 16px; color: #4b5563;">
+        <strong>Need Help?</strong> If you encounter any technical issues, our support team is ready to assist you.
+    </p>
+    
+    <div style="text-align: center; margin: 30px 0;">
+        <a href="{{ interview_link }}" class="cta-button">
+            <i class="fas fa-video"></i> Resume Your Practice
+        </a>
+    </div>
+    
+    <p style="margin-top: 25px; font-style: italic; color: #6b7280; text-align: center;">
+        Good luck with your practice session! Remember, every interview is a learning opportunity. 🌟
+    </p>
+</div>
+{% endblock %}
+

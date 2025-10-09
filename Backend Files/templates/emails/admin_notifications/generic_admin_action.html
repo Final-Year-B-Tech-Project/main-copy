@@ -1,0 +1,49 @@
+{% extends "emails/base_email.html" %}
+
+{% block content %}
+<div class="greeting">
+    Account Update Notification 📢
+</div>
+
+<div class="message-content">
+    <p>Dear {{ recipient_name }},</p>
+    
+    <p>We are writing to inform you about an important update to your TalentSync account.</p>
+    
+    <div class="highlight-box">
+        <h3><i class="fas fa-info-circle"></i> Action Details</h3>
+        <p><strong>Action:</strong> {{ action.title() }}</p>
+        <p><strong>Date:</strong> {{ current_year }}</p>
+        <p><strong>Status:</strong> <span class="badge">Processed</span></p>
+    </div>
+    
+    <h3 style="color: #1f2937; margin: 30px 0 15px 0;">📋 Details:</h3>
+    <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin: 15px 0; border: 1px solid #e5e7eb;">
+        <p style="margin: 0; line-height: 1.7; color: #4b5563;">{{ details }}</p>
+    </div>
+    
+    <h3 style="color: #1f2937; margin: 30px 0 15px 0;">🔧 Next Steps:</h3>
+    <ul class="feature-list">
+        <li>Review the changes made to your account</li>
+        <li>Contact support if you have any questions</li>
+        <li>Continue using TalentSync as normal</li>
+        <li>Report any issues immediately</li>
+    </ul>
+    
+    <div style="text-align: center; margin: 30px 0;">
+        <a href="#" class="cta-button">
+            <i class="fas fa-headset"></i> Contact Support
+        </a>
+    </div>
+    
+    <div class="divider"></div>
+    
+    <p style="text-align: center; margin: 25px 0; font-size: 16px; color: #4b5563;">
+        <strong>Need Help?</strong> Our support team is available to assist you with any questions.
+    </p>
+    
+    <p style="margin-top: 25px; font-style: italic; color: #6b7280; text-align: center;">
+        Thank you for using TalentSync! 🤝
+    </p>
+</div>
+{% endblock %}

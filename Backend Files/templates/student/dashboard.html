@@ -1,0 +1,229 @@
+{% extends "base.html" %}
+
+{% block title %}Student Dashboard - AI Interview Agent{% endblock %}
+
+{% block body_class %}student-dashboard-page{% endblock %}
+
+{% block additional_css %}
+<style>
+.student-dashboard-page {
+    background: linear-gradient(135deg, var(--primary-bg) 0%, var(--secondary-bg) 100%);
+    min-height: 100vh;
+}
+
+.card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    color: var(--text-primary);
+}
+
+.card-header {
+    background: rgba(59, 130, 246, 0.1);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.table {
+    color: var(--text-primary);
+}
+
+.table th {
+    background: rgba(59, 130, 246, 0.1);
+    color: var(--text-primary);
+    border-color: var(--border-color);
+}
+
+.table td {
+    border-color: var(--border-color);
+}
+
+.table-hover tbody tr:hover {
+    background: rgba(59, 130, 246, 0.05);
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h1 class="h3 mb-1">Welcome back, {{ current_user.first_name }}!</h1>
+                    <p class="text-muted">Ready to practice your interview skills?</p>
+                </div>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-outline-danger" onclick="clearInterviewHistory()">
+                        <i class="fas fa-trash me-2"></i>Clear History
+                    </button>
+                    <a href="{{ url_for('main.practice_interview') }}" class="btn btn-primary">
+                        <i class="fas fa-play me-2"></i>Start Practice Interview
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-4">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            <h5 class="card-title">Practice Sessions</h5>
+                            <h2 class="mb-0">{{ practice_count }}</h2>
+                        </div>
+                        <div class="ms-3">
+                            <i class="fas fa-graduation-cap fa-2x opacity-75"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            <h5 class="card-title">Average Score</h5>
+                            <h2 class="mb-0">{{ "%.1f"|format(avg_score) }}%</h2>
+                        </div>
+                        <div class="ms-3">
+                            <i class="fas fa-chart-line fa-2x opacity-75"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            <h5 class="card-title">Total Interviews</h5>
+                            <h2 class="mb-0">{{ recent_interviews|length }}</h2>
+                        </div>
+                        <div class="ms-3">
+                            <i class="fas fa-microphone fa-2x opacity-75"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Interviews -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Recent Interview Sessions</h5>
+                </div>
+                <div class="card-body">
+                    {% if recent_interviews %}
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Type</th>
+                                        <th>Status</th>
+                                        <th>Score</th>
+                                        <th>Duration</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for interview in recent_interviews %}
+                                    <tr>
+                                        <td>{{ interview.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                                        <td>
+                                            <span class="badge bg-secondary">{{ interview.session_type.title() }}</span>
+                                        </td>
+                                        <td>
+                                            {% if interview.status == 'completed' %}
+                                                <span class="badge bg-success">Completed</span>
+                                            {% elif interview.status == 'terminated' %}
+                                                <span class="badge bg-danger">Terminated</span>
+                                            {% elif interview.status == 'in_progress' %}
+                                                <span class="badge bg-warning">In Progress</span>
+                                            {% else %}
+                                                <span class="badge bg-info">Scheduled</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if interview.overall_score %}
+                                                {{ "%.1f"|format(interview.overall_score) }}%
+                                            {% else %}
+                                                -
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if interview.duration %}
+                                                {{ (interview.duration // 60) }}m {{ (interview.duration % 60) }}s
+                                            {% else %}
+                                                -
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if interview.status in ['completed', 'terminated'] %}
+                                                <a href="{{ url_for('main.interview_feedback', session_id=interview.id) }}" 
+                                                   class="btn btn-sm btn-outline-primary">
+                                                    <i class="fas fa-eye me-1"></i>View Feedback
+                                                </a>
+                                            {% elif interview.status == 'scheduled' %}
+                                                <a href="{{ url_for('main.adaptive_interview_interface', session_id=interview.id) }}" 
+                                                   class="btn btn-sm btn-success">
+                                                    <i class="fas fa-play me-1"></i>Start
+                                                </a>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-4">
+                            <i class="fas fa-microphone fa-3x text-muted mb-3"></i>
+                            <h5 class="text-muted">No interviews yet</h5>
+                            <p class="text-muted">Start your first practice interview to see your progress here.</p>
+                            <a href="{{ url_for('main.practice_interview') }}" class="btn btn-primary">
+                                <i class="fas fa-play me-2"></i>Start Practice Interview
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function clearInterviewHistory() {
+    if (confirm('Are you sure you want to clear all your interview history? This action cannot be undone.')) {
+        fetch('/student/clear-history', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Interview history cleared successfully!');
+                location.reload();
+            } else {
+                alert('Error: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Failed to clear history. Please try again.');
+        });
+    }
+}
+</script>
+{% endblock %}

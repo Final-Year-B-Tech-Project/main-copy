@@ -1,0 +1,57 @@
+{% extends "emails/base_email.html" %}
+
+{% block content %}
+<div class="greeting">
+    Job Drive {{ action.title() }}! 📢
+</div>
+
+<div class="message-content">
+    <p>Hi {{ hr_name }},</p>
+    
+    <p>Your job drive has been successfully {{ action }}. Here are the details:</p>
+    
+    <div class="highlight-box">
+        <h3><i class="fas fa-briefcase"></i> Job Drive Details</h3>
+        <p><strong>Position:</strong> {{ job_title }}</p>
+        <p><strong>Action:</strong> {{ action.title() }}</p>
+        <p><strong>Date:</strong> {{ current_year }}</p>
+        <p><strong>Status:</strong> <span class="badge">Active</span></p>
+    </div>
+    
+    {% if action == 'created' %}
+    <h3 style="color: #1f2937; margin: 30px 0 15px 0;">🎯 Next Steps:</h3>
+    <ul class="feature-list">
+        <li>Share the job drive link with potential candidates</li>
+        <li>Monitor candidate applications and interviews</li>
+        <li>Review interview results as they come in</li>
+        <li>Make hiring decisions based on AI assessments</li>
+    </ul>
+    {% elif action == 'updated' %}
+    <h3 style="color: #1f2937; margin: 30px 0 15px 0;">📝 Changes Applied:</h3>
+    <ul class="feature-list">
+        <li>Job requirements have been updated</li>
+        <li>Interview questions may have been modified</li>
+        <li>New candidates will see the updated job description</li>
+        <li>Existing candidates are notified of changes</li>
+    </ul>
+    {% elif action == 'closed' %}
+    <h3 style="color: #1f2937; margin: 30px 0 15px 0;">🔒 Drive Closed:</h3>
+    <ul class="feature-list">
+        <li>No new candidates can apply to this position</li>
+        <li>Existing interviews will continue as scheduled</li>
+        <li>You can still review completed interviews</li>
+        <li>Final hiring decisions can be made</li>
+    </ul>
+    {% endif %}
+    
+    <div style="text-align: center; margin: 30px 0;">
+        <a href="#" class="cta-button">
+            <i class="fas fa-tachometer-alt"></i> View Job Drive Dashboard
+        </a>
+    </div>
+    
+    <p style="margin-top: 25px; font-style: italic; color: #6b7280; text-align: center;">
+        Thank you for using TalentSync for your hiring needs! 🚀
+    </p>
+</div>
+{% endblock %}

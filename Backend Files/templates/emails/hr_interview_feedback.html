@@ -1,0 +1,142 @@
+{% extends "emails/base_email.html" %}
+
+{% block content %}
+<div class="greeting">
+    Interview Assessment Complete - {{ candidate_name }} 📋
+</div>
+
+<div class="message-content">
+    <p>The AI interview for <strong>{{ candidate_name }}</strong> has been completed. Please find the comprehensive assessment below to help you make an informed hiring decision.</p>
+    
+    <!-- Candidate Information -->
+    <div class="highlight-box">
+        <h3><i class="fas fa-user"></i> Candidate Information</h3>
+        <p><strong>Name:</strong> {{ candidate_name }}</p>
+        <p><strong>Email:</strong> {{ candidate_email }}</p>
+        <p><strong>Position:</strong> {{ job_title }}</p>
+        <p><strong>Interview Date:</strong> {{ interview_date }}</p>
+        <p><strong>Duration:</strong> {{ duration }}</p>
+    </div>
+    
+    <!-- Hiring Recommendation -->
+    <div style="background: {% if overall_score >= 80 %}linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); border: 2px solid #10b981;{% elif overall_score >= 65 %}linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border: 2px solid #f59e0b;{% else %}linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border: 2px solid #ef4444;{% endif %} border-radius: 12px; padding: 25px; margin: 25px 0; text-align: center;">
+        <h2 style="margin: 0 0 10px 0; color: {% if overall_score >= 80 %}#047857{% elif overall_score >= 65 %}#92400e{% else %}#dc2626{% endif %}; font-size: 24px;">
+            <i class="fas fa-{% if overall_score >= 80 %}thumbs-up{% elif overall_score >= 65 %}hand-paper{% else %}thumbs-down{% endif %}"></i>
+            {{ recommendation }}
+        </h2>
+        <div class="score-display" style="background: transparent; border: none; padding: 10px 0;">
+            <h2 class="score-number" style="color: {% if overall_score >= 80 %}#047857{% elif overall_score >= 65 %}#92400e{% else %}#dc2626{% endif %};">{{ overall_score }}/100</h2>
+            <p class="score-label" style="color: {% if overall_score >= 80 %}#047857{% elif overall_score >= 65 %}#92400e{% else %}#dc2626{% endif %};">Overall Score</p>
+        </div>
+    </div>
+    
+    <!-- Detailed Performance Scores -->
+    <h3 style="color: #1f2937; margin: 30px 0 15px 0;">📊 Performance Breakdown</h3>
+    <div class="info-grid">
+        <div class="info-item">
+            <h4><i class="fas fa-brain"></i> Technical Skills</h4>
+            <p><strong>{{ technical_score }}/100</strong></p>
+            <small style="color: #6b7280;">Role-specific technical knowledge and problem-solving ability</small>
+        </div>
+        <div class="info-item">
+            <h4><i class="fas fa-comments"></i> Communication</h4>
+            <p><strong>{{ communication_score }}/100</strong></p>
+            <small style="color: #6b7280;">Clarity, articulation, and professional communication</small>
+        </div>
+        <div class="info-item">
+            <h4><i class="fas fa-smile"></i> Confidence</h4>
+            <p><strong>{{ confidence_score }}/100</strong></p>
+            <small style="color: #6b7280;">Self-assurance and professional presence</small>
+        </div>
+        <div class="info-item">
+            <h4><i class="fas fa-lightbulb"></i> Problem Solving</h4>
+            <p><strong>{{ problem_solving_score }}/100</strong></p>
+            <small style="color: #6b7280;">Analytical thinking and solution-oriented approach</small>
+        </div>
+    </div>
+    
+    <!-- Key Strengths -->
+    <div style="background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); border-left: 4px solid #10b981; padding: 20px; margin: 25px 0; border-radius: 8px;">
+        <h3 style="margin: 0 0 15px 0; color: #047857; font-size: 18px; font-weight: 600;">
+            <i class="fas fa-star"></i> Key Strengths
+        </h3>
+        <ul class="feature-list">
+            {% for strength in strengths %}
+            <li>{{ strength }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    
+    <!-- Areas of Concern -->
+    <div style="background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border-left: 4px solid #ef4444; padding: 20px; margin: 25px 0; border-radius: 8px;">
+        <h3 style="margin: 0 0 15px 0; color: #dc2626; font-size: 18px; font-weight: 600;">
+            <i class="fas fa-exclamation-triangle"></i> Areas of Concern
+        </h3>
+        <ul class="feature-list">
+            {% for weakness in weaknesses %}
+            <li>{{ weakness }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    
+    <!-- AI Assessment Summary -->
+    <h3 style="color: #1f2937; margin: 30px 0 15px 0;">🤖 AI Assessment Summary</h3>
+    <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin: 15px 0; border: 1px solid #e5e7eb;">
+        <p style="margin: 0; line-height: 1.7; color: #4b5563;">{{ summary }}</p>
+    </div>
+    
+    <!-- Hiring Decision Factors -->
+    <h3 style="color: #1f2937; margin: 30px 0 15px 0;">🎯 Hiring Decision Factors</h3>
+    <div class="info-grid">
+        <div class="info-item" style="background: #ecfdf5; border-color: #10b981;">
+            <h4 style="color: #047857;"><i class="fas fa-check-circle"></i> Excellent (80-100)</h4>
+            <p style="color: #065f46;">Proceed with offer - exceptional candidate</p>
+        </div>
+        <div class="info-item" style="background: #fef3c7; border-color: #f59e0b;">
+            <h4 style="color: #92400e;"><i class="fas fa-hand-paper"></i> Good (65-79)</h4>
+            <p style="color: #78350f;">Consider for role - solid candidate</p>
+        </div>
+        <div class="info-item" style="background: #fef2f2; border-color: #ef4444;">
+            <h4 style="color: #dc2626;"><i class="fas fa-exclamation-circle"></i> Below Average (0-64)</h4>
+            <p style="color: #991b1b;">Consider rejection - needs improvement</p>
+        </div>
+    </div>
+    
+    <!-- Security Alerts -->
+    {% if security_note %}
+    <div style="background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border: 2px solid #ef4444; border-radius: 12px; padding: 20px; margin: 25px 0;">
+        <h3 style="margin: 0 0 10px 0; color: #dc2626; font-size: 18px;">
+            <i class="fas fa-shield-alt"></i> Security Alert
+        </h3>
+        <p style="margin: 0; color: #991b1b; font-weight: 500;">{{ security_note }}</p>
+    </div>
+    {% endif %}
+    
+    <!-- Next Steps -->
+    <h3 style="color: #1f2937; margin: 30px 0 15px 0;">📋 Recommended Next Steps</h3>
+    <ul class="feature-list">
+        <li>Review the detailed feedback and scores above</li>
+        <li>Compare this candidate with other applicants for the same position</li>
+        <li>Consider conducting a follow-up interview if needed</li>
+        <li>Make your final hiring decision based on overall evaluation</li>
+        <li>Provide constructive feedback to the candidate</li>
+    </ul>
+    
+    <div class="divider"></div>
+    
+    <p style="text-align: center; margin: 25px 0; font-size: 16px; color: #4b5563;">
+        <strong>Note:</strong> This assessment was generated by our AI interview system. All scores and recommendations are based on automated analysis of the candidate's responses.
+    </p>
+    
+    <div style="text-align: center; margin: 30px 0;">
+        <a href="{{ dashboard_link or '#' }}" class="cta-button">
+            <i class="fas fa-tachometer-alt"></i> View Full Dashboard
+        </a>
+    </div>
+    
+    <p style="margin-top: 25px; font-style: italic; color: #6b7280; text-align: center;">
+        Thank you for using TalentSync for your hiring process. We're here to help you make the best hiring decisions!
+    </p>
+</div>
+{% endblock %}
+

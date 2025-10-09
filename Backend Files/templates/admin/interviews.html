@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Interview Management - Admin Panel</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f8f9fa; }
+        .header { background: #2c3e50; color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .header h1 { font-size: 1.5rem; }
+        .nav-links { display: flex; gap: 1rem; }
+        .nav-links a { color: white; text-decoration: none; padding: 0.5rem 1rem; border-radius: 4px; transition: background 0.3s; }
+        .nav-links a:hover { background: rgba(255,255,255,0.1); }
+        .container { max-width: 1400px; margin: 2rem auto; padding: 0 1rem; }
+        .section { background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 2rem; }
+        .section-header { padding: 1rem 1.5rem; border-bottom: 1px solid #ecf0f1; display: flex; justify-content: space-between; align-items: center; }
+        .section-header h2 { color: #2c3e50; }
+        .section-content { padding: 1.5rem; }
+        .filters { display: flex; gap: 1rem; margin-bottom: 1rem; }
+        .filters select { padding: 0.5rem; border: 1px solid #ddd; border-radius: 4px; }
+        .interviews-table { width: 100%; border-collapse: collapse; }
+        .interviews-table th, .interviews-table td { padding: 0.75rem; text-align: left; border-bottom: 1px solid #ecf0f1; }
+        .interviews-table th { background: #f8f9fa; font-weight: 600; color: #2c3e50; }
+        .interviews-table tr:hover { background: #f8f9fa; }
+        .btn { padding: 0.5rem 1rem; border: none; border-radius: 4px; cursor: pointer; font-size: 0.875rem; transition: all 0.3s; }
+        .btn-primary { background: #3498db; color: white; }
+        .status-badge { padding: 0.25rem 0.5rem; border-radius: 12px; font-size: 0.75rem; font-weight: 500; }
+        .status-completed { background: #d4edda; color: #155724; }
+        .status-in_progress { background: #fff3cd; color: #856404; }
+        .status-scheduled { background: #d1ecf1; color: #0c5460; }
+        .status-cancelled { background: #f8d7da; color: #721c24; }
+        .status-terminated { background: #f8d7da; color: #721c24; }
+        .type-badge { padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 500; }
+        .type-practice { background: #e2e3e5; color: #383d41; }
+        .type-actual { background: #b8daff; color: #004085; }
+        .pagination { display: flex; justify-content: center; gap: 0.5rem; margin-top: 1rem; }
+        .pagination a { padding: 0.5rem 1rem; background: #f8f9fa; border: 1px solid #ddd; text-decoration: none; color: #2c3e50; }
+        .pagination a.active { background: #3498db; color: white; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🎤 Interview Management</h1>
+        <div class="nav-links">
+            <a href="/admin/dashboard">Dashboard</a>
+            <a href="/admin/users">Users</a>
+            <a href="/admin/interviews">Interviews</a>
+            <a href="/admin/activity-log">Activity Log</a>
+            <a href="/admin/system-stats">System Stats</a>
+            <a href="/admin/logout">Logout</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="section">
+            <div class="section-header">
+                <h2>🔍 Interview Filters</h2>
+            </div>
+            <div class="section-content">
+                <form method="GET" class="filters">
+                    <select name="status">
+                        <option value="">All Status</option>
+                        <option value="scheduled" {% if status_filter == 'scheduled' %}selected{% endif %}>Scheduled</option>
+                        <option value="in_progress" {% if status_filter == 'in_progress' %}selected{% endif %}>In Progress</option>
+                        <option value="completed" {% if status_filter == 'completed' %}selected{% endif %}>Completed</option>
+                        <option value="terminated" {% if status_filter == 'terminated' %}selected{% endif %}>Terminated</option>
+                        <option value="cancelled" {% if status_filter == 'cancelled' %}selected{% endif %}>Cancelled</option>
+                    </select>
+                    <select name="session_type">
+                        <option value="">All Types</option>
+                        <option value="practice" {% if session_type_filter == 'practice' %}selected{% endif %}>Practice</option>
+                        <option value="actual" {% if session_type_filter == 'actual' %}selected{% endif %}>Actual</option>
+                    </select>
+                    <button type="submit" class="btn btn-primary">🔍 Filter</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <h2>📋 Interviews ({{ interviews.total }} total)</h2>
+            </div>
+            <div class="section-content">
+                <table class="interviews-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Candidate</th>
+                            <th>Type</th>
+                            <th>Status</th>
+                            <th>Score</th>
+                            <th>Duration</th>
+                            <th>Created</th>
+                            <th>Job Drive</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for interview in interviews.items %}
+                        <tr>
+                            <td>{{ interview.id }}</td>
+                            <td>
+                                {% if interview.candidate %}
+                                {{ interview.candidate.full_name }}<br>
+                                <small>{{ interview.candidate.email }}</small>
+                                {% else %}
+                                Unknown
+                                {% endif %}
+                            </td>
+                            <td>
+                                <span class="type-badge type-{{ interview.session_type }}">
+                                    {{ interview.session_type.title() }}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="status-badge status-{{ interview.status }}">
+                                    {{ interview.status.replace('_', ' ').title() }}
+                                </span>
+                            </td>
+                            <td>
+                                {% if interview.overall_score %}
+                                {{ "%.1f"|format(interview.overall_score) }}/100
+                                {% else %}
+                                N/A
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if interview.duration %}
+                                {{ (interview.duration // 60)|int }}m {{ interview.duration % 60 }}s
+                                {% else %}
+                                N/A
+                                {% endif %}
+                            </td>
+                            <td>{{ interview.created_at.strftime('%Y-%m-%d %H:%M') if interview.created_at else 'N/A' }}</td>
+                            <td>
+                                {% if interview.job_drive %}
+                                {{ interview.job_drive.title }}
+                                {% else %}
+                                Practice Interview
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <!-- Pagination -->
+                {% if interviews.pages > 1 %}
+                <div class="pagination">
+                    {% if interviews.has_prev %}
+                    <a href="{{ url_for('admin.manage_interviews', page=interviews.prev_num, status=status_filter, session_type=session_type_filter) }}">&laquo; Previous</a>
+                    {% endif %}
+                    
+                    {% for page_num in interviews.iter_pages() %}
+                        {% if page_num %}
+                            {% if page_num != interviews.page %}
+                            <a href="{{ url_for('admin.manage_interviews', page=page_num, status=status_filter, session_type=session_type_filter) }}">{{ page_num }}</a>
+                            {% else %}
+                            <a href="#" class="active">{{ page_num }}</a>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                    
+                    {% if interviews.has_next %}
+                    <a href="{{ url_for('admin.manage_interviews', page=interviews.next_num, status=status_filter, session_type=session_type_filter) }}">Next &raquo;</a>
+                    {% endif %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>

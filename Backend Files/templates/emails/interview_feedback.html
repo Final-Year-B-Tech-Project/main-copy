@@ -1,0 +1,89 @@
+{% extends "emails/base_email.html" %}
+
+{% block content %}
+<div class="greeting">
+    Interview Results - {{ candidate_name }} 📊
+</div>
+
+<div class="message-content">
+    <p>Thank you for completing your interview for the <strong>{{ job_title }}</strong> position at <strong>{{ company_name }}</strong>. We've completed our comprehensive evaluation, and we're excited to share your detailed feedback.</p>
+    
+    <!-- Overall Score Display -->
+    <div class="score-display">
+        <h2 class="score-number">{{ overall_score }}/100</h2>
+        <p class="score-label">Overall Performance Score</p>
+    </div>
+    
+    <!-- Detailed Scores -->
+    <div class="info-grid">
+        <div class="info-item">
+            <h4><i class="fas fa-brain"></i> Technical Skills</h4>
+            <p><strong>{{ technical_score }}/100</strong></p>
+        </div>
+        <div class="info-item">
+            <h4><i class="fas fa-comments"></i> Communication</h4>
+            <p><strong>{{ communication_score }}/100</strong></p>
+        </div>
+        <div class="info-item">
+            <h4><i class="fas fa-smile"></i> Confidence</h4>
+            <p><strong>{{ confidence_score }}/100</strong></p>
+        </div>
+        <div class="info-item">
+            <h4><i class="fas fa-code"></i> Problem Solving</h4>
+            <p><strong>{{ problem_solving_score }}/100</strong></p>
+        </div>
+    </div>
+    
+    <!-- Strengths Section -->
+    <div class="highlight-box">
+        <h3><i class="fas fa-star"></i> Key Strengths</h3>
+        <ul class="feature-list">
+            {% for strength in strengths %}
+            <li>{{ strength }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    
+    <!-- Areas for Improvement -->
+    <div style="background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border-left: 4px solid #ef4444; padding: 20px; margin: 25px 0; border-radius: 8px;">
+        <h3 style="margin: 0 0 15px 0; color: #dc2626; font-size: 18px; font-weight: 600;">
+            <i class="fas fa-chart-line"></i> Areas for Growth
+        </h3>
+        <ul class="feature-list">
+            {% for weakness in weaknesses %}
+            <li>{{ weakness }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    
+    <!-- Detailed Analysis -->
+    <h3 style="color: #1f2937; margin: 30px 0 15px 0;">📝 Detailed Assessment</h3>
+    <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin: 15px 0;">
+        <p style="margin: 0; line-height: 1.7; color: #4b5563;">{{ summary }}</p>
+    </div>
+    
+    <!-- Recommendations -->
+    <h3 style="color: #1f2937; margin: 30px 0 15px 0;">💡 Recommendations for Future Interviews</h3>
+    <ul class="feature-list">
+        {% for recommendation in recommendations %}
+        <li>{{ recommendation }}</li>
+        {% endfor %}
+    </ul>
+    
+    <div class="divider"></div>
+    
+    <!-- Next Steps -->
+    <div style="text-align: center; margin: 30px 0;">
+        <h3 style="color: #1f2937; margin-bottom: 15px;">What's Next?</h3>
+        <p style="color: #6b7280; margin-bottom: 20px;">{{ next_steps }}</p>
+        <a href="{{ dashboard_link or '#' }}" class="cta-button">
+            <i class="fas fa-tachometer-alt"></i> View Full Dashboard
+        </a>
+    </div>
+    
+    <p style="margin-top: 25px; font-style: italic; color: #6b7280; text-align: center;">
+        Thank you for your time and interest in joining our team. We wish you the best in your career journey!
+    </p>
+</div>
+{% endblock %}
+

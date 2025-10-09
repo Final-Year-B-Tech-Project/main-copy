@@ -1,0 +1,107 @@
+{% extends "emails/base_email.html" %}
+
+{% block content %}
+<div class="greeting">
+    Welcome to TalentSync! 🎉
+</div>
+
+<div class="message-content">
+    <p>Hi {{ user_name }},</p>
+    
+    <p>Welcome to TalentSync, the revolutionary AI-powered interview platform! We're excited to have you join our community of successful professionals.</p>
+    
+    <div class="highlight-box">
+        <h3><i class="fas fa-user"></i> Account Created Successfully</h3>
+        <p><strong>Account Type:</strong> {{ user_type.title() }}</p>
+        <p><strong>Welcome Date:</strong> {{ current_year }}</p>
+        <p><strong>Status:</strong> <span class="badge">Active</span></p>
+    </div>
+    
+    {% if user_type == 'student' %}
+    <h3 style="color: #1f2937; margin: 30px 0 15px 0;">🎓 What You Can Do as a Student:</h3>
+    <div class="info-grid">
+        <div class="info-item">
+            <h4><i class="fas fa-infinity"></i> Unlimited Practice</h4>
+            <p>Practice interviews as much as you want with our AI interviewer</p>
+        </div>
+        <div class="info-item">
+            <h4><i class="fas fa-brain"></i> Smart Feedback</h4>
+            <p>Get instant, personalized feedback on your performance</p>
+        </div>
+        <div class="info-item">
+            <h4><i class="fas fa-chart-line"></i> Track Progress</h4>
+            <p>Monitor your improvement with detailed analytics</p>
+        </div>
+        <div class="info-item">
+            <h4><i class="fas fa-file-alt"></i> Resume Tips</h4>
+            <p>Get AI-powered suggestions to improve your resume</p>
+        </div>
+    </div>
+    
+    <div style="text-align: center; margin: 30px 0;">
+        <a href="#" class="cta-button">
+            <i class="fas fa-play-circle"></i> Start Your First Practice Interview
+        </a>
+    </div>
+    
+    {% elif user_type == 'hr' %}
+    <h3 style="color: #1f2937; margin: 30px 0 15px 0;">💼 What You Can Do as an HR Professional:</h3>
+    <div class="info-grid">
+        <div class="info-item">
+            <h4><i class="fas fa-users"></i> Manage Candidates</h4>
+            <p>Create job drives and invite candidates to interviews</p>
+        </div>
+        <div class="info-item">
+            <h4><i class="fas fa-robot"></i> AI Screening</h4>
+            <p>Automated candidate screening and evaluation</p>
+        </div>
+        <div class="info-item">
+            <h4><i class="fas fa-chart-bar"></i> Analytics</h4>
+            <p>Comprehensive reports and hiring insights</p>
+        </div>
+        <div class="info-item">
+            <h4><i class="fas fa-balance-scale"></i> Fair Assessment</h4>
+            <p>Bias-free evaluations for equal opportunity</p>
+        </div>
+    </div>
+    
+    <div style="text-align: center; margin: 30px 0;">
+        <a href="#" class="cta-button">
+            <i class="fas fa-plus-circle"></i> Create Your First Job Drive
+        </a>
+    </div>
+    {% endif %}
+    
+    <h3 style="color: #1f2937; margin: 30px 0 15px 0;">🚀 Getting Started Guide:</h3>
+    <ul class="feature-list">
+        <li>Complete your profile setup with relevant information</li>
+        <li>Explore the platform features and capabilities</li>
+        <li>Start with a practice session or create your first job drive</li>
+        <li>Check out our help center for tips and best practices</li>
+        <li>Contact support if you need any assistance</li>
+    </ul>
+    
+    <div style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border: 2px solid #0ea5e9; border-radius: 12px; padding: 25px; margin: 25px 0; text-align: center;">
+        <h3 style="margin: 0 0 10px 0; color: #0369a1; font-size: 20px;">
+            <i class="fas fa-headset"></i> Need Help?
+        </h3>
+        <p style="margin: 0; color: #0c4a6e;">Our support team is available 24/7 to help you get the most out of TalentSync.</p>
+    </div>
+    
+    <div class="divider"></div>
+    
+    <p style="text-align: center; margin: 25px 0; font-size: 16px; color: #4b5563;">
+        <strong>Ready to get started?</strong> Log in to your dashboard and begin your TalentSync journey!
+    </p>
+    
+    <div style="text-align: center; margin: 30px 0;">
+        <a href="#" class="cta-button">
+            <i class="fas fa-tachometer-alt"></i> Go to Dashboard
+        </a>
+    </div>
+    
+    <p style="margin-top: 25px; font-style: italic; color: #6b7280; text-align: center;">
+        Welcome to the future of interviews! We're excited to see what you'll achieve. 🌟
+    </p>
+</div>
+{% endblock %}
