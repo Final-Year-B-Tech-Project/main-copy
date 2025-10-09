@@ -2,7 +2,11 @@
 
 {% block content %}
 <div class="greeting">
-    Interview Results - {{ candidate_name }} 📊
+    Interview Results - {{ candidate_name }}
+</div>
+
+<div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; border-radius: 12px; text-align: center; margin-bottom: 30px;">
+    <p style="color: white; font-size: 16px; margin: 0; font-weight: 600;">Your detailed interview report is attached as a PDF</p>
 </div>
 
 <div class="message-content">
@@ -12,76 +16,106 @@
     <div class="score-display">
         <h2 class="score-number">{{ overall_score }}/100</h2>
         <p class="score-label">Overall Performance Score</p>
+        <div style="margin-top: 15px;">
+            {% if overall_score >= 80 %}
+                <span style="background: #10b981; color: white; padding: 8px 16px; border-radius: 20px; font-size: 14px; font-weight: 600;">Excellent Performance</span>
+            {% elif overall_score >= 65 %}
+                <span style="background: #3b82f6; color: white; padding: 8px 16px; border-radius: 20px; font-size: 14px; font-weight: 600;">Good Performance</span>
+            {% elif overall_score >= 50 %}
+                <span style="background: #f59e0b; color: white; padding: 8px 16px; border-radius: 20px; font-size: 14px; font-weight: 600;">Average Performance</span>
+            {% else %}
+                <span style="background: #ef4444; color: white; padding: 8px 16px; border-radius: 20px; font-size: 14px; font-weight: 600;">Keep Practicing</span>
+            {% endif %}
+        </div>
     </div>
     
     <!-- Detailed Scores -->
+    <h3 style="color: #1f2937; margin: 30px 0 20px 0; font-size: 20px;">Performance Breakdown</h3>
     <div class="info-grid">
         <div class="info-item">
-            <h4><i class="fas fa-brain"></i> Technical Skills</h4>
-            <p><strong>{{ technical_score }}/100</strong></p>
+            <h4><i class="fas fa-brain" style="color: #667eea;"></i> Technical Skills</h4>
+            <p><strong style="font-size: 24px; color: #667eea;">{{ technical_score }}/100</strong></p>
+            <div style="background: #e5e7eb; height: 8px; border-radius: 10px; margin-top: 10px; overflow: hidden;">
+                <div style="background: linear-gradient(90deg, #667eea, #764ba2); height: 100%; width: {{ technical_score }}%; border-radius: 10px;"></div>
+            </div>
         </div>
         <div class="info-item">
-            <h4><i class="fas fa-comments"></i> Communication</h4>
-            <p><strong>{{ communication_score }}/100</strong></p>
+            <h4><i class="fas fa-comments" style="color: #10b981;"></i> Communication</h4>
+            <p><strong style="font-size: 24px; color: #10b981;">{{ communication_score }}/100</strong></p>
+            <div style="background: #e5e7eb; height: 8px; border-radius: 10px; margin-top: 10px; overflow: hidden;">
+                <div style="background: linear-gradient(90deg, #10b981, #059669); height: 100%; width: {{ communication_score }}%; border-radius: 10px;"></div>
+            </div>
         </div>
         <div class="info-item">
-            <h4><i class="fas fa-smile"></i> Confidence</h4>
-            <p><strong>{{ confidence_score }}/100</strong></p>
+            <h4><i class="fas fa-smile" style="color: #f59e0b;"></i> Confidence</h4>
+            <p><strong style="font-size: 24px; color: #f59e0b;">{{ confidence_score }}/100</strong></p>
+            <div style="background: #e5e7eb; height: 8px; border-radius: 10px; margin-top: 10px; overflow: hidden;">
+                <div style="background: linear-gradient(90deg, #f59e0b, #d97706); height: 100%; width: {{ confidence_score }}%; border-radius: 10px;"></div>
+            </div>
         </div>
         <div class="info-item">
-            <h4><i class="fas fa-code"></i> Problem Solving</h4>
-            <p><strong>{{ problem_solving_score }}/100</strong></p>
+            <h4><i class="fas fa-code" style="color: #3b82f6;"></i> Problem Solving</h4>
+            <p><strong style="font-size: 24px; color: #3b82f6;">{{ problem_solving_score }}/100</strong></p>
+            <div style="background: #e5e7eb; height: 8px; border-radius: 10px; margin-top: 10px; overflow: hidden;">
+                <div style="background: linear-gradient(90deg, #3b82f6, #2563eb); height: 100%; width: {{ problem_solving_score }}%; border-radius: 10px;"></div>
+            </div>
         </div>
     </div>
     
     <!-- Strengths Section -->
     <div class="highlight-box">
-        <h3><i class="fas fa-star"></i> Key Strengths</h3>
-        <ul class="feature-list">
+        <h3><i class="fas fa-star" style="color: #fbbf24;"></i> Key Strengths</h3>
+        <ul class="feature-list" style="margin: 15px 0;">
             {% for strength in strengths %}
-            <li>{{ strength }}</li>
+            <li style="padding: 10px 0; font-size: 15px;">{{ strength }}</li>
             {% endfor %}
         </ul>
     </div>
     
     <!-- Areas for Improvement -->
-    <div style="background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border-left: 4px solid #ef4444; padding: 20px; margin: 25px 0; border-radius: 8px;">
-        <h3 style="margin: 0 0 15px 0; color: #dc2626; font-size: 18px; font-weight: 600;">
+    <div style="background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border-left: 5px solid #ef4444; padding: 25px; margin: 30px 0; border-radius: 12px; box-shadow: 0 4px 15px rgba(239, 68, 68, 0.1);">
+        <h3 style="margin: 0 0 15px 0; color: #dc2626; font-size: 20px; font-weight: 700; display: flex; align-items: center; gap: 10px;">
             <i class="fas fa-chart-line"></i> Areas for Growth
         </h3>
-        <ul class="feature-list">
+        <ul class="feature-list" style="margin: 15px 0;">
             {% for weakness in weaknesses %}
-            <li>{{ weakness }}</li>
+            <li style="padding: 10px 0; font-size: 15px; color: #991b1b;">{{ weakness }}</li>
             {% endfor %}
         </ul>
     </div>
     
     <!-- Detailed Analysis -->
-    <h3 style="color: #1f2937; margin: 30px 0 15px 0;">📝 Detailed Assessment</h3>
-    <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin: 15px 0;">
-        <p style="margin: 0; line-height: 1.7; color: #4b5563;">{{ summary }}</p>
+    <h3 style="color: #1f2937; margin: 30px 0 15px 0; font-size: 20px; font-weight: 700;">Detailed Assessment</h3>
+    <div style="background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); padding: 25px; border-radius: 12px; margin: 15px 0; border: 2px solid #e2e8f0;">
+        <p style="margin: 0; line-height: 1.8; color: #4b5563; font-size: 15px;">{{ summary }}</p>
     </div>
     
     <!-- Recommendations -->
-    <h3 style="color: #1f2937; margin: 30px 0 15px 0;">💡 Recommendations for Future Interviews</h3>
-    <ul class="feature-list">
+    <h3 style="color: #1f2937; margin: 30px 0 15px 0; font-size: 20px; font-weight: 700;">Recommendations for Future Interviews</h3>
+    <ul class="feature-list" style="margin: 15px 0;">
         {% for recommendation in recommendations %}
-        <li>{{ recommendation }}</li>
+        <li style="padding: 10px 0; font-size: 15px;">{{ recommendation }}</li>
         {% endfor %}
     </ul>
     
     <div class="divider"></div>
     
     <!-- Next Steps -->
-    <div style="text-align: center; margin: 30px 0;">
-        <h3 style="color: #1f2937; margin-bottom: 15px;">What's Next?</h3>
-        <p style="color: #6b7280; margin-bottom: 20px;">{{ next_steps }}</p>
-        <a href="{{ dashboard_link or '#' }}" class="cta-button">
+    <div style="background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%); padding: 30px; border-radius: 15px; text-align: center; margin: 30px 0; border: 2px solid #8b5cf6;">
+        <h3 style="color: #6b21a8; margin-bottom: 15px; font-size: 22px; font-weight: 700;">What's Next?</h3>
+        <p style="color: #6b21a8; margin-bottom: 25px; font-size: 16px; line-height: 1.6;">{{ next_steps }}</p>
+        <a href="{{ dashboard_link or '#' }}" class="cta-button" style="display: inline-block;">
             <i class="fas fa-tachometer-alt"></i> View Full Dashboard
         </a>
     </div>
     
-    <p style="margin-top: 25px; font-style: italic; color: #6b7280; text-align: center;">
+    <div style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); padding: 25px; border-radius: 12px; text-align: center; margin-top: 30px; border-left: 5px solid #10b981;">
+        <p style="margin: 0; font-size: 16px; color: #065f46; line-height: 1.6;">
+            <strong>Don't forget to check the attached PDF report</strong> for a comprehensive analysis of your interview performance!
+        </p>
+    </div>
+    
+    <p style="margin-top: 30px; font-style: italic; color: #6b7280; text-align: center; font-size: 15px; line-height: 1.6;">
         Thank you for your time and interest in joining our team. We wish you the best in your career journey!
     </p>
 </div>

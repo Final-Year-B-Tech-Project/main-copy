@@ -641,13 +641,16 @@ def complete_adaptive_interview(session_id):
             duration = (session.end_time - session.start_time).total_seconds()
             session.duration = int(duration)
         
-        # Generate detailed student-oriented feedback
-        feedback_data = ai_service.generate_simple_feedback(all_responses, "student")
+        # Generate comprehensive feedback with full conversation history
+        from app.ai_service import AIInterviewService
+        full_ai_service = AIInterviewService()
+        feedback_data = full_ai_service.generate_feedback(questions, responses, session)
         session.ai_feedback = json.dumps(feedback_data)
         session.overall_score = feedback_data.get('overall_score', 75)
         session.technical_score = feedback_data.get('technical_score', 75)
         session.communication_score = feedback_data.get('communication_score', 75)
         session.confidence_score = feedback_data.get('confidence_score', 75)
+        session.problem_solving_score = feedback_data.get('problem_solving_score', 70)
         
         db.session.commit()
         

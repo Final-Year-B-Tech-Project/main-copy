@@ -10,10 +10,17 @@ class AIInterviewService:
         self.api_key = None
         self.base_url = None
         self.models = {
-            'question_generation': 'x-ai/grok-4-fast:free',        # Best for creative question generation
-            'feedback_analysis': 'deepseek/deepseek-chat-v3.1:free', # Best for detailed analysis
-            'technical_evaluation': 'openai/gpt-oss-120b:free',    # Best for technical assessment
-            'behavioral_analysis': 'nvidia/nemotron-nano-9b-v2:free' # Good for behavioral insights
+            'question_generation': 'x-ai/grok-4-fast:free',
+            'feedback_analysis': 'deepseek/deepseek-chat-v3.1:free',
+            'technical_evaluation': 'openai/gpt-oss-120b:free',
+            'behavioral_analysis': 'nvidia/nemotron-nano-9b-v2:free'
+        }
+        # Fallback models if primary fails
+        self.fallback_models = {
+            'question_generation': ['google/gemini-2.0-flash-exp:free', 'meta-llama/llama-3.2-3b-instruct:free'],
+            'feedback_analysis': ['google/gemini-2.0-flash-exp:free', 'meta-llama/llama-3.2-3b-instruct:free'],
+            'technical_evaluation': ['google/gemini-2.0-flash-exp:free', 'meta-llama/llama-3.2-3b-instruct:free'],
+            'behavioral_analysis': ['google/gemini-2.0-flash-exp:free', 'meta-llama/llama-3.2-3b-instruct:free']
         }
         # Simple service without adaptive manager
     
@@ -33,35 +40,50 @@ class AIInterviewService:
                 print(f"Error initializing OpenRouter service: {e}")
     
     def _make_api_request(self, model: str, prompt: str, max_tokens: int = 2000) -> str:
-        """Make API request to OpenRouter."""
-        # Ensure service is initialized
+        """Make API request to OpenRouter with automatic fallback."""
         self._ensure_initialized()
         
         if not self.api_key or not self.base_url or self.api_key == 'your-actual-api-key-here':
-            print("OpenRouter API not configured properly, using fallback")
-            print(f"API Key present: {bool(self.api_key)}")
-            print(f"API Key valid: {self.api_key != 'your-actual-api-key-here' if self.api_key else False}")
+            print("OpenRouter API not configured, using fallback")
             return ""
         
-        print(f"Making API request to model: {model}")
+        # Try primary model
+        result = self._try_model(model, prompt, max_tokens)
+        if result:
+            return result
         
-        headers = {
-            "Authorization": f"Bearer {self.api_key}",
-            "Content-Type": "application/json",
-            "HTTP-Referer": "http://localhost:5000",
-            "X-Title": "AI Interview Agent"
-        }
+        # Try fallback models
+        model_type = self._get_model_type(model)
+        if model_type and model_type in self.fallback_models:
+            print(f"Primary model failed, trying fallbacks for {model_type}")
+            for fallback in self.fallback_models[model_type]:
+                print(f"Trying fallback model: {fallback}")
+                result = self._try_model(fallback, prompt, max_tokens)
+                if result:
+                    return result
         
-        data = {
-            "model": model,
-            "messages": [
-                {"role": "user", "content": prompt}
-            ],
-            "max_tokens": max_tokens,
-            "temperature": 0.7
-        }
-        
+        print("All models failed, returning empty")
+        return ""
+    
+    def _try_model(self, model: str, prompt: str, max_tokens: int) -> str:
+        """Try a single model."""
         try:
+            print(f"Trying model: {model}")
+            
+            headers = {
+                "Authorization": f"Bearer {self.api_key}",
+                "Content-Type": "application/json",
+                "HTTP-Referer": "http://localhost:5000",
+                "X-Title": "AI Interview Agent"
+            }
+            
+            data = {
+                "model": model,
+                "messages": [{"role": "user", "content": prompt}],
+                "max_tokens": max_tokens,
+                "temperature": 0.7
+            }
+            
             response = requests.post(
                 f"{self.base_url}/chat/completions",
                 headers=headers,
@@ -69,19 +91,24 @@ class AIInterviewService:
                 timeout=60
             )
             
-            print(f"API Response Status: {response.status_code}")
-            
             if response.status_code == 200:
                 result = response.json()
                 content = result['choices'][0]['message']['content']
-                print(f"API Response received: {len(content)} characters")
+                print(f"✓ Success with {model}: {len(content)} chars")
                 return content
             else:
-                print(f"API request failed: {response.status_code} - {response.text}")
+                print(f"✗ Failed {model}: {response.status_code}")
                 return ""
         except Exception as e:
-            print(f"API request exception: {e}")
+            print(f"✗ Exception with {model}: {e}")
             return ""
+    
+    def _get_model_type(self, model: str) -> str:
+        """Get model type from model string."""
+        for model_type, model_name in self.models.items():
+            if model_name == model:
+                return model_type
+        return ""
     
     def get_interview_summary(self) -> Dict:
         """Get basic interview summary"""
@@ -193,12 +220,10 @@ Return ONLY the JSON array, nothing else."""
             
             if response and response.strip():
                 print(f"Got API response, parsing...")
-                # Parse response
                 questions = self._parse_questions_response(response)
                 print(f"Parsed {len(questions)} questions from API")
                 
                 if questions:
-                    # Validate and clean questions
                     validated_questions = self._validate_questions(questions, num_questions)
                     print(f"Validated {len(validated_questions)} questions")
                     
@@ -218,26 +243,31 @@ Return ONLY the JSON array, nothing else."""
                          questions: List[Dict],
                          responses: Dict,
                          session: Any) -> Dict:
-        """Generate comprehensive feedback for the interview."""
+        """Generate comprehensive feedback for the interview with full conversation history."""
         
         # Ensure service is initialized
         self._ensure_initialized()
         
         try:
-            # Prepare conversation for analysis
-            conversation = self._prepare_conversation_for_analysis(questions, responses)
+            # Prepare FULL conversation for analysis with all Q&A pairs
+            conversation = self._prepare_full_conversation_history(questions, responses)
             
-            prompt = f"""You are a senior technical interviewer providing professional feedback.
+            # Calculate response quality metrics
+            answered_count = len([r for r in responses.values() if r.get('answer', '').strip()])
+            avg_response_length = sum([len(r.get('answer', '')) for r in responses.values()]) / max(answered_count, 1)
+            
+            prompt = f"""You are a senior technical interviewer providing professional feedback based on the COMPLETE interview conversation.
 
 Interview Details:
 - Session Type: {session.session_type}
 - Job Role: {session.job_drive.job_role if session.job_drive else 'Practice Interview'}
 - Duration: {session.duration} seconds
 - Total Questions: {len(questions)}
-- Answered Questions: {len([r for r in responses.values() if r.get('answer', '').strip()])}
+- Answered Questions: {answered_count}
+- Average Response Length: {int(avg_response_length)} characters
 
-Conversation Analysis:
-{json.dumps(conversation, indent=2)}
+COMPLETE INTERVIEW CONVERSATION (Analyze ALL questions and answers):
+{json.dumps(conversation, indent=2, ensure_ascii=False)}
 
 As a professional interviewer, provide comprehensive, actionable feedback in this EXACT JSON format:
 {{
@@ -613,6 +643,10 @@ Return ONLY this JSON format:
     
     def _prepare_conversation_for_analysis(self, questions: List[Dict], responses: Dict) -> List[Dict]:
         """Prepare conversation data for AI analysis."""
+        return self._prepare_full_conversation_history(questions, responses)
+    
+    def _prepare_full_conversation_history(self, questions: List[Dict], responses: Dict) -> List[Dict]:
+        """Prepare COMPLETE conversation history with all details for comprehensive analysis."""
         conversation = []
         
         for i, question in enumerate(questions):
@@ -620,24 +654,34 @@ Return ONLY this JSON format:
                 q_text = question
                 q_type = 'general'
                 q_category = 'general'
+                q_difficulty = 'medium'
                 q_id = str(i + 1)
             else:
                 q_text = question.get('question', f'Question {i + 1}')
                 q_type = question.get('type', 'general')
                 q_category = question.get('category', 'general')
+                q_difficulty = question.get('difficulty', 'medium')
                 q_id = str(question.get('id', i + 1))
             
             response_data = responses.get(q_id, {})
             if isinstance(response_data, str):
                 answer = response_data
+                response_time = 0
             else:
-                answer = response_data.get('answer', 'No response')
+                answer = response_data.get('answer', 'No response provided')
+                response_time = response_data.get('time_taken', 0)
             
+            # Include full context for each Q&A pair
             conversation.append({
+                "question_number": i + 1,
                 "question": q_text,
                 "type": q_type,
                 "category": q_category,
-                "answer": answer
+                "difficulty": q_difficulty,
+                "answer": answer,
+                "answer_length": len(answer),
+                "response_time_seconds": response_time,
+                "answered": bool(answer and answer.strip() and answer != 'No response provided')
             })
         
         return conversation

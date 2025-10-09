@@ -2,13 +2,22 @@ import os
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from email.mime.application import MIMEApplication
 from flask import current_app, render_template
 from flask_mail import Mail, Message
 from datetime import datetime
 import ssl
+from app.pdf_generator import generate_interview_pdf
 
-def send_email_safely(to_email, subject, html_body):
-    """Safely send email with proper error handling and SSL configuration."""
+def send_email_safely(to_email, subject, html_body, attachments=None):
+    """Safely send email with proper error handling and SSL configuration.
+    
+    Args:
+        to_email: Recipient email address
+        subject: Email subject
+        html_body: HTML content of email
+        attachments: List of tuples (filename, file_data) for attachments
+    """
     try:
         mail_username = os.environ.get('MAIL_USERNAME')
         mail_password = os.environ.get('MAIL_PASSWORD')
@@ -17,15 +26,27 @@ def send_email_safely(to_email, subject, html_body):
             print("Email credentials not configured")
             return False
         
+        # Remove ALL non-ASCII characters to prevent encoding errors
+        import re
+        # Remove emojis and special Unicode characters
+        html_body = html_body.encode('ascii', 'ignore').decode('ascii')
+        
         # Create message
-        msg = MIMEMultipart('alternative')
+        msg = MIMEMultipart('mixed')
         msg['From'] = mail_username
         msg['To'] = to_email
         msg['Subject'] = subject
         
-        # Add HTML content with proper encoding
-        html_part = MIMEText(html_body, 'html', 'utf-8')
+        # Add HTML content with ASCII-safe encoding
+        html_part = MIMEText(html_body, 'html', 'ascii')
         msg.attach(html_part)
+        
+        # Add attachments if provided
+        if attachments:
+            for filename, file_data in attachments:
+                attachment = MIMEApplication(file_data, _subtype='pdf')
+                attachment.add_header('Content-Disposition', 'attachment', filename=filename)
+                msg.attach(attachment)
         
         # Gmail SMTP configuration with proper SSL handling
         context = ssl.create_default_context()
@@ -124,7 +145,7 @@ def send_registration_invitation(candidate_email, job_title, company_name, regis
         return False
 
 def send_interview_feedback_to_candidate(candidate_email, candidate_name, job_title, company_name, feedback):
-    """Send interview feedback email to candidate with improvement focus."""
+    """Send interview feedback email to candidate with improvement focus and PDF attachment."""
     try:
         subject = f"Your Interview Results - {job_title}"
         
@@ -177,7 +198,41 @@ def send_interview_feedback_to_candidate(candidate_email, candidate_name, job_ti
                                   dashboard_link='#',
                                   current_year=datetime.now().year)
         
-        return send_email_safely(candidate_email, subject, html_body)
+        # Generate PDF report
+        try:
+            candidate_data = {
+                'name': candidate_name,
+                'email': candidate_email,
+                'job_title': job_title,
+                'company_name': company_name
+            }
+            
+            feedback_data = {
+                'overall_score': overall_score,
+                'technical_score': technical_score,
+                'communication_score': communication_score,
+                'confidence_score': confidence_score,
+                'problem_solving_score': problem_solving_score,
+                'strengths': strengths,
+                'weaknesses': weaknesses,
+                'summary': summary,
+                'recommendations': recommendations
+            }
+            
+            pdf_buffer = generate_interview_pdf(candidate_data, feedback_data)
+            pdf_data = pdf_buffer.read()
+            
+            # Create filename
+            safe_name = candidate_name.replace(' ', '_')
+            filename = f"Interview_Report_{safe_name}_{datetime.now().strftime('%Y%m%d')}.pdf"
+            
+            attachments = [(filename, pdf_data)]
+            
+            return send_email_safely(candidate_email, subject, html_body, attachments)
+        except Exception as pdf_error:
+            print(f"Failed to generate PDF: {pdf_error}")
+            # Send email without PDF if generation fails
+            return send_email_safely(candidate_email, subject, html_body)
         
     except Exception as e:
         print(f"Failed to send candidate feedback: {e}")
