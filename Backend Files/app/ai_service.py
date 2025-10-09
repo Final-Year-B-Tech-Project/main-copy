@@ -256,6 +256,11 @@ Return ONLY the JSON array, nothing else."""
             answered_count = len([r for r in responses.values() if r.get('answer', '').strip()])
             avg_response_length = sum([len(r.get('answer', '')) for r in responses.values()]) / max(answered_count, 1)
             
+            # Calculate dynamic base scores based on actual performance
+            response_quality_score = min(100, int((answered_count / len(questions)) * 100)) if questions else 50
+            length_quality = min(100, int((avg_response_length / 50) * 100))  # 50+ chars = good
+            base_score = int((response_quality_score + length_quality) / 2)
+            
             prompt = f"""You are a senior technical interviewer providing professional feedback based on the COMPLETE interview conversation.
 
 Interview Details:
@@ -265,44 +270,53 @@ Interview Details:
 - Total Questions: {len(questions)}
 - Answered Questions: {answered_count}
 - Average Response Length: {int(avg_response_length)} characters
+- Calculated Base Performance: {base_score}/100
 
 COMPLETE INTERVIEW CONVERSATION (Analyze ALL questions and answers):
 {json.dumps(conversation, indent=2, ensure_ascii=False)}
 
-As a professional interviewer, provide comprehensive, actionable feedback in this EXACT JSON format:
+SCORING GUIDELINES:
+- Base your scores on ACTUAL answer quality, not generic assumptions
+- Short answers ("hello") should score 20-40
+- Medium quality answers should score 60-75
+- Detailed, thoughtful answers should score 80-95
+- Exceptional answers with examples should score 95-100
+- Use the calculated base score ({base_score}) as a starting reference
+
+Provide comprehensive, actionable feedback in this EXACT JSON format:
 {{
-  "overall_score": 75,
-  "technical_score": 70,
-  "communication_score": 80,
-  "confidence_score": 75,
-  "problem_solving_score": 70,
-  "leadership_score": 65,
-  "adaptability_score": 75,
-  "strengths": ["Specific strength with evidence", "Another concrete strength"],
-  "weaknesses": ["Specific area for improvement", "Another development area"],
+  "overall_score": {base_score},
+  "technical_score": {max(base_score - 10, 40)},
+  "communication_score": {min(base_score + 10, 95)},
+  "confidence_score": {base_score},
+  "problem_solving_score": {base_score},
+  "leadership_score": {max(base_score - 15, 35)},
+  "adaptability_score": {base_score},
+  "strengths": ["Specific strength with evidence from answers", "Another concrete strength"],
+  "weaknesses": ["Specific area for improvement based on responses", "Another development area"],
   "improvement_areas": ["Actionable improvement suggestion", "Specific skill to develop"],
   "detailed_analysis": {{
-    "communication": "Professional assessment of communication skills with examples",
-    "technical_skills": "Detailed technical competency evaluation with specifics",
-    "problem_solving": "Analysis of problem-solving approach and methodology",
-    "cultural_fit": "Assessment of cultural alignment and team fit"
+    "communication": "Assessment based on actual answer clarity and structure",
+    "technical_skills": "Evaluation based on technical depth shown in answers",
+    "problem_solving": "Analysis based on problem-solving approach demonstrated",
+    "cultural_fit": "Assessment based on professionalism and attitude shown"
   }},
-  "recommendations": ["Specific, actionable recommendation", "Concrete next step"],
-  "summary": "Professional summary highlighting key performance indicators and growth areas",
-  "next_steps": "Clear, actionable development plan for candidate improvement"
+  "recommendations": ["Specific recommendation based on performance", "Concrete next step"],
+  "summary": "Professional summary based on actual interview performance",
+  "next_steps": "Development plan based on identified gaps"
 }}
 
-Evaluate professionally:
-1. Technical competency depth and accuracy
-2. Communication clarity and structure (STAR method usage)
-3. Problem-solving methodology and critical thinking
-4. Professional presentation and confidence
-5. Adaptability and learning orientation
-6. Leadership potential and team collaboration
-7. Industry knowledge and best practices awareness
-8. Cultural fit and professional maturity
+Evaluate professionally based on ACTUAL responses:
+1. Answer completeness and depth
+2. Communication clarity and structure
+3. Technical knowledge demonstrated
+4. Problem-solving approach shown
+5. Professional presentation
+6. Specific examples provided
+7. Relevance to questions asked
+8. Overall engagement level
 
-Provide specific, evidence-based feedback. Avoid generic comments. Return ONLY valid JSON."""
+Be FAIR and ACCURATE. Reward good answers with high scores (85-95). Penalize weak answers with low scores (30-50). Return ONLY valid JSON."""
             
             response = self._make_api_request(self.models['feedback_analysis'], prompt, max_tokens=2500)
             feedback = self._parse_json_response(response)
@@ -512,51 +526,55 @@ Return ONLY this JSON format:
         }
     
     def _validate_comprehensive_feedback(self, feedback: Dict) -> Dict:
-        """Validate comprehensive feedback structure."""
+        """Validate comprehensive feedback structure with dynamic defaults."""
+        # Ensure scores are reasonable integers
+        overall = int(feedback.get('overall_score', 70))
+        overall = max(20, min(100, overall))  # Clamp between 20-100
+        
         return {
-            'overall_score': feedback.get('overall_score', 75),
-            'technical_score': feedback.get('technical_score', 70),
-            'communication_score': feedback.get('communication_score', 80),
-            'confidence_score': feedback.get('confidence_score', 75),
-            'problem_solving_score': feedback.get('problem_solving_score', 70),
-            'leadership_score': feedback.get('leadership_score', 65),
-            'adaptability_score': feedback.get('adaptability_score', 75),
-            'strengths': feedback.get('strengths', ['Good communication', 'Shows enthusiasm']),
-            'weaknesses': feedback.get('weaknesses', ['Could be more specific', 'Practice more examples']),
-            'improvement_areas': feedback.get('improvement_areas', ['Practice STAR method', 'Study technical concepts']),
+            'overall_score': overall,
+            'technical_score': int(feedback.get('technical_score', max(overall - 5, 40))),
+            'communication_score': int(feedback.get('communication_score', min(overall + 5, 95))),
+            'confidence_score': int(feedback.get('confidence_score', overall)),
+            'problem_solving_score': int(feedback.get('problem_solving_score', overall)),
+            'leadership_score': int(feedback.get('leadership_score', max(overall - 10, 35))),
+            'adaptability_score': int(feedback.get('adaptability_score', overall)),
+            'strengths': feedback.get('strengths', ['Completed the interview', 'Showed engagement']),
+            'weaknesses': feedback.get('weaknesses', ['Provide more detailed responses', 'Include specific examples']),
+            'improvement_areas': feedback.get('improvement_areas', ['Practice STAR method', 'Prepare specific examples']),
             'detailed_analysis': feedback.get('detailed_analysis', {
-                'communication': 'Clear and articulate responses',
-                'technical_skills': 'Solid foundation with room for growth',
-                'problem_solving': 'Good analytical approach',
-                'cultural_fit': 'Shows good alignment with team values'
+                'communication': 'Responses provided with varying levels of detail',
+                'technical_skills': 'Technical knowledge demonstrated at basic level',
+                'problem_solving': 'Problem-solving approach needs more structure',
+                'cultural_fit': 'Shows willingness to engage and learn'
             }),
-            'recommendations': feedback.get('recommendations', ['Continue practicing', 'Focus on technical depth']),
-            'summary': feedback.get('summary', 'Good overall performance with clear areas for improvement.'),
-            'next_steps': feedback.get('next_steps', 'Focus on technical skills and provide more specific examples.')
+            'recommendations': feedback.get('recommendations', ['Practice with more examples', 'Study technical concepts']),
+            'summary': feedback.get('summary', f'Performance score of {overall}/100 indicates areas for growth and development.'),
+            'next_steps': feedback.get('next_steps', 'Focus on providing detailed, structured responses with specific examples.')
         }
     
     def _get_comprehensive_fallback_feedback(self) -> Dict:
         """Get comprehensive fallback feedback when AI is not available."""
         return {
-            "overall_score": 75,
-            "technical_score": 70,
-            "communication_score": 80,
-            "confidence_score": 75,
-            "problem_solving_score": 70,
-            "leadership_score": 65,
-            "adaptability_score": 75,
-            "strengths": ["Clear communication skills", "Shows enthusiasm for the role", "Good problem-solving approach"],
-            "weaknesses": ["Could provide more specific examples", "Technical knowledge needs strengthening", "Leadership experience limited"],
-            "improvement_areas": ["Practice STAR method for behavioral questions", "Deepen technical knowledge", "Gain more leadership experience"],
+            "overall_score": 70,
+            "technical_score": 65,
+            "communication_score": 75,
+            "confidence_score": 70,
+            "problem_solving_score": 68,
+            "leadership_score": 60,
+            "adaptability_score": 72,
+            "strengths": ["Completed all interview questions", "Maintained engagement throughout", "Showed willingness to participate"],
+            "weaknesses": ["Responses could be more detailed", "Include more specific examples", "Demonstrate deeper technical knowledge"],
+            "improvement_areas": ["Practice STAR method (Situation, Task, Action, Result)", "Prepare specific examples from experience", "Study technical concepts in depth"],
             "detailed_analysis": {
-                "communication": "Demonstrates clear and articulate communication throughout the interview",
-                "technical_skills": "Shows solid foundation but could benefit from deeper technical knowledge",
-                "problem_solving": "Good analytical thinking and structured approach to problems",
-                "cultural_fit": "Shows good alignment with team values and company culture"
+                "communication": "Basic communication established. Work on structuring responses more clearly.",
+                "technical_skills": "Technical knowledge shown at foundational level. Deepen expertise in key areas.",
+                "problem_solving": "Problem-solving approach needs more structure and specific examples.",
+                "cultural_fit": "Shows positive attitude and willingness to learn."
             },
-            "recommendations": ["Continue practicing interview skills", "Focus on technical depth in your field", "Prepare more specific examples using STAR method"],
-            "summary": "Good overall performance with strong communication skills. Focus on strengthening technical knowledge and providing more specific examples.",
-            "next_steps": "Practice technical concepts, prepare specific examples, and continue developing leadership skills."
+            "recommendations": ["Practice answering common interview questions", "Prepare 5-7 detailed examples using STAR method", "Research company and role thoroughly"],
+            "summary": "Interview completed with room for improvement. Focus on providing detailed, structured responses with concrete examples from your experience.",
+            "next_steps": "Practice interview skills daily, prepare specific examples, and strengthen technical knowledge in your field."
         }
     
     def _analyze_previous_performance(self, questions: List[Dict], answers: Dict) -> Dict:

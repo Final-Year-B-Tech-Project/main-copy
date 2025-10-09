@@ -692,69 +692,51 @@ class ProInterviewSystem {
             if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
                 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
                 this.recognition = new SpeechRecognition();
-                this.recognition.continuous = true;
-                this.recognition.interimResults = true
+                this.recognition.continuous = false;
+                this.recognition.interimResults = false;
                 this.recognition.lang = 'en-US';
                 this.recognition.maxAlternatives = 1;
                 
                 this.recognition.onstart = () => {
-                    console.log('Voice recognition started');
+                    console.log('✓ Voice recognition started');
                     document.querySelector('.listening-indicator').style.display = 'block';
                 };
                 
-                let finalTranscript = '';
                 this.recognition.onresult = (event) => {
-                    let interimTranscript = '';
-                    for (let i = event.resultIndex; i < event.results.length; i++) {
-                        if (event.results[i].isFinal) {
-                            finalTranscript += event.results[i][0].transcript + ' ';
-                        } else {
-                            interimTranscript += event.results[i][0].transcript;
-                        }
-                    }
+                    const transcript = event.results[0][0].transcript;
                     
-                    // Show interim results in input field
-                    if (interimTranscript) {
-                        document.getElementById('manualInput').value = finalTranscript + interimTranscript;
-                    }
-                    
-                    // Process final transcript when user stops speaking
-                    if (finalTranscript.trim() && event.results[event.results.length - 1].isFinal) {
-                        const completeTranscript = finalTranscript.trim();
-                        console.log('Voice transcript:', completeTranscript);
-                        this.addMessage('candidate', completeTranscript);
-                        this.addToTranscript('Candidate', completeTranscript);
-                        this.logInteraction('voice_response', completeTranscript);
+                    if (transcript.trim()) {
+                        console.log('✓ Voice captured:', transcript);
+                        this.addMessage('candidate', transcript);
+                        this.addToTranscript('Candidate', transcript);
+                        this.logInteraction('voice_response', transcript);
                         
                         // Store response for final feedback
                         this.allResponses.push({
                             question: this.currentQuestion || 'Question',
-                            answer: completeTranscript,
+                            answer: transcript,
                             timestamp: new Date().toISOString()
                         });
                         
-                        this.generateAIResponse(completeTranscript);
-                        finalTranscript = '';
+                        this.generateAIResponse(transcript);
                         document.getElementById('manualInput').value = '';
                     }
                 };
                 
                 this.recognition.onend = () => {
-                    console.log('Voice recognition ended, restarting...');
+                    console.log('Voice recognition ended');
                     document.querySelector('.listening-indicator').style.display = 'none';
+                    
+                    // Auto-restart for next answer
                     if (!this.interviewEnded && !this.feedbackProcessing) {
                         setTimeout(() => {
                             try {
-                                if (this.recognition) {
-                                    this.recognition.start();
-                                    console.log('✓ Voice recognition restarted successfully');
-                                }
+                                this.recognition.start();
+                                console.log('✓ Restarted - Ready for next answer');
                             } catch (error) {
-                                if (error.message !== 'recognition already started') {
-                                    console.error('Failed to restart recognition:', error);
-                                }
+                                console.error('Restart error:', error);
                             }
-                        }, 300);
+                        }, 500);
                     }
                 };
                 
