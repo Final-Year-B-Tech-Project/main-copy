@@ -5,9 +5,11 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash,
 from flask_login import login_required, current_user
 from app import db
 from app.models import User, JobDrive, InterviewSession
+import json
 from app.ai_service_simple import SimpleAIService
 from app.utils import generate_interview_link
 from app.logger import log_user_action, log_interview_action, log_security_event
+from app.professional_interviewer import ProfessionalInterviewer
 
 main = Blueprint('main', __name__)
 ai_service = SimpleAIService()
@@ -24,7 +26,7 @@ def dashboard():
     if current_user.user_type == 'student':
         return redirect(url_for('main.student_dashboard'))
     elif current_user.user_type == 'hr':
-        return redirect(url_for('main.hr_dashboard'))
+        return redirect(url_for('hr.dashboard'))
     elif current_user.is_admin():
         return redirect(url_for('admin.dashboard'))
     else:
@@ -60,41 +62,12 @@ def student_dashboard():
         scores = [interview.overall_score for interview in completed_interviews if interview.overall_score]
         avg_score = sum(scores) / len(scores) if scores else 0
     
-    return render_template('student/dashboard.html',
+    return render_template('student/perfect_dashboard.html',
                          recent_interviews=recent_interviews,
                          practice_count=practice_count,
                          avg_score=avg_score)
 
-@main.route('/hr/dashboard')
-@login_required
-def hr_dashboard():
-    """HR dashboard."""
-    if current_user.user_type != 'hr':
-        flash('Access denied. HR only.', 'error')
-        return redirect(url_for('main.index'))
-    
-    # Get HR's job drives
-    job_drives = JobDrive.query.join(
-        current_user.hr_profile.__class__
-    ).filter_by(user_id=current_user.id).all()
-    
-    # Get recent interview sessions for HR's drives
-    drive_ids = [drive.id for drive in job_drives]
-    recent_interviews = InterviewSession.query.filter(
-        InterviewSession.job_drive_id.in_(drive_ids) if drive_ids else False
-    ).order_by(InterviewSession.created_at.desc()).limit(10).all()
-    
-    # Statistics
-    total_drives = len(job_drives)
-    total_interviews = len(recent_interviews)
-    completed_interviews = len([i for i in recent_interviews if i.status == 'completed'])
-    
-    return render_template('hr/enhanced_dashboard.html',
-                         job_drives=job_drives,
-                         recent_interviews=recent_interviews,
-                         total_drives=total_drives,
-                         total_interviews=total_interviews,
-                         completed_interviews=completed_interviews)
+# Removed - now handled by HR blueprint
 
 @main.route('/student/practice-interview')
 @login_required
@@ -141,7 +114,7 @@ def clear_interview_history():
 @main.route('/student/start-practice', methods=['POST'])
 @login_required
 def start_practice():
-    """Start an adaptive practice interview session."""
+    """Start a practice interview session."""
     if current_user.user_type != 'student':
         return jsonify({'success': False, 'message': 'Access denied'}), 403
     
@@ -163,15 +136,52 @@ def start_practice():
         db.session.add(session)
         db.session.flush()
         
-        # Prepare candidate data for adaptive interview
-        candidate_data = {
-            'name': current_user.full_name,
-            'email': current_user.email,
-            'education': getattr(current_user.student_profile, 'degree', 'Not specified') if current_user.student_profile else 'Not specified',
-            'skills': getattr(current_user.student_profile, 'skills', 'Not specified') if current_user.student_profile else 'Not specified',
-            'experience': getattr(current_user.student_profile, 'experience_level', 'Fresher') if current_user.student_profile else 'Fresher',
-            'projects': 'Not specified'  # Can be enhanced later
-        }
+        # Send interview start notification immediately
+        try:
+            from app.email_templates_fixed import get_interview_start_template
+            import smtplib
+            from email.mime.multipart import MIMEMultipart
+            from email.mime.text import MIMEText
+            import os
+            
+            # Get job role
+            job_role = request.json.get('job_role', 'General')
+            
+            # Send start notification
+            interview_link = f"{request.url_root}adaptive-interview/{session.id}"
+            html_body = get_interview_start_template(
+                current_user.full_name,
+                job_role,
+                interview_link
+            )
+            
+            # Email configuration
+            smtp_server = os.getenv('MAIL_SERVER', 'smtp.gmail.com')
+            smtp_port = int(os.getenv('MAIL_PORT', 587))
+            sender_email = os.getenv('MAIL_USERNAME')
+            sender_password = os.getenv('MAIL_PASSWORD')
+            
+            if sender_email and sender_password:
+                print(f"Sending start notification to {current_user.email}...")
+                msg = MIMEMultipart()
+                msg['From'] = sender_email
+                msg['To'] = current_user.email
+                msg['Subject'] = f"Interview Starting - {job_role} | TalentSync"
+                msg.attach(MIMEText(html_body, 'html', 'utf-8'))
+                
+                server = smtplib.SMTP(smtp_server, smtp_port)
+                server.starttls()
+                server.login(sender_email, sender_password)
+                server.sendmail(sender_email, current_user.email, msg.as_string())
+                server.quit()
+                print(f"✓ Start notification sent to {current_user.email}")
+            else:
+                print("✗ Email credentials not configured")
+                
+        except Exception as e:
+            print(f"✗ Failed to send start notification: {e}")
+            import traceback
+            traceback.print_exc()
         
         # Start with predefined first question for instant start
         first_question = "Tell me about yourself and your background."
@@ -185,13 +195,6 @@ def start_practice():
         
         log_user_action('PRACTICE_INTERVIEW_STARTED', f'Session ID: {session.id}, Job Role: {job_role}')
         
-        # Send practice interview start notification
-        try:
-            from app.email_service import send_practice_interview_notification
-            send_practice_interview_notification(current_user.email, current_user.full_name, job_role)
-        except Exception as e:
-            print(f"Failed to send practice interview notification: {e}")
-        
         return jsonify({
             'success': True,
             'session_id': session.id,
@@ -203,99 +206,11 @@ def start_practice():
         db.session.rollback()
         return jsonify({'success': False, 'message': str(e)}), 500
 
-@main.route('/hr/drives')
-@login_required
-def hr_drives():
-    """HR job drives management."""
-    if current_user.user_type != 'hr':
-        flash('Access denied. HR only.', 'error')
-        return redirect(url_for('main.index'))
-    
-    drives = JobDrive.query.join(
-        current_user.hr_profile.__class__
-    ).filter_by(user_id=current_user.id).order_by(JobDrive.created_at.desc()).all()
-    
-    return render_template('hr/drives.html', drives=drives)
+# Removed - now handled by HR blueprint
 
-@main.route('/hr/create-drive', methods=['GET', 'POST'])
-@login_required
-def create_drive():
-    """Create new job drive."""
-    if current_user.user_type != 'hr':
-        flash('Access denied. HR only.', 'error')
-        return redirect(url_for('main.index'))
-    
-    if request.method == 'POST':
-        try:
-            # Get form data
-            title = request.form.get('title', '').strip()
-            description = request.form.get('description', '').strip()
-            job_role = request.form.get('job_role', '').strip()
-            experience_required = request.form.get('experience_required', '')
-            skills_required = request.form.get('skills_required', '').split(',')
-            skills_required = [skill.strip() for skill in skills_required if skill.strip()]
-            number_of_positions = int(request.form.get('number_of_positions', 1))
-            location = request.form.get('location', '').strip()
-            salary_range = request.form.get('salary_range', '').strip()
-            
-            # Parse deadline
-            deadline_str = request.form.get('deadline')
-            deadline = datetime.strptime(deadline_str, '%Y-%m-%dT%H:%M') if deadline_str else None
-            
-            # Create job drive
-            drive = JobDrive(
-                hr_id=current_user.hr_profile.id,
-                title=title,
-                description=description,
-                job_role=job_role,
-                experience_required=experience_required,
-                skills_required=json.dumps(skills_required),
-                number_of_positions=number_of_positions,
-                location=location,
-                salary_range=salary_range,
-                deadline=deadline
-            )
-            
-            db.session.add(drive)
-            db.session.commit()
-            
-            # Send job drive creation notification
-            try:
-                from app.email_service import send_job_drive_notification
-                send_job_drive_notification(current_user.email, current_user.full_name, title, 'created')
-            except Exception as e:
-                print(f"Failed to send job drive creation email: {e}")
-            
-            flash('Job drive created successfully!', 'success')
-            return redirect(url_for('main.hr_drives'))
-            
-        except Exception as e:
-            db.session.rollback()
-            flash('Failed to create job drive. Please try again.', 'error')
-    
-    return render_template('hr/create_drive.html')
+# Removed - now handled by HR blueprint
 
-@main.route('/hr/drive/<int:drive_id>/candidates')
-@login_required
-def drive_candidates(drive_id):
-    """View candidates for a specific drive."""
-    if current_user.user_type != 'hr':
-        flash('Access denied. HR only.', 'error')
-        return redirect(url_for('main.index'))
-    
-    # Verify drive belongs to current HR
-    drive = JobDrive.query.join(
-        current_user.hr_profile.__class__
-    ).filter_by(user_id=current_user.id).filter(JobDrive.id == drive_id).first()
-    
-    if not drive:
-        flash('Drive not found or access denied.', 'error')
-        return redirect(url_for('main.hr_drives'))
-    
-    # Get interview sessions for this drive
-    interviews = InterviewSession.query.filter_by(job_drive_id=drive_id).all()
-    
-    return render_template('hr/candidates.html', drive=drive, interviews=interviews)
+# Removed - now handled by HR blueprint
 
 @main.route('/hr/drive/<int:drive_id>/toggle', methods=['POST'])
 @login_required
@@ -306,9 +221,10 @@ def toggle_drive(drive_id):
     
     try:
         # Verify drive belongs to current HR
-        drive = JobDrive.query.join(
-            current_user.hr_profile.__class__
-        ).filter_by(user_id=current_user.id).filter(JobDrive.id == drive_id).first()
+        if current_user.hr_profile:
+            drive = JobDrive.query.filter_by(id=drive_id, hr_id=current_user.hr_profile.id).first()
+        else:
+            drive = None
         
         if not drive:
             return jsonify({'success': False, 'message': 'Drive not found'}), 404
@@ -346,9 +262,10 @@ def schedule_interview():
             return jsonify({'success': False, 'message': 'Candidate not found'}), 404
         
         # Verify drive belongs to current HR
-        drive = JobDrive.query.join(
-            current_user.hr_profile.__class__
-        ).filter_by(user_id=current_user.id).filter(JobDrive.id == drive_id).first()
+        if current_user.hr_profile:
+            drive = JobDrive.query.filter_by(id=drive_id, hr_id=current_user.hr_profile.id).first()
+        else:
+            drive = None
         
         if not drive:
             return jsonify({'success': False, 'message': 'Job drive not found or access denied'}), 404
@@ -420,9 +337,10 @@ def bulk_schedule_interview():
             return jsonify({'success': False, 'message': 'No candidates selected'}), 400
         
         # Verify drive belongs to current HR
-        drive = JobDrive.query.join(
-            current_user.hr_profile.__class__
-        ).filter_by(user_id=current_user.id).filter(JobDrive.id == drive_id).first()
+        if current_user.hr_profile:
+            drive = JobDrive.query.filter_by(id=drive_id, hr_id=current_user.hr_profile.id).first()
+        else:
+            drive = None
         
         if not drive:
             return jsonify({'success': False, 'message': 'Job drive not found or access denied'}), 404
@@ -598,6 +516,64 @@ def start_adaptive_interview(session_id):
         session.start_time = datetime.utcnow()
         db.session.commit()
         
+        # Send interview start notification
+        try:
+            from app.email_templates_fixed import get_interview_start_template
+            import smtplib
+            from email.mime.multipart import MIMEMultipart
+            from email.mime.text import MIMEText
+            from flask import current_app
+            
+            # Get job role
+            job_role = "General"
+            if session.notes and "Job Role: " in session.notes:
+                job_role = session.notes.split("Job Role: ")[1].split("\n")[0]
+            
+            # Send start notification
+            interview_link = f"{request.url_root}adaptive-interview/{session_id}"
+            html_body = get_interview_start_template(
+                session.candidate.full_name,
+                job_role,
+                interview_link
+            )
+            
+            # Import os for environment variables
+            import os
+            
+            # Send email directly
+            smtp_server = current_app.config.get('MAIL_SERVER') or os.getenv('MAIL_SERVER', 'smtp.gmail.com')
+            smtp_port = current_app.config.get('MAIL_PORT') or int(os.getenv('MAIL_PORT', 587))
+            sender_email = current_app.config.get('MAIL_USERNAME') or os.getenv('MAIL_USERNAME')
+            sender_password = current_app.config.get('MAIL_PASSWORD') or os.getenv('MAIL_PASSWORD')
+            
+            print(f"Email config - Server: {smtp_server}, Username: {sender_email}, Password: {'***' if sender_password else 'None'}")
+            
+            if sender_email and sender_password:
+                print(f"Sending start notification to {session.candidate.email}...")
+                msg = MIMEMultipart()
+                msg['From'] = sender_email
+                msg['To'] = session.candidate.email
+                msg['Subject'] = f"Interview Starting - {job_role} | TalentSync"
+                
+                # Encode HTML body safely
+                html_body_safe = html_body.encode('utf-8', errors='ignore').decode('utf-8')
+                msg.attach(MIMEText(html_body_safe, 'html', 'utf-8'))
+                
+                server = smtplib.SMTP(smtp_server, smtp_port)
+                server.starttls()
+                server.login(sender_email, sender_password)
+                server.sendmail(sender_email, session.candidate.email, msg.as_string())
+                server.quit()
+                print(f"✓ Start notification sent to {session.candidate.email}")
+            else:
+                print(f"✗ Email credentials missing - Username: {sender_email}, Password: {'***' if sender_password else 'None'}")
+                print("Please check .env file for MAIL_USERNAME and MAIL_PASSWORD")
+            
+        except Exception as e:
+            print(f"✗ Failed to send start notification: {e}")
+            import traceback
+            traceback.print_exc()
+        
         return jsonify({
             'success': True, 
             'message': 'Interview started successfully'
@@ -609,67 +585,119 @@ def start_adaptive_interview(session_id):
 
 @main.route('/adaptive-interview/<session_id>/complete', methods=['POST'])
 def complete_adaptive_interview(session_id):
-    """Complete the adaptive interview session."""
+    """Complete the adaptive interview session with enhanced evaluation."""
     session = InterviewSession.query.get_or_404(session_id)
     
     try:
         # Get stored responses from frontend
         all_responses = request.json.get('all_responses', [])
         
-        # Store responses
-        responses = {}
-        questions = []
-        for i, resp in enumerate(all_responses):
-            responses[str(i+1)] = {
-                'question': resp.get('question', f'Question {i+1}'),
-                'answer': resp.get('answer', ''),
-                'timestamp': resp.get('timestamp', datetime.utcnow().isoformat())
-            }
-            questions.append({
-                'id': i+1,
-                'question': resp.get('question', f'Question {i+1}'),
-                'type': 'interview',
-                'category': 'general'
-            })
+        # Get job role from session
+        job_role = "General"
+        if session.notes:
+            try:
+                job_role = session.notes.split("Job Role: ")[1] if "Job Role: " in session.notes else "General"
+            except:
+                job_role = "General"
         
-        session.responses = json.dumps(responses)
-        session.questions = json.dumps(questions)
+        # Only generate feedback if there are actual responses
+        if len(all_responses) == 0:
+            return jsonify({
+                'success': False,
+                'message': 'No responses recorded. Please speak or type your answers during the interview.'
+            }), 400
+        
+        # Send all responses to LLM for real feedback
+        from app.llm_feedback import generate_comprehensive_feedback
+        evaluation_result = generate_comprehensive_feedback(ai_service, all_responses, job_role)
+        
+        print(f"Generated feedback for {len(all_responses)} responses with score: {evaluation_result.get('overall_score', 0)}")
+
+        
+        # Update session with results
         session.status = 'completed'
         session.end_time = datetime.utcnow()
         
         if session.start_time:
-            duration = (session.end_time - session.start_time).total_seconds()
-            session.duration = int(duration)
+            duration = int((session.end_time - session.start_time).total_seconds())
+            session.duration = duration
         
-        # Generate comprehensive feedback with full conversation history
-        from app.ai_service import AIInterviewService
-        full_ai_service = AIInterviewService()
-        feedback_data = full_ai_service.generate_feedback(questions, responses, session)
-        session.ai_feedback = json.dumps(feedback_data)
-        session.overall_score = feedback_data.get('overall_score', 75)
-        session.technical_score = feedback_data.get('technical_score', 75)
-        session.communication_score = feedback_data.get('communication_score', 75)
-        session.confidence_score = feedback_data.get('confidence_score', 75)
-        session.problem_solving_score = feedback_data.get('problem_solving_score', 70)
+        # Store realistic scores
+        session.overall_score = evaluation_result['overall_score']
+        session.technical_score = evaluation_result['technical_score']
+        session.communication_score = evaluation_result['communication_score']
+        session.confidence_score = evaluation_result['confidence_score']
+        
+        # Store responses and questions with enhanced data
+        responses = {}
+        questions = []
+        
+        for i, resp in enumerate(all_responses):
+            responses[str(i+1)] = {
+                'question': resp.get('question', f'Question {i+1}'),
+                'answer': resp.get('answer', ''),
+                'timestamp': resp.get('timestamp', datetime.utcnow().isoformat()),
+                'response_time': resp.get('response_time', 120),
+                'word_count': len(resp.get('answer', '').split())
+            }
+            questions.append({
+                'id': i+1,
+                'question': resp.get('question', f'Question {i+1}'),
+                'type': 'professional',
+                'phase': 'adaptive'
+            })
+        
+        session.responses = json.dumps(responses)
+        session.questions = json.dumps(questions)
+        session.ai_feedback = json.dumps(evaluation_result)
+        
+        # Store additional metadata
+        session.notes = f"Job Role: {job_role}\nTotal Questions: {len(all_responses)}\nInterview Type: Professional"
         
         db.session.commit()
+        print(f"Interview completed successfully with {len(all_responses)} responses for {job_role} role")
         
-        # Send email notification
+        # Send comprehensive email notifications and PDF
         try:
-            from app.email_service import send_interview_feedback_to_candidate
-            candidate = session.candidate
-            send_interview_feedback_to_candidate(
-                candidate_email=candidate.email,
-                candidate_name=candidate.full_name,
-                job_title='Practice Interview',
-                company_name='Talent Sync',
-                feedback=feedback_data
+            from app.interview_completion import InterviewCompletionService
+            completion_service = InterviewCompletionService()
+            
+            # Generate PDF report
+            pdf_path, pdf_filename = completion_service.generate_feedback_pdf(
+                session, evaluation_result, all_responses
             )
+            
+            # Send email to candidate
+            completion_service.send_candidate_email(
+                candidate_email=session.candidate.email,
+                candidate_name=session.candidate.full_name,
+                job_role=job_role,
+                feedback_data=evaluation_result,
+                pdf_path=pdf_path
+            )
+            
+            # Send email to HR if this is a scheduled interview
+            if session.job_drive and session.session_type == 'actual':
+                hr = session.job_drive.hr.user
+                completion_service.send_hr_email(
+                    hr_email=hr.email,
+                    hr_name=hr.full_name,
+                    candidate_name=session.candidate.full_name,
+                    candidate_email=session.candidate.email,
+                    job_role=job_role,
+                    feedback_data=evaluation_result
+                )
+            
+            print(f"Interview completed with email notifications sent for {session.candidate.full_name}")
+            
         except Exception as e:
-            print(f"Email error: {e}")
+            print(f"Email/PDF error: {e}")
+            import traceback
+            traceback.print_exc()
         
         return jsonify({
             'success': True,
+            'message': f'Interview completed successfully! Feedback generated for {len(all_responses)} responses.',
             'redirect_url': url_for('main.interview_feedback', session_id=session_id)
         })
         
@@ -812,14 +840,22 @@ def interview_feedback(session_id):
         flash('Access denied.', 'error')
         return redirect(url_for('main.index'))
     
-    # Parse feedback
+    # Parse feedback and responses
     ai_feedback = json.loads(session.ai_feedback) if session.ai_feedback else {}
+    
+    # Parse responses for template
+    responses_data = {}
+    if session.responses:
+        try:
+            responses_data = json.loads(session.responses) if isinstance(session.responses, str) else session.responses
+        except:
+            responses_data = {}
     
     # Determine which feedback to show
     if current_user.user_type == 'student':
-        return render_template('student/feedback.html', session=session, feedback=ai_feedback)
+        return render_template('student/feedback.html', session=session, feedback=ai_feedback, responses=responses_data)
     else:
-        return render_template('hr/interview_feedback.html', session=session, feedback=ai_feedback)
+        return render_template('hr/interview_feedback.html', session=session, feedback=ai_feedback, responses=responses_data)
 
 @main.route('/interview/<session_id>/security-warning', methods=['POST'])
 def log_security_warning(session_id):
@@ -860,49 +896,159 @@ def get_interview_questions():
 
 @main.route('/api/generate-ai-response', methods=['POST'])
 def generate_ai_response():
-    """Generate professional AI interviewer response."""
+    """Generate adaptive AI response with robust error handling."""
     try:
         data = request.get_json()
         session_id = data.get('session_id')
         user_message = data.get('message', '').strip()
-        current_tool = data.get('current_tool', 'chat')
         
         # Get session
         session = InterviewSession.query.get(session_id)
         if not session:
-            return jsonify({'success': False, 'message': 'Session not found'}), 404
+            return jsonify({
+                'success': True,
+                'response': "Could you tell me about yourself?"
+            })
         
-        # Get job role from session
-        job_role = 'General'
-        if session.job_drive:
-            job_role = session.job_drive.job_role
-        elif hasattr(session, 'notes') and session.notes:
-            # Extract job role from notes
-            if 'Job Role:' in session.notes:
-                job_role = session.notes.split('Job Role:')[1].strip()
+        # Get job role from session notes with safe handling
+        job_role = "General"
+        try:
+            if hasattr(session, 'notes') and session.notes and "Job Role: " in str(session.notes):
+                job_role = str(session.notes).split("Job Role: ")[1].split("\n")[0].strip()
+        except Exception as e:
+            print(f"Job role extraction error: {e}")
+            job_role = "General"
+        
+        # No fallback interviewer needed - AI service handles everything
         
         # Get current question count
-        responses_data = session.responses
-        if isinstance(responses_data, str):
-            responses = json.loads(responses_data) if responses_data else {}
-        else:
-            responses = responses_data or {}
-            
+        try:
+            responses_data = session.responses
+            if isinstance(responses_data, str):
+                responses = json.loads(responses_data) if responses_data else {}
+            else:
+                responses = responses_data or {}
+        except:
+            responses = {}
+        
         question_count = len(responses)
         
-        # Generate contextual response
-        response = ai_service.generate_simple_response(user_message, question_count, job_role)
+        # Calculate time elapsed
+        total_time = 0
+        if session.start_time:
+            total_time = int((datetime.utcnow() - session.start_time).total_seconds())
         
-        return jsonify({
-            'success': True,
-            'response': response
-        })
+        # Process the response
+        if user_message and len(user_message.strip()) > 1:
+            # Store the response with correct indexing
+            response_key = str(question_count)
+            responses[response_key] = {
+                'question_index': question_count,
+                'answer': user_message,
+                'timestamp': datetime.utcnow().isoformat()
+            }
+            
+            try:
+                session.responses = json.dumps(responses)
+            except:
+                pass
+            
+            # Use actual response count for continuation check
+            current_question_count = len(responses)
+            print(f"Current question count: {current_question_count}, Total time: {total_time}")
+            
+            # Check if should continue using simple logic
+            elapsed_seconds = total_time
+            remaining_time = max(0, 1200 - elapsed_seconds)
+            
+            if current_question_count >= 8 or remaining_time <= 60:
+                return jsonify({
+                    'success': True,
+                    'response': "Thank you for completing the interview! Please click 'End Interview' to see your feedback.",
+                    'should_end': True
+                })
+            
+            # Generate next question using AI
+            try:
+                # Build conversation history
+                conversation_history = ""
+                for i, resp in enumerate(responses.values()):
+                    if isinstance(resp, dict) and 'answer' in resp:
+                        conversation_history += f"Q{i+1}: {resp.get('question', 'Question')}\nA{i+1}: {resp['answer']}\n\n"
+                
+                # Get job role
+                job_role = "General"
+                if hasattr(session, 'notes') and session.notes and "Job Role: " in str(session.notes):
+                    job_role = str(session.notes).split("Job Role: ")[1].split("\n")[0].strip()
+                
+                # Use AI to generate next question
+                next_question = ai_service.generate_adaptive_question(
+                    user_message, job_role, current_question_count, conversation_history
+                )
+                print(f"Generated question: {next_question}")
+                
+            except Exception as e:
+                print(f"Question generation error: {e}")
+                next_question = "Could you tell me more about your experience with that?"
+            
+            # Store question
+            try:
+                questions_data = session.questions
+                if isinstance(questions_data, str):
+                    questions = json.loads(questions_data) if questions_data else []
+                else:
+                    questions = questions_data or []
+                
+                questions.append({
+                    'id': len(questions) + 1,
+                    'question': next_question,
+                    'type': 'adaptive'
+                })
+                session.questions = json.dumps(questions)
+            except:
+                pass
+            
+            try:
+                db.session.commit()
+            except:
+                pass
+            
+            return jsonify({
+                'success': True,
+                'response': next_question,
+                'question_index': current_question_count + 1
+            })
+        else:
+            # First question or no meaningful response
+            if question_count == 0:
+                try:
+                    opening_question = interviewer.get_next_question("", 0)
+                    if session.start_time is None:
+                        session.start_time = datetime.utcnow()
+                        db.session.commit()
+                except Exception as e:
+                    print(f"Opening question error: {e}")
+                    opening_question = f"Hello! Welcome to your {job_role} interview. I'm excited to learn more about you today. Could you please introduce yourself and tell me about your background?"
+                
+                return jsonify({
+                    'success': True,
+                    'response': opening_question,
+                    'question_index': 0
+                })
+            else:
+                # Ask for more detail
+                return jsonify({
+                    'success': True,
+                    'response': "Could you please provide a bit more detail in your response?",
+                    'question_index': question_count
+                })
         
     except Exception as e:
-        print(f"Error generating AI response: {e}")
+        print(f"Error in AI response generation: {e}")
+        # Always return a valid response
         return jsonify({
             'success': True,
-            'response': "Thank you for your response. Please continue with your thoughts on this topic."
+            'response': "Could you tell me more about yourself and your background?"
         })
 
 @main.route('/api/log-interaction', methods=['POST'])
@@ -938,3 +1084,4 @@ def evaluate_code():
         })
     except Exception as e:
         return jsonify({'success': False, 'message': str(e)}), 500
+

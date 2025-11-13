@@ -1,0 +1,241 @@
+{% extends "base.html" %}
+
+{% block title %}HR Dashboard{% endblock %}
+
+{% block content %}
+<div class="content-wrapper">
+    <div class="app-container">
+        <!-- Page Header -->
+        <div class="ui-card ui-animate-fadeInUp">
+            <div class="ui-d-flex ui-justify-between ui-align-center">
+                <div>
+                    <h1 class="ui-mb-2">HR Command Center</h1>
+                    <p class="ui-mb-0">Welcome back, {{ current_user.first_name }}! Manage your recruitment pipeline with ease.</p>
+                </div>
+                <div class="ui-d-flex ui-gap-2">
+                    <a href="{{ url_for('hr.create_drive') }}" class="ui-btn ui-btn-primary">
+                        <i class="fas fa-plus"></i>New Job Drive
+                    </a>
+                    <a href="{{ url_for('hr.drives') }}" class="ui-btn ui-btn-outline">
+                        <i class="fas fa-briefcase"></i>Manage Drives
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistics Grid -->
+        <div class="ui-grid ui-grid-4 ui-animate-fadeInUp" style="animation-delay: 0.1s;">
+            <div class="ui-stat-card">
+                <div class="ui-stat-value">{{ stats.total_drives }}</div>
+                <div class="ui-stat-label">Active Job Drives</div>
+            </div>
+            <div class="ui-stat-card">
+                <div class="ui-stat-value">{{ stats.total_interviews }}</div>
+                <div class="ui-stat-label">Total Interviews</div>
+            </div>
+            <div class="ui-stat-card">
+                <div class="ui-stat-value">{{ stats.completed_interviews }}</div>
+                <div class="ui-stat-label">Completed Interviews</div>
+            </div>
+            <div class="ui-stat-card">
+                <div class="ui-stat-value">{{ stats.total_interviews - stats.completed_interviews }}</div>
+                <div class="ui-stat-label">Pending Reviews</div>
+            </div>
+        </div>
+
+        <!-- Content Grid -->
+        <div class="ui-grid ui-grid-2 ui-animate-fadeInUp" style="animation-delay: 0.2s;">
+            <!-- Recent Job Drives -->
+            <div class="ui-card">
+                <div class="ui-card-header">
+                    <div class="ui-d-flex ui-justify-between ui-align-center">
+                        <h3 class="ui-mb-0">Recent Job Drives</h3>
+                        <a href="{{ url_for('hr.drives') }}" class="ui-btn ui-btn-sm ui-btn-outline">
+                            <i class="fas fa-arrow-right"></i>View All
+                        </a>
+                    </div>
+                </div>
+
+                {% if job_drives %}
+                <div class="ui-table-responsive">
+                    <table class="ui-table">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Role</th>
+                                <th>Status</th>
+                                <th>Created</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for drive in job_drives[:5] %}
+                            <tr>
+                                <td>
+                                    <div class="ui-d-flex ui-align-center ui-gap-2">
+                                        <div style="width: 8px; height: 8px; background: linear-gradient(135deg, #6366f1, #8b5cf6); border-radius: 50%;"></div>
+                                        <strong>{{ drive.title }}</strong>
+                                    </div>
+                                </td>
+                                <td>{{ drive.job_role }}</td>
+                                <td>
+                                    <span class="ui-badge {% if drive.is_active %}ui-badge-success{% else %}ui-badge-secondary{% endif %}">
+                                        <i class="fas fa-{% if drive.is_active %}check{% else %}pause{% endif %}"></i>
+                                        {% if drive.is_active %}Active{% else %}Inactive{% endif %}
+                                    </span>
+                                </td>
+                                <td>{{ drive.created_at.strftime('%m/%d') }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="ui-empty-state">
+                    <div class="ui-empty-icon">
+                        <i class="fas fa-briefcase"></i>
+                    </div>
+                    <div class="ui-empty-title">No Job Drives</div>
+                    <div class="ui-empty-text">Create your first job drive to start recruiting candidates.</div>
+                    <a href="{{ url_for('hr.create_drive') }}" class="ui-btn ui-btn-primary">
+                        <i class="fas fa-plus"></i>Create Job Drive
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Recent Interviews -->
+            <div class="ui-card">
+                <div class="ui-card-header">
+                    <h3 class="ui-mb-0">Recent Interviews</h3>
+                </div>
+
+                {% if recent_interviews %}
+                <div class="ui-table-responsive">
+                    <table class="ui-table">
+                        <thead>
+                            <tr>
+                                <th>Candidate</th>
+                                <th>Status</th>
+                                <th>Score</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for interview in recent_interviews[:5] %}
+                            <tr>
+                                <td>
+                                    <div class="ui-d-flex ui-align-center ui-gap-2">
+                                        <div style="width: 32px; height: 32px; background: linear-gradient(135deg, #6366f1, #8b5cf6); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 0.75rem;">
+                                            {{ interview.candidate.first_name[0] }}{{ interview.candidate.last_name[0] }}
+                                        </div>
+                                        <div>
+                                            <div class="ui-mb-0" style="font-weight: 600;">{{ interview.candidate.full_name }}</div>
+                                            <div style="font-size: 0.75rem; color: #94a3b8;">{{ interview.candidate.email }}</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="ui-badge 
+                                        {% if interview.status == 'completed' %}ui-badge-success
+                                        {% elif interview.status == 'in_progress' %}ui-badge-warning
+                                        {% elif interview.status == 'scheduled' %}ui-badge-info
+                                        {% else %}ui-badge-secondary{% endif %}">
+                                        <i class="fas fa-{% if interview.status == 'completed' %}check{% elif interview.status == 'in_progress' %}play{% elif interview.status == 'scheduled' %}clock{% else %}pause{% endif %}"></i>
+                                        {{ interview.status.title() }}
+                                    </span>
+                                </td>
+                                <td>
+                                    {% if interview.overall_score %}
+                                        <span class="ui-badge ui-badge-success">{{ "%.0f"|format(interview.overall_score) }}%</span>
+                                    {% else %}
+                                        <span style="color: #94a3b8;">-</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ interview.created_at.strftime('%m/%d') }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="ui-empty-state">
+                    <div class="ui-empty-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="ui-empty-title">No Interviews</div>
+                    <div class="ui-empty-text">Schedule interviews with candidates to see them here.</div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="ui-card ui-animate-fadeInUp" style="animation-delay: 0.3s;">
+            <div class="ui-card-header">
+                <h3 class="ui-mb-0">Quick Actions</h3>
+            </div>
+            <div class="ui-grid ui-grid-auto">
+                <div class="ui-d-flex ui-align-center ui-gap-3 ui-p-3" style="background: rgba(99, 102, 241, 0.1); border-radius: 12px; border: 1px solid #4c1d95;">
+                    <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #6366f1, #8b5cf6); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-plus" style="color: white; font-size: 1.25rem;"></i>
+                    </div>
+                    <div style="flex: 1;">
+                        <h5 class="ui-mb-1">Create Job Drive</h5>
+                        <p class="ui-mb-2" style="color: #94a3b8; font-size: 0.875rem;">Start a new recruitment campaign</p>
+                        <a href="{{ url_for('hr.create_drive') }}" class="ui-btn ui-btn-sm ui-btn-primary">Create Now</a>
+                    </div>
+                </div>
+
+                <div class="ui-d-flex ui-align-center ui-gap-3 ui-p-3" style="background: rgba(16, 185, 129, 0.1); border-radius: 12px; border: 1px solid #059669;">
+                    <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #10b981, #059669); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-users" style="color: white; font-size: 1.25rem;"></i>
+                    </div>
+                    <div style="flex: 1;">
+                        <h5 class="ui-mb-1">Manage Candidates</h5>
+                        <p class="ui-mb-2" style="color: #94a3b8; font-size: 0.875rem;">Review and schedule interviews</p>
+                        <a href="{{ url_for('hr.drives') }}" class="ui-btn ui-btn-sm ui-btn-success">View Drives</a>
+                    </div>
+                </div>
+
+                <div class="ui-d-flex ui-align-center ui-gap-3 ui-p-3" style="background: rgba(6, 182, 212, 0.1); border-radius: 12px; border: 1px solid #0891b2;">
+                    <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #06b6d4, #0891b2); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-chart-line" style="color: white; font-size: 1.25rem;"></i>
+                    </div>
+                    <div style="flex: 1;">
+                        <h5 class="ui-mb-1">Analytics</h5>
+                        <p class="ui-mb-2" style="color: #94a3b8; font-size: 0.875rem;">View recruitment insights</p>
+                        <button class="ui-btn ui-btn-sm ui-btn-info" onclick="alert('Analytics feature coming soon!')">View Reports</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block additional_js %}
+<script>
+// Add some interactive animations
+document.addEventListener('DOMContentLoaded', function() {
+    // Animate stat cards on load
+    const statCards = document.querySelectorAll('.ui-stat-card');
+    statCards.forEach((card, index) => {
+        card.style.animationDelay = `${index * 0.1}s`;
+        card.classList.add('ui-animate-fadeInUp');
+    });
+    
+    // Add hover effects to action cards
+    const actionCards = document.querySelectorAll('[style*="rgba(99, 102, 241, 0.1)"], [style*="rgba(16, 185, 129, 0.1)"], [style*="rgba(6, 182, 212, 0.1)"]');
+    actionCards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-4px)';
+            this.style.transition = 'all 0.3s ease';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+        });
+    });
+});
+</script>
+{% endblock %}

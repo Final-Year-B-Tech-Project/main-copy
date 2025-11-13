@@ -17,7 +17,7 @@ if __name__ == '__main__':
     app = create_app()
     
     print("=" * 50)
-    print("🤖 AI Interview Agent Starting...")
+    print("[AI INTERVIEW] Starting Application...")
     print("=" * 50)
     print(f"Environment: {os.environ.get('FLASK_ENV', 'development')}")
     print(f"Host: {host}")

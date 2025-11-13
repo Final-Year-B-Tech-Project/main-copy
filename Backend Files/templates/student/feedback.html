@@ -554,8 +554,8 @@ body {
                 <img src="{{ url_for('static', filename='images/logo.png') }}" alt="TalentSync" style="width: 24px; height: 24px; border-radius: 4px;">
             </div>
             <h3>Overall Score</h3>
-            <div class="overall-score">{{ "%.0f"|format(feedback.overall_score or 85) }}%</div>
-            <div class="status-badge status-{{ feedback.status.lower() if feedback.status else 'good' }}">{{ feedback.status or 'GOOD' }}</div>
+            <div class="overall-score">{{ "%.0f"|format(feedback.overall_score or 0) }}%</div>
+            <div class="status-badge status-{{ 'good' if feedback.overall_score >= 70 else 'satisfactory' if feedback.overall_score >= 50 else 'needs_improvement' }}">{{ 'EXCELLENT' if feedback.overall_score >= 85 else 'GOOD' if feedback.overall_score >= 70 else 'FAIR' if feedback.overall_score >= 50 else 'NEEDS WORK' }}</div>
         </div>
     </div>
 
@@ -566,42 +566,26 @@ body {
             
             <div class="metric-item">
                 <span class="metric-name">Communication</span>
-                <span class="metric-value">{{ feedback.communication_score or 80 }}%</span>
+                <span class="metric-value">{{ feedback.communication_score or 0 }}%</span>
             </div>
             <div class="metric-bar">
-                <div class="metric-fill" style="width: {{ feedback.communication_score or 80 }}%"></div>
+                <div class="metric-fill" style="width: {{ feedback.communication_score or 0 }}%"></div>
             </div>
             
             <div class="metric-item">
                 <span class="metric-name">Technical Knowledge</span>
-                <span class="metric-value">{{ feedback.technical_score or 90 }}%</span>
+                <span class="metric-value">{{ feedback.technical_score or 0 }}%</span>
             </div>
             <div class="metric-bar">
-                <div class="metric-fill" style="width: {{ feedback.technical_score or 90 }}%"></div>
-            </div>
-            
-            <div class="metric-item">
-                <span class="metric-name">Problem-Solving</span>
-                <span class="metric-value">{{ feedback.problem_solving_score or 75 }}%</span>
-            </div>
-            <div class="metric-bar">
-                <div class="metric-fill" style="width: {{ feedback.problem_solving_score or 75 }}%"></div>
+                <div class="metric-fill" style="width: {{ feedback.technical_score or 0 }}%"></div>
             </div>
             
             <div class="metric-item">
                 <span class="metric-name">Confidence</span>
-                <span class="metric-value">{{ feedback.confidence_score or 88 }}%</span>
+                <span class="metric-value">{{ feedback.confidence_score or 0 }}%</span>
             </div>
             <div class="metric-bar">
-                <div class="metric-fill" style="width: {{ feedback.confidence_score or 88 }}%"></div>
-            </div>
-            
-            <div class="metric-item">
-                <span class="metric-name">Coding Proficiency</span>
-                <span class="metric-value">{{ feedback.coding_score or 92 }}%</span>
-            </div>
-            <div class="metric-bar">
-                <div class="metric-fill" style="width: {{ feedback.coding_score or 92 }}%"></div>
+                <div class="metric-fill" style="width: {{ feedback.confidence_score or 0 }}%"></div>
             </div>
         </div>
 
@@ -618,24 +602,32 @@ body {
         <div class="transcript-card">
             <h3 class="card-title">Transcript Highlights</h3>
             
-            <div class="highlight-item highlight-positive">
-                <p class="highlight-text">✓ Candidate: My approach to the microservices architecture...</p>
-                <p class="highlight-time">0:15:30</p>
-            </div>
+            {% if responses %}
+                {% for key, response in responses.items() %}
+                    {% if loop.index <= 3 %}
+                    <div class="highlight-item highlight-positive">
+                        <p class="highlight-text">✓ {{ (response.answer or 'Response')[:100] }}...</p>
+                        <p class="highlight-time">Response {{ key }}</p>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <p class="highlight-text">No transcript available</p>
+            {% endif %}
         </div>
 
         <div class="transcript-card">
             <h3 class="card-title">Areas for Improvement</h3>
             
-            <div class="highlight-item highlight-negative">
-                <p class="highlight-text">⚠ Fondisato the CAP theorem.</p>
-                <p class="highlight-time">0:18:30</p>
-            </div>
-            
-            <div class="highlight-item highlight-positive">
-                <p class="highlight-text">✓ AI: Explain the CAP theorem, Hoarctios states...</p>
-                <p class="highlight-time">0:19:15</p>
-            </div>
+            {% if feedback.weaknesses %}
+                {% for weakness in feedback.weaknesses[:2] %}
+                <div class="highlight-item highlight-negative">
+                    <p class="highlight-text">⚠ {{ weakness }}</p>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p class="highlight-text">No specific areas identified</p>
+            {% endif %}
         </div>
     </div>
 
@@ -684,12 +676,25 @@ body {
         {% else %}
         <div class="feedback-section">
             <h4><i class="fas fa-star"></i> Strengths:</h4>
-            <p class="feedback-text">{{ feedback.get('detailed_analysis', {}).get('technical_skills') or 'Excellent grasp of concepts and clear communication throughout the interview.' }}</p>
+            <ul class="feedback-text">
+                {% for strength in feedback.strengths %}
+                <li>{{ strength }}</li>
+                {% endfor %}
+            </ul>
         </div>
         
         <div class="feedback-section">
-            <h4><i class="fas fa-arrow-up"></i> Improvement Tips:</h4>
-            <p class="feedback-text">{{ feedback.get('detailed_analysis', {}).get('communication') or 'Continue practicing and building experience to enhance your interview performance.' }}</p>
+            <h4><i class="fas fa-arrow-up"></i> Areas for Improvement:</h4>
+            <ul class="feedback-text">
+                {% for weakness in feedback.weaknesses %}
+                <li>{{ weakness }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        
+        <div class="feedback-section">
+            <h4><i class="fas fa-lightbulb"></i> Summary:</h4>
+            <p class="feedback-text">{{ feedback.summary }}</p>
         </div>
         {% endif %}
     </div>

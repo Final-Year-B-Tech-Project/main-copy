@@ -40,7 +40,7 @@
                             {% if current_user.user_type == 'student' %}
                                 <a href="{{ url_for('main.practice_interview') }}" style="color: var(--gray-400); text-decoration: none; font-size: 0.875rem; transition: color 0.2s;">Practice</a>
                             {% elif current_user.user_type == 'hr' %}
-                                <a href="{{ url_for('main.hr_drives') }}" style="color: var(--gray-400); text-decoration: none; font-size: 0.875rem; transition: color 0.2s;">Job Drives</a>
+                                <a href="{{ url_for('hr.drives') }}" style="color: var(--gray-400); text-decoration: none; font-size: 0.875rem; transition: color 0.2s;">Job Drives</a>
                             {% endif %}
                             <a href="{{ url_for('auth.profile') }}" style="color: var(--gray-400); text-decoration: none; font-size: 0.875rem; transition: color 0.2s;">Profile</a>
                         {% else %}

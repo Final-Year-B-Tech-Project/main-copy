@@ -20,7 +20,7 @@
                         <i class="fas fa-play-circle me-2"></i>Practice
                     </a>
                 {% elif current_user.user_type == 'hr' %}
-                    <a class="nav-link d-flex align-items-center" href="{{ url_for('main.hr_drives') }}">
+                    <a class="nav-link d-flex align-items-center" href="{{ url_for('hr.drives') }}">
                         <i class="fas fa-briefcase me-2"></i>Job Drives
                     </a>
                 {% endif %}
@@ -69,8 +69,8 @@
                 'main.student_dashboard': 'Student Dashboard',
                 'main.hr_dashboard': 'HR Dashboard',
                 'main.practice_interview': 'Practice Interview',
-                'main.hr_drives': 'Job Drives',
-                'main.create_drive': 'Create Drive',
+                'hr.drives': 'Job Drives',
+                'hr.create_drive': 'Create Drive',
                 'auth.profile': 'Profile Settings',
                 'main.interview_interface': 'Interview'
             } %}

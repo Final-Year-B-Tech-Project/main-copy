@@ -153,6 +153,7 @@ class InterviewSession(db.Model):
     confidence_score = db.Column(db.Float)
     coding_score = db.Column(db.Float)
     interview_link = db.Column(db.String(255))  # Unique interview link
+    notes = db.Column(db.Text)  # Additional notes and metadata
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 

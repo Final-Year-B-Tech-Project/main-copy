@@ -6,35 +6,42 @@
 
 {% block additional_css %}
 <style>
+/* Override with violet theme */
 :root {
-    --hr-primary: #2563eb;
-    --hr-secondary: #64748b;
-    --hr-success: #059669;
-    --hr-warning: #d97706;
-    --hr-danger: #dc2626;
-    --hr-info: #0891b2;
-    --hr-light: #f8fafc;
-    --hr-dark: #1e293b;
-    --hr-gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    --hr-gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-    --hr-gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-    --hr-gradient-4: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+    --hr-primary: #6366f1;
+    --hr-secondary: #8b5cf6;
+    --hr-success: #10b981;
+    --hr-warning: #f59e0b;
+    --hr-danger: #ef4444;
+    --hr-info: #06b6d4;
+    --hr-light: #ffffff;
+    --hr-dark: #0f0f23;
+    --hr-gradient-1: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    --hr-gradient-2: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
+    --hr-gradient-3: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+    --hr-gradient-4: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
+
+/* Force white text everywhere */
+* {
+    color: #ffffff !important;
 }
 
 .hr-dashboard {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
     min-height: 100vh;
     padding: 2rem 0;
 }
 
 .dashboard-header {
-    background: rgba(255, 255, 255, 0.1);
+    background: linear-gradient(145deg, #1a1a2e, #16213e);
     backdrop-filter: blur(10px);
     border-radius: 20px;
     padding: 2rem;
     margin-bottom: 2rem;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: white;
+    border: 1px solid #4c1d95;
+    color: white !important;
+    box-shadow: 0 8px 32px rgba(99, 102, 241, 0.1);
 }
 
 .dashboard-header h1 {
@@ -85,10 +92,11 @@
 }
 
 .stat-card {
-    background: white;
+    background: linear-gradient(145deg, #1a1a2e, #16213e);
+    border: 1px solid #4c1d95;
     border-radius: 20px;
     padding: 2rem;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 30px rgba(99, 102, 241, 0.1);
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
@@ -169,10 +177,11 @@
 }
 
 .main-content, .sidebar-content {
-    background: white;
+    background: linear-gradient(145deg, #1a1a2e, #16213e);
+    border: 1px solid #4c1d95;
     border-radius: 20px;
     padding: 2rem;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 30px rgba(99, 102, 241, 0.1);
 }
 
 .section-header {
@@ -338,10 +347,11 @@
 }
 
 .analytics-widget {
-    background: white;
+    background: linear-gradient(145deg, #1a1a2e, #16213e);
+    border: 1px solid #4c1d95;
     border-radius: 20px;
     padding: 2rem;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 30px rgba(99, 102, 241, 0.1);
     margin-bottom: 2rem;
 }
 

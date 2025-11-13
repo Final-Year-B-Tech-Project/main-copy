@@ -1,0 +1,297 @@
+/* Interview UI Fixes - High Contrast and Visibility */
+
+/* Override existing styles for better visibility */
+.interview-container {
+    background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%) !important;
+    color: #ffffff !important;
+    min-height: 100vh;
+}
+
+/* Header improvements */
+.header {
+    background: rgba(26, 32, 44, 0.95) !important;
+    border-bottom: 2px solid #4299e1 !important;
+    backdrop-filter: blur(10px);
+}
+
+.brand-text {
+    background: linear-gradient(135deg, #4299e1, #63b3ed) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    font-weight: 800 !important;
+}
+
+/* Toolbar improvements */
+.toolbar {
+    background: rgba(26, 32, 44, 0.9) !important;
+    border-bottom: 1px solid #4299e1 !important;
+}
+
+.tool-btn {
+    background: rgba(66, 153, 225, 0.15) !important;
+    border: 2px solid rgba(66, 153, 225, 0.4) !important;
+    color: #e2e8f0 !important;
+    font-weight: 600 !important;
+    transition: all 0.3s ease !important;
+}
+
+.tool-btn.active {
+    background: rgba(66, 153, 225, 0.3) !important;
+    color: #ffffff !important;
+    border-color: #4299e1 !important;
+    box-shadow: 0 0 15px rgba(66, 153, 225, 0.3) !important;
+}
+
+.tool-btn:hover {
+    background: rgba(66, 153, 225, 0.25) !important;
+    color: #ffffff !important;
+    transform: translateY(-2px) !important;
+}
+
+/* Video section improvements */
+.video-panel {
+    background: rgba(26, 32, 44, 0.9) !important;
+    border: 2px solid rgba(66, 153, 225, 0.3) !important;
+    border-radius: 15px !important;
+}
+
+.ai-interviewer {
+    background: linear-gradient(135deg, #2d3748, #4a5568) !important;
+}
+
+.ai-avatar {
+    background: linear-gradient(135deg, #4299e1, #63b3ed) !important;
+    box-shadow: 0 0 30px rgba(66, 153, 225, 0.4) !important;
+}
+
+.ai-label, .video-placeholder {
+    background: rgba(0, 0, 0, 0.8) !important;
+    color: #ffffff !important;
+    font-weight: 600 !important;
+    border: 1px solid rgba(66, 153, 225, 0.3) !important;
+}
+
+/* Content area improvements */
+.content-area {
+    background: rgba(26, 32, 44, 0.9) !important;
+    border: 2px solid rgba(66, 153, 225, 0.3) !important;
+    border-radius: 15px !important;
+}
+
+.content-header {
+    background: rgba(45, 55, 72, 0.8) !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    border-bottom: 2px solid rgba(66, 153, 225, 0.3) !important;
+}
+
+/* Message improvements */
+.message-content {
+    background: rgba(66, 153, 225, 0.15) !important;
+    border: 2px solid rgba(66, 153, 225, 0.3) !important;
+    color: #ffffff !important;
+    font-weight: 500 !important;
+    line-height: 1.6 !important;
+}
+
+.candidate-message .message-content {
+    background: rgba(72, 187, 120, 0.15) !important;
+    border-color: rgba(72, 187, 120, 0.4) !important;
+}
+
+.message-avatar {
+    border: 2px solid rgba(66, 153, 225, 0.4) !important;
+    font-weight: 700 !important;
+}
+
+.ai-message .message-avatar {
+    background: linear-gradient(135deg, #4299e1, #63b3ed) !important;
+    color: #ffffff !important;
+}
+
+.candidate-message .message-avatar {
+    background: linear-gradient(135deg, #48bb78, #68d391) !important;
+    color: #ffffff !important;
+}
+
+/* Input improvements */
+.form-control {
+    background: rgba(45, 55, 72, 0.8) !important;
+    border: 2px solid rgba(66, 153, 225, 0.4) !important;
+    color: #ffffff !important;
+    font-weight: 500 !important;
+}
+
+.form-control:focus {
+    background: rgba(45, 55, 72, 0.9) !important;
+    border-color: #4299e1 !important;
+    box-shadow: 0 0 15px rgba(66, 153, 225, 0.3) !important;
+    color: #ffffff !important;
+}
+
+.form-control::placeholder {
+    color: #a0aec0 !important;
+    font-weight: 500 !important;
+}
+
+/* Button improvements */
+.btn-primary {
+    background: linear-gradient(135deg, #4299e1, #3182ce) !important;
+    border: 2px solid #4299e1 !important;
+    color: #ffffff !important;
+    font-weight: 600 !important;
+    transition: all 0.3s ease !important;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #3182ce, #2c5282) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 5px 20px rgba(66, 153, 225, 0.4) !important;
+}
+
+/* Control buttons */
+.control-btn {
+    font-weight: 600 !important;
+    border-width: 2px !important;
+    transition: all 0.3s ease !important;
+}
+
+.mute-btn {
+    background: rgba(66, 153, 225, 0.2) !important;
+    color: #4299e1 !important;
+    border-color: #4299e1 !important;
+}
+
+.mute-btn:hover {
+    background: rgba(66, 153, 225, 0.3) !important;
+    color: #ffffff !important;
+}
+
+.end-btn {
+    background: rgba(245, 101, 101, 0.2) !important;
+    color: #f56565 !important;
+    border-color: #f56565 !important;
+}
+
+.end-btn:hover {
+    background: rgba(245, 101, 101, 0.3) !important;
+    color: #ffffff !important;
+}
+
+.camera-btn, .settings-btn {
+    background: rgba(160, 174, 192, 0.2) !important;
+    color: #a0aec0 !important;
+    border-color: #a0aec0 !important;
+}
+
+.camera-btn:hover, .settings-btn:hover {
+    background: rgba(160, 174, 192, 0.3) !important;
+    color: #ffffff !important;
+}
+
+/* Listening indicator */
+.listening-indicator {
+    animation: pulse 2s infinite !important;
+}
+
+.listening-indicator > div {
+    background: rgba(245, 101, 101, 0.3) !important;
+    border: 2px solid #f56565 !important;
+    color: #ffffff !important;
+    font-weight: 600 !important;
+}
+
+/* Timer improvements */
+.timer {
+    color: #4299e1 !important;
+    font-weight: 700 !important;
+    font-size: 1.4rem !important;
+    text-shadow: 0 0 10px rgba(66, 153, 225, 0.5) !important;
+}
+
+/* Transcript improvements */
+.transcript-panel {
+    color: #e2e8f0 !important;
+    font-weight: 500 !important;
+}
+
+/* Code editor improvements */
+.code-editor {
+    background: #1a202c !important;
+    border: 2px solid rgba(66, 153, 225, 0.3) !important;
+}
+
+.editor-header {
+    background: rgba(45, 55, 72, 0.9) !important;
+    color: #ffffff !important;
+    border-bottom: 2px solid rgba(66, 153, 225, 0.3) !important;
+}
+
+.code-area {
+    background: #1a202c !important;
+    color: #e2e8f0 !important;
+    border: none !important;
+}
+
+.run-btn {
+    background: linear-gradient(135deg, #48bb78, #38a169) !important;
+    color: #ffffff !important;
+    font-weight: 600 !important;
+    border: 2px solid #48bb78 !important;
+}
+
+/* Scrollbar improvements */
+::-webkit-scrollbar {
+    width: 8px !important;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(45, 55, 72, 0.5) !important;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(66, 153, 225, 0.6) !important;
+    border-radius: 4px !important;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(66, 153, 225, 0.8) !important;
+}
+
+/* Text improvements */
+.text-muted {
+    color: #cbd5e0 !important;
+    font-weight: 500 !important;
+}
+
+/* Animations */
+@keyframes pulse {
+    0%, 100% { 
+        opacity: 1; 
+        transform: scale(1);
+    }
+    50% { 
+        opacity: 0.7; 
+        transform: scale(1.05);
+    }
+}
+
+/* Responsive improvements */
+@media (max-width: 768px) {
+    .interview-container {
+        margin: 5px !important;
+    }
+    
+    .main-content {
+        flex-direction: column !important;
+    }
+    
+    .video-grid {
+        grid-template-columns: 1fr !important;
+        height: auto !important;
+    }
+    
+    .video-panel {
+        height: 200px !important;
+    }
+}

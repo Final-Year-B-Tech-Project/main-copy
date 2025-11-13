@@ -53,11 +53,14 @@ def create_app(config_name=None):
     from app.student import student_bp as student_blueprint
     app.register_blueprint(student_blueprint)
     
-    from app.hr import hr as hr_blueprint
-    app.register_blueprint(hr_blueprint)
+    try:
+        from app.hr_simple import hr as hr_blueprint
+        app.register_blueprint(hr_blueprint)
+    except ImportError as e:
+        print(f"HR blueprint disabled due to import error: {e}")
     
-    from app.adaptive_api import adaptive_api as adaptive_blueprint
-    app.register_blueprint(adaptive_blueprint)
+    # Register adaptive models for database creation
+    from app.adaptive_models import AdaptiveSession, AdaptiveQuestion, AdaptiveResponse
     
     # User loader for Flask-Login
     @login_manager.user_loader

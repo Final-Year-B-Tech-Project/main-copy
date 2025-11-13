@@ -1,0 +1,181 @@
+{% extends "base.html" %}
+
+{% block title %}HR Dashboard{% endblock %}
+
+{% block extra_css %}
+<style>
+    .dashboard-card {
+        margin-bottom: 20px;
+        padding: 25px;
+    }
+    
+    .stat-card {
+        text-align: center;
+        padding: 30px 20px;
+    }
+    
+    .quick-actions {
+        padding: 25px;
+    }
+    
+    .recent-section {
+        padding: 25px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="mb-4" style="color: #ffffff !important;">HR Dashboard</h1>
+        </div>
+    </div>
+    
+    <!-- Statistics Cards -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="dashboard-card text-center">
+                <h5 style="color: #ffffff !important;">Total Job Drives</h5>
+                <div class="stat-number">{{ stats.total_drives }}</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="dashboard-card text-center">
+                <h5 style="color: #ffffff !important;">Total Interviews</h5>
+                <div class="stat-number">{{ stats.total_interviews }}</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="dashboard-card text-center">
+                <h5 style="color: #ffffff !important;">Completed Interviews</h5>
+                <div class="stat-number">{{ stats.completed_interviews }}</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Quick Actions -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="dashboard-card">
+                <h5 style="color: #ffffff !important;">Quick Actions</h5>
+                <div class="mt-3">
+                    <a href="{{ url_for('hr.create_drive') }}" class="btn btn-primary me-2">Create New Job Drive</a>
+                    <a href="{{ url_for('hr.drives') }}" class="btn btn-outline-light">Manage Job Drives</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Recent Job Drives -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="dashboard-card">
+                <h5 style="color: #ffffff !important;">Recent Job Drives</h5>
+                {% if job_drives %}
+                <div class="table-responsive mt-3">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th style="color: #ffffff !important;">Title</th>
+                                <th style="color: #ffffff !important;">Role</th>
+                                <th style="color: #ffffff !important;">Status</th>
+                                <th style="color: #ffffff !important;">Created</th>
+                                <th style="color: #ffffff !important;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for drive in job_drives[:5] %}
+                            <tr>
+                                <td style="color: #ffffff !important;">{{ drive.title }}</td>
+                                <td style="color: #ffffff !important;">{{ drive.job_role }}</td>
+                                <td style="color: #ffffff !important;">
+                                    <span class="badge {% if drive.is_active %}bg-success{% else %}bg-secondary{% endif %}">
+                                        {% if drive.is_active %}Active{% else %}Inactive{% endif %}
+                                    </span>
+                                </td>
+                                <td style="color: #ffffff !important;">{{ drive.created_at.strftime('%Y-%m-%d') }}</td>
+                                <td>
+                                    <a href="{{ url_for('hr.drive_candidates', drive_id=drive.id) }}" 
+                                       class="btn btn-sm btn-outline-light">View Candidates</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="text-center mt-3">
+                    <p style="color: #ffffff !important;">No job drives created yet.</p>
+                    <a href="{{ url_for('hr.create_drive') }}" class="btn btn-primary">Create Your First Job Drive</a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <!-- Recent Interviews -->
+    <div class="row">
+        <div class="col-12">
+            <div class="dashboard-card">
+                <h5 style="color: #ffffff !important;">Recent Interviews</h5>
+                {% if recent_interviews %}
+                <div class="table-responsive mt-3">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th style="color: #ffffff !important;">Candidate</th>
+                                <th style="color: #ffffff !important;">Job Drive</th>
+                                <th style="color: #ffffff !important;">Status</th>
+                                <th style="color: #ffffff !important;">Scheduled</th>
+                                <th style="color: #ffffff !important;">Score</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for interview in recent_interviews %}
+                            <tr>
+                                <td style="color: #ffffff !important;">{{ interview.candidate.full_name }}</td>
+                                <td style="color: #ffffff !important;">
+                                    {% if interview.job_drive %}
+                                        {{ interview.job_drive.title }}
+                                    {% else %}
+                                        Practice Interview
+                                    {% endif %}
+                                </td>
+                                <td style="color: #ffffff !important;">
+                                    <span class="badge 
+                                        {% if interview.status == 'completed' %}bg-success
+                                        {% elif interview.status == 'in_progress' %}bg-warning
+                                        {% else %}bg-info{% endif %}">
+                                        {{ interview.status.title() }}
+                                    </span>
+                                </td>
+                                <td style="color: #ffffff !important;">
+                                    {% if interview.scheduled_time %}
+                                        {{ interview.scheduled_time.strftime('%Y-%m-%d %H:%M') }}
+                                    {% else %}
+                                        Not scheduled
+                                    {% endif %}
+                                </td>
+                                <td style="color: #ffffff !important;">
+                                    {% if interview.overall_score %}
+                                        {{ "%.1f"|format(interview.overall_score) }}%
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="text-center mt-3">
+                    <p style="color: #ffffff !important;">No interviews scheduled yet.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
