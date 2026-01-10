@@ -3,681 +3,999 @@
         'interview-fundamentals': {
             'title': 'Interview Fundamentals',
             'icon': '🎯',
-            'description': 'Master the essential skills every successful candidate needs',
-            'duration': '2-3 hours',
+            'description': 'Master the essential skills every successful candidate needs to stand out from the crowd and impress HR recruiters.',
+            'duration': '3-4 hours',
             'difficulty': 'Beginner',
             'color': '#6366f1',
             'lessons': [
                 {
                     'id': 1,
-                    'title': 'First Impressions & Professional Presence',
-                    'duration': '35 min',
+                    'title': 'The Psychology of First Impressions',
+                    'duration': '45 min',
                     'content': '''
-<h3><i class="fas fa-eye"></i> The 7-Second Rule: Making Every Moment Count</h3>
-<p>Research from Harvard Business School shows that interviewers form their first impression within 7 seconds of meeting you. This lesson teaches you how to maximize those crucial moments and create a lasting positive impact that sets the tone for your entire interview.</p>
+<h3><i class="fas fa-brain"></i> The Science Behind the First 7 Seconds</h3>
+<p>Research from Harvard Business School confirms that interviewers form a definitive impression within the first 7 seconds. This isn't just about "looking good"; it's about signaling competence, trustworthiness, and cultural fit. From an HR perspective, those first moments tell them whether you're someone they can confidently represent to their internal stakeholders.</p>
 
 <div class="tip-section">
-    <h5><i class="fas fa-user-tie"></i> HR Insider Perspective</h5>
-    <p><strong>What We Look For:</strong> It's not just about the suit. We look for <em>congruence</em>—does your energy, attire, and body language match the role you're applying for? A developer in a three-piece suit might feel "off" at a startup, just as a banker in jeans would at a firm.</p>
+    <h5><i class="fas fa-user-tie"></i> HR Recruiter POV: The "Candidate Filter"</h5>
+    <p><strong>Inside Scoop:</strong> Recruiters are often looking for reasons to say "no" so they can focus on the best candidates. A weak first impression (poor eye contact, lack of energy, inappropriate attire) acts as an immediate filter. We want to see someone who carries themselves with "Professional Gravity"—the quiet confidence that says, 'I belong here.'</p>
 </div>
 
-<h4>Professional Appearance Mastery</h4>
+<h4>1. Professional Appearance & "Culture Matching"</h4>
+<p>Dressing for an interview is no longer just about wearing a suit. It's about demonstrating "Cultural Intelligence" (CQ).</p>
 <ul>
-    <li><strong>Dress Code Intelligence:</strong> Research company culture thoroughly using LinkedIn employee photos. The golden rule: dress 10-15% more formal than their standard.</li>
-    <li><strong>Color Psychology:</strong>
+    <li><strong>The 10% Rule:</strong> Always dress approximately 10-15% more formal than the company's daily attire. Research this by looking at the "People" tab on the company's LinkedIn page.</li>
+    <li><strong>Industry Nuances:</strong> 
         <ul>
-            <li><strong>Navy Blue:</strong> Trustworthiness (Finance/Law)</li>
-            <li><strong>Charcoal Gray:</strong> Authority (Management)</li>
-            <li><strong>Black:</strong> Sophistication (Creative/Fashion)</li>
+            <li><em>Tech/Startups:</em> Business Casual (Smart jeans/chinos, button-down, blazer).</li>
+            <li><em>Finance/Law:</em> Business Professional (Full suit, neutral colors).</li>
+            <li><em>Creative:</em> Professional with a "personality piece" (a unique accessory or color).</li>
         </ul>
     </li>
-    <li><strong>Grooming Checklist:</strong> Fresh haircut, trimmed nails, minimal scent (others should only smell it when hugging you), and polished shoes.</li>
+    <li><strong>The Grooming Checklist:</strong> It's the small details. Polished shoes, clean fingernails, and ironed clothes signal "Attention to Detail"—a trait HR loves.</li>
 </ul>
 
-<h4>Body Language That Commands Respect</h4>
+<h4>2. Body Language: The Silent Narrative</h4>
+<p>Your body speaks before you open your mouth. Master these "Power Cues":</p>
 <ul>
-    <li><strong>The Power Entrance:</strong> Walk with purpose. Shoulders back, head up. Don't shuffle.</li>
-    <li><strong>Handshake Mastery:</strong> Web-to-web contact, 2-3 pumps, match their pressure. It's the first physical connection—make it count.</li>
-    <li><strong>Eye Contact Formula:</strong> Aim for 70-80% direct contact. Use the "Triangle Technique" (move focus between eyes and forehead) to avoid an intense stare.</li>
+    <li><strong>The Power Entrance:</strong> Walk with purpose. Avoid the "turtle" (hunched shoulders). Keep your head level and maintain a slight, genuine smile.</li>
+    <li><strong>The "Web-to-Web" Handshake:</strong> Firm, but not aggressive. 2-3 pumps. If virtual, a polite nod and a warm greeting replace the physical touch.</li>
+    <li><strong>The "Triangle" Eye Contact:</strong> Look from one eye, to the other, then the mouth. This feels natural and shows you are actively engaged. Aim for 70% eye contact.</li>
+    <li><strong>Micro-Expressions:</strong> HR is trained to spot "Mismatch." If you say you're excited but your face is flat, they sense a lack of authenticity.</li>
 </ul>
-
-<div class="warning-section">
-    <h5><i class="fas fa-exclamation-triangle"></i> Common Red Flags</h5>
-    <ul>
-        <li><strong>Weak/Clammy Handshake:</strong> Suggests nervousness or lack of confidence.</li>
-        <li><strong>Checking the Watch:</strong> implies you have somewhere better to be.</li>
-        <li><strong>Slouching:</strong> Communicates disinterest or low energy.</li>
-    </ul>
-</div>
-
-<div class="reference-section">
-    <h5><i class="fas fa-book"></i> Recommended Reading</h5>
-    <ul>
-        <li><a href="https://www.amazon.com/Like-Switch-Influencing-People-Thinking/dp/1476754489" target="_blank">The Like Switch</a> by Jack Schafer (Ex-FBI agent on rapport)</li>
-        <li><a href="https://www.amazon.com/Presence-Bringing-Boldest-Biggest-Challenges/dp/1478930166" target="_blank">Presence</a> by Amy Cuddy</li>
-    </ul>
-</div>
 
 <div class="links-section">
-    <h5><i class="fas fa-link"></i> Useful Resources</h5>
+    <h5><i class="fas fa-graduation-cap"></i> Essential Learning Materials</h5>
     <ul>
-        <li><a href="https://www.ted.com/talks/amy_cuddy_your_body_language_may_shape_who_you_are" target="_blank">TED Talk: Your Body Language May Shape Who You Are</a></li>
-        <li><a href="https://hbr.org/2011/02/the-science-of-first-impressions" target="_blank">HBR: The Science of First Impressions</a></li>
+        <li><a href="https://www.ted.com/talks/amy_cuddy_your_body_language_may_shape_who_you_are" target="_blank">TED: Your Body Language Shapes Who You Are (Amy Cuddy)</a></li>
+        <li><a href="https://hbr.org/2011/02/the-science-of-first-impressions" target="_blank">HBR: The Science of First Impressions (Research Deep Dive)</a></li>
+        <li><a href="https://www.forbes.com/sites/jacquelynsmith/2013/03/11/how-to-ace-the-first-7-seconds-of-an-interview/" target="_blank">Forbes: How to Ace the First 7 Seconds</a></li>
     </ul>
+</div>
+
+<div class="exercise-section">
+    <h5><i class="fas fa-edit"></i> Action Item: The Mirror Test</h5>
+    <p>Practice your "Entrance" and "Introductory Greeting" in front of a mirror or record yourself on your phone. Look for nervous tics like touching your face or adjusting your collar.</p>
 </div>
 '''
                 },
                 {
                     'id': 2,
-                    'title': 'Strategic Research & Preparation',
-                    'duration': '40 min',
+                    'title': 'Strategic Company Intelligence',
+                    'duration': '55 min',
                     'content': '''
-<h3><i class="fas fa-search"></i> The Research Advantage</h3>
-<p>Thorough preparation separates good candidates from great ones. This systematic approach ensures you know more about the company than most employees and demonstrates genuine interest.</p>
+<h3><i class="fas fa-microscope"></i> Beyond the "About Us" Page</h3>
+<p>Average candidates read the website. Exceptional candidates understand the <em>business model</em>. HR recruiters want to hire someone who will contribute to the company's bottom line from day one.</p>
 
 <div class="tip-section">
-    <h5><i class="fas fa-lightbulb"></i> The "Deep Dive" Technique</h5>
-    <p>Don't just read the "About Us" page. Read their <strong>Investor Relations</strong> page (10-K reports) if public, or <strong>Crunchbase</strong> if a startup. Know their revenue model, recent acquisitions, and biggest threats.</p>
+    <h5><i class="fas fa-lightbulb"></i> HR Recruiter POV: The "Why Us?" Test</h5>
+    <p>When I ask "Why do you want to work here?", I'm checking if you've done your homework. If your answer is generic (e.g., "I heard you have a great culture"), you've failed. I want to hear about our recent acquisition, our new product line, or our specific challenges in the APAC market.</p>
 </div>
 
-<h4>Company Intelligence Gathering</h4>
+<h4>Level 1: The Basics (The 30-Minute Search)</h4>
 <ul>
-    <li><strong>Financial Health:</strong> Revenue trends, stock performance (1-year view), major investments.</li>
-    <li><strong>Culture Deep-Dive:</strong> Glassdoor reviews (sort by "Recent"), LinkedIn tenure of employees (do people stay?), social media tone.</li>
-    <li><strong>Leadership:</strong> Who are the C-level execs? Watch their recent interviews or podcasts to understand their vision.</li>
+    <li><strong>The Mission Statement:</strong> Don't just memorize it; think of how your skills align with it.</li>
+    <li><strong>Products/Services:</strong> Who are their customers? What is their "Value Proposition"?</li>
+    <li><strong>The Leadership:</strong> Search the CEO's recent interviews on YouTube or Medium. Understand their vision.</li>
 </ul>
 
-<h4>Role Mastery Framework</h4>
+<h4>Level 2: Strategic Insights (The Deep Dive)</h4>
 <ul>
-    <li><strong>Job Description Analysis:</strong> Highlight every verb (e.g., "Manage", "Design", "Analyze"). Prepare a specific story for each.</li>
-    <li><strong>The "Pain Point" Hypothesis:</strong> Every job exists to solve a problem. Identify what pain this role solves for the manager and frame your answers as the solution.</li>
+    <li><strong>Financial Health (Public Companies):</strong> Look at their 10-K report. Read the "Risk Factors" section. This tells you exactly what the company is worried about.</li>
+    <li><strong>Competitor Analysis:</strong> Identify their top 3 competitors. How does this company differentiate itself? (e.g., Is it price? Innovation? Service?)</li>
+    <li><strong>The "Tech Stack" / "Ops Model":</strong> Use tools like BuiltWith or Glassdoor to understand how they actually do the work.</li>
 </ul>
 
-<div class="checklist-section">
-    <h5><i class="fas fa-check-circle"></i> Pre-Interview Checklist</h5>
+<h4>Level 3: Cultural Clues</h4>
+<ul>
+    <li><strong>LinkedIn Employee Pulse:</strong> Look at the "People" tab. Where did they work before? What do they post about?</li>
+    <li><strong>Glassdoor & Indeed:</strong> Read between the lines. Ignore the 1-star and 5-star rants; look for patterns in the 3-star reviews.</li>
+</ul>
+
+<div class="links-section">
+    <h5><i class="fas fa-search-plus"></i> Research Toolkit</h5>
     <ul>
-        <li>[ ] 5 printed copies of resume on high-quality paper</li>
-        <li>[ ] 10 thoughtful questions prepared for the interviewer</li>
-        <li>[ ] Route planned with traffic buffer (arrive 15 mins early)</li>
-        <li>[ ] LinkedIn profiles of interviewers reviewed</li>
-        <li>[ ] "Tell me about yourself" pitch practiced (30s, 60s, 90s versions)</li>
+        <li><a href="https://www.crunchbase.com/" target="_blank">Crunchbase: Startup Funding & Growth Data</a></li>
+        <li><a href="https://www.similarweb.com/" target="_blank">SimilarWeb: Analyze Company Traffic & Competitors</a></li>
+        <li><a href="https://builtwith.com/" target="_blank">BuiltWith: Discover the Technology behind any Website</a></li>
     </ul>
 </div>
 
-<div class="links-section">
-    <h5><i class="fas fa-tools"></i> Research Toolkit</h5>
+<div class="checklist-section">
+    <h5><i class="fas fa-clipboard-list"></i> The "Insider" Checklist</h5>
     <ul>
-        <li><a href="https://www.sec.gov/edgar/searchedgar/companysearch" target="_blank">SEC Edgar (Public Filings)</a></li>
-        <li><a href="https://www.crunchbase.com/" target="_blank">Crunchbase (Startup Data)</a></li>
-        <li><a href="https://trends.google.com/" target="_blank">Google Trends (Market Interest)</a></li>
-        <li><a href="https://www.glassdoor.com/" target="_blank">Glassdoor (Culture Reviews)</a></li>
+        <li>[ ] I know the company's top 3 revenue streams.</li>
+        <li>[ ] I can name their 2 biggest competitors.</li>
+        <li>[ ] I have read at least 2 recent press releases from the last 3 months.</li>
+        <li>[ ] I understand the specific challenges facing this industry right now.</li>
     </ul>
 </div>
 '''
                 },
                 {
                     'id': 3,
-                    'title': 'Mastering Different Interview Formats',
+                    'title': 'Mastering the Opening: "Tell Me About Yourself"',
+                    'duration': '50 min',
+                    'content': '''
+<h3><i class="fas fa-comments"></i> Crafting Your Professional Narrative</h3>
+<p>This is the most important question in the interview. It sets the narrative for everything that follows. HR isn't asking for your life story; they are asking for a <strong>Product Pitch</strong> where <em>you</em> are the product.</p>
+
+<div class="tip-section">
+    <h5><i class="fas fa-bullseye"></i> HR Recruiter POV: The 90-Second Audition</h5>
+    <p>I use this question to gauge your communication skills. Can you synthesize complex information? Are you focused? If you talk for 5 minutes about your childhood, I've already decided you lack professional focus. Aim for the "Sweet Spot": 90 to 120 seconds.</p>
+</div>
+
+<h4>The "Present-Past-Future" Framework</h4>
+<ul>
+    <li><strong>The Present (20%):</strong> Your current role and one <em>major</em> recent accomplishment. (e.g., "Currently, I'm a Senior Analyst at X, where I recently led a project that saved $50k.")</li>
+    <li><strong>The Past (50%):</strong> Briefly highlight 2-3 key experiences that led you here. Focus on <em>relevant</em> skills only.</li>
+    <li><strong>The Future (30%):</strong> Why you are here <em>now</em> and how you will solve <em>their</em> specific problems.</li>
+</ul>
+
+<h4>The "Hook" Technique</h4>
+<p>Start with a high-level summary of who you are. (e.g., "I am a growth-oriented developer with a passion for building scalable architectures and 5 years of experience in the FinTech space.")</p>
+
+<h4>Common Pitfalls to Avoid</h4>
+<ul>
+    <li><strong>The "Resume Reciter":</strong> Don't just read your resume. They've already read it. Tell them what's <em>between</em> the lines.</li>
+    <li><strong>The "Personal Over-sharer":</strong> Avoid talking about hobbies, family, or politics unless specifically asked.</li>
+    <li><strong>The "Modesty Trap":</strong> This is not the time to be humble. Use "I" instead of "We" when talking about achievements.</li>
+</ul>
+
+<div class="links-section">
+    <h5><i class="fas fa-video"></i> Expert Guides</h5>
+    <ul>
+        <li><a href="https://www.youtube.com/watch?v=mmVnOnm6PTo" target="_blank">YouTube: The Perfect 'Tell Me About Yourself' Answer</a></li>
+        <li><a href="https://hbr.org/2019/08/how-to-respond-to-tell-me-about-yourself" target="_blank">HBR: How to Respond to 'Tell Me About Yourself'</a></li>
+    </ul>
+</div>
+
+<div class="exercise-section">
+    <h5><i class="fas fa-pen-fancy"></i> Action Item: Write Your Script</h5>
+    <p>Write out your answer using the PPF framework. Read it out loud. Does it flow? Is it under 2 minutes? Practice it until it sounds conversational, not robotic.</p>
+</div>
+'''
+                },
+                {
+                    'id': 4,
+                    'title': 'Resume Walkthrough & Impact Mapping',
                     'duration': '45 min',
                     'content': '''
-<h3><i class="fas fa-shapes"></i> Adapting to Every Style</h3>
-<p>Different formats require different strategies. Master each to excel regardless of the setting.</p>
+<h3><i class="fas fa-map-signs"></i> Guiding the Interviewer through Your Career</h3>
+<p>When a recruiter says, "Walk me through your resume," they are testing your ability to explain your career <em>logic</em>. They want to see growth, intentionality, and impact.</p>
 
-<h4>1. Phone Screen (The Gatekeeper)</h4>
-<p><strong>Goal:</strong> Prove you are sane, qualified, and affordable.</p>
+<h4>1. The "Why" Behind the Moves</h4>
+<p>For every job transition, have a positive reason. 
+    <br>❌ "I hated my boss." 
+    <br>✅ "I reached a ceiling in my learning and wanted to move into a role with more ownership over [Specific Skill]."</p>
+
+<h4>2. Quantifying Your Impact (The HR Language)</h4>
+<p>HR recruiters think in numbers. "Managed a project" is invisible. "Managed a $20k project that delivered 15% ahead of schedule" is a candidate they want to hire.</p>
 <ul>
-    <li><strong>Strategy:</strong> Stand up while talking to increase energy. Smile (it changes your voice).</li>
-    <li><strong>Cheat Sheet:</strong> Have your resume and key stats taped to the wall in front of you.</li>
+    <li><strong>Money:</strong> Did you save it? Earn it? Manage it?</li>
+    <li><strong>Time:</strong> Did you make a process faster? Reduce downtime?</li>
+    <li><strong>People:</strong> How many did you lead? Train? Influence?</li>
 </ul>
 
-<h4>2. Video Interview (The New Standard)</h4>
-<ul>
-    <li><strong>Eye Contact:</strong> Look at the <em>camera lens</em>, not the screen. Stick a googly eye near the lens to remind you.</li>
-    <li><strong>Lighting:</strong> Light source should be <em>behind</em> the camera, facing you. No windows behind your back (silhouette effect).</li>
-    <li><strong>Background:</strong> Clean, professional, or a high-quality blur. Remove distractions.</li>
-</ul>
+<h4>3. Mapping Skills to the Job Description</h4>
+<p>Identify the "Keywords" in the job posting. During your walkthrough, emphasize the experiences that directly use those keywords.</p>
 
-<h4>3. The Panel (The Gauntlet)</h4>
-<p><strong>Challenge:</strong> Managing multiple personalities.</p>
-<ul>
-    <li><strong>The "Lighthouse" Technique:</strong> When answering, start eye contact with the asker, sweep across the group, and finish back on the asker.</li>
-    <li><strong>Name Mapping:</strong> Write down names/positions immediately in your notebook layout matching their seating.</li>
-</ul>
-
-<div class="warning-section">
-    <h5><i class="fas fa-bug"></i> Technical Failures</h5>
-    <p>Always have a backup plan. If Zoom fails, have your phone ready to dial in immediately. "I'm having technical trouble, switching to phone" shows problem-solving skills, not failure.</p>
+<div class="tip-section">
+    <h5><i class="fas fa-search-dollar"></i> HR Recruiter POV: Spotting "The Red Flags"</h5>
+    <p>I'm looking for gaps or "job hopping." If you have a gap, be honest but brief. Focus on what you did during that time (upskilling, freelance, personal projects). Show me that you never stopped growing.</p>
 </div>
 
 <div class="links-section">
-    <h5><i class="fas fa-laptop-code"></i> Practice Tools</h5>
+    <h5><i class="fas fa-file-invoice"></i> Resources</h5>
     <ul>
-        <li><a href="https://zoom.us/test" target="_blank">Zoom Test Meeting</a></li>
-        <li><a href="https://www.pramp.com/" target="_blank">Pramp (Mock Interviews)</a></li>
-        <li><a href="https://interviewbuddy.in/" target="_blank">InterviewBuddy</a></li>
+        <li><a href="https://www.google.com/about/careers/how-we-hire/resume/" target="_blank">Google: How to Write a Google-Ready Resume</a></li>
+        <li><a href="https://medium.com/swlh/how-to-quantify-your-resume-bullets-when-you-dont-work-with-numbers-77a834e062c3" target="_blank">Medium: Quantifying Impact (Even for Non-Math Roles)</a></li>
     </ul>
 </div>
 '''
                 },
+                {
+                    'id': 5,
+                    'title': 'The Hybrid World: Mastering All Interview Formats',
+                    'duration': '50 min',
+                    'content': '''
+<h3><i class="fas fa-laptop-code"></i> Mastering Video, Phone, and In-Person Stages</h3>
+<p>Modern hiring is a multi-stage process. You need to be a chameleon, adapting your style to the medium while keeping your message consistent.</p>
+
+<h4>1. The Video Interview (The Digital First Impression)</h4>
+<ul>
+    <li><strong>Eye Contact 2.0:</strong> Look at the <em>green dot</em> of the camera, not the person on the screen. This is the only way to look them in the eye.</li>
+    <li><strong>The "Stage" Design:</strong> Neutral background, good lighting (face the window), and no "headroom" (top of your head should be near the top of the frame).</li>
+    <li><strong>Audio is King:</strong> Use a dedicated microphone or headset. People will forgive bad video, but they won't forgive bad audio.</li>
+</ul>
+
+<h4>2. Phone Screens (The Gatekeeper)</h4>
+<ul>
+    <li><strong>Vocal Energy:</strong> Without body language, your voice must do 100% of the work. Stand up while talking—it opens your lungs and makes you sound more energetic.</li>
+    <li><strong>Smile While Talking:</strong> It sounds cliché, but the listener can "hear" a smile. It changes your tone of voice to be more approachable.</li>
+</ul>
+
+<h4>3. The In-Person Panel (The Final Gauntlet)</h4>
+<ul>
+    <li><strong>Room Management:</strong> When answering, start eye contact with the person who asked, but "sweep" the room to include everyone. Make the quietest person in the room feel included.</li>
+    <li><strong>The "Water" Strategy:</strong> If you get a tough question, take a slow sip of water. It gives you 5 seconds of "Thinking Time" without an awkward silence.</li>
+</ul>
+
+<div class="tip-section">
+    <h5><i class="fas fa-video-slash"></i> HR Recruiter POV: The Tech Fail Test</h5>
+    <p>If your Zoom fails, don't panic. How you handle a technical glitch tells me how you'll handle a crisis on the job. Stay calm, apologize briefly, and rejoin. Resilience is a hireable trait.</p>
+</div>
+'''
+                },
+                {
+                    'id': 6,
+                    'title': 'The Strategic Follow-Up: Closing the Deal',
+                    'duration': '35 min',
+                    'content': '''
+<h3><i class="fas fa-envelope-open-text"></i> Turning "Thanks" into "Hire Me"</h3>
+<p>The interview doesn't end when you leave the room. 80% of candidates send a generic thank-you note. 15% send nothing. 5% send a <strong>Strategic Follow-Up</strong>. Be the 5%.</p>
+
+<h4>The "Value-Add" Template</h4>
+<p>A great follow-up should include:</p>
+<ol>
+    <li><strong>The Hook:</strong> Reference a specific, interesting topic from the conversation.</li>
+    <li><strong>The Reinforcement:</strong> Briefly mention one skill you discussed and why it's perfect for their needs.</li>
+    <li><strong>The Value-Add:</strong> (Optional but powerful) Send a link to an article or a quick 1-page "Strategy Note" based on a problem they mentioned.</li>
+</ol>
+
+<div class="tip-section">
+    <h5><i class="fas fa-user-clock"></i> HR Recruiter POV: The 24-Hour Rule</h5>
+    <p>If I don't hear from you in 24 hours, I assume you're not that interested. A personalized note within 2-4 hours is the "Gold Standard." It shows you are proactive and organized.</p>
+</div>
+
+<div class="links-section">
+    <h5><i class="fas fa-copy"></i> Templates & Guides</h5>
+    <ul>
+        <li><a href="https://hbr.org/2021/05/how-to-write-a-thank-you-email-after-an-interview" target="_blank">HBR: How to Write a Thank-You Email</a></li>
+        <li><a href="https://www.themuse.com/advice/the-perfect-template-for-your-followup-thankyou-email" target="_blank">The Muse: Follow-up Templates for Every Scenario</a></li>
+    </ul>
+</div>
+'''
+                },
+                {
+                    'id': 7,
+                    'title': 'Handling Rejection & Building Career Resilience',
+                    'duration': '40 min',
+                    'content': '''
+<h3><i class="fas fa-seedling"></i> Failing Forward: The Growth Mindset</h3>
+<p>Rejection is not a stop sign; it's a redirection. HR recruiters often keep "Silver Medalists" (the #2 candidate) on file for future roles. How you handle a "No" determines if you stay on that list.</p>
+
+<h4>The "Professional Grace" Response</h4>
+<p>When you get the rejection email, reply within 24 hours:</p>
+<ul>
+    <li>Thank them for their time and the opportunity.</li>
+    <li>Express genuine disappointment (it shows you cared).</li>
+    <li>Ask for <em>one</em> specific piece of feedback. (e.g., "Is there one specific skill I should focus on to be a better fit for [Company] in the future?")</li>
+    <li>Ask to stay in touch on LinkedIn.</li>
+</ul>
+
+<div class="tip-section">
+    <h5><i class="fas fa-users-cog"></i> HR Recruiter POV: The Long Game</h5>
+    <p>I once hired a candidate 8 months after rejecting them because their response to the rejection was so professional and growth-oriented. They showed me they had the "Emotional Intelligence" we needed for a leadership role.</p>
+</div>
+
+<div class="links-section">
+    <h5><i class="fas fa-heart"></i> Resilience Resources</h5>
+    <ul>
+        <li><a href="https://www.ted.com/talks/angela_lee_duckworth_grit_the_power_of_passion_and_perseverance" target="_blank">TED: Grit - The Power of Passion and Perseverance</a></li>
+        <li><a href="https://hbr.org/2015/01/how-to-bounce-back-from-a-job-rejection" target="_blank">HBR: How to Bounce Back from Rejection</a></li>
+    </ul>
+</div>
+'''
+                }
             ]
         },
         'behavioral-mastery': {
             'title': 'Behavioral Interview Mastery',
             'icon': '⭐',
-            'description': 'Perfect the STAR method and storytelling techniques',
+            'description': 'Master the art of storytelling and prove your value through concrete evidence that resonates with HR professionals.',
             'duration': '2-3 hours',
             'difficulty': 'Intermediate',
             'color': '#10b981',
             'lessons': [
                 {
                     'id': 1,
-                    'title': 'STAR Method Framework Mastery',
-                    'duration': '30 min',
+                    'title': 'The STAR+R Framework: Engineering High-Impact Answers',
+                    'duration': '45 min',
                     'content': '''
-<h3><i class="fas fa-star"></i> The STAR Method Explained</h3>
-<p>The STAR method is not just a format; it's a story arc. It ensures you provide evidence, not just claims.</p>
+<h3><i class="fas fa-star"></i> Beyond the Basics: The Pro STAR Method</h3>
+<p>The STAR method is not just a structure; it's a way to prove your competency through data. HR recruiters use "Behavioral-Based Interviewing" because past behavior is the best predictor of future performance. We're adding a fifth letter: <strong>R for Reflection</strong>.</p>
 
-<h4>S - Situation (10%)</h4>
-<p>Set the scene briefly. "In my role as Lead Dev at XYZ Corp, we faced a critical database failure during Black Friday..."</p>
+<h4>1. S - Situation (10%): The Context</h4>
+<p>Keep it brief. "While working as a Junior Dev at X during a major system migration..." Avoid unnecessary details. Only give the context needed to understand the stakes.</p>
 
-<h4>T - Task (10%)</h4>
-<p>What was your specific responsibility? "I needed to restore service within 1 hour while minimizing data loss..."</p>
+<h4>2. T - Task (10%): The Challenge</h4>
+<p>What was the specific problem? "Our database was crashing every Friday at 5 PM, affecting 5,000 users."</p>
 
-<h4>A - Action (60% - The Meat)</h4>
-<p><strong>Crucial:</strong> Use "I", not "We". This is about <em>your</em> contribution.</p>
-<ul>
-    <li>"I diagnosed the deadlock..."</li>
-    <li>"I coordinated with the infra team..."</li>
-    <li>"I implemented a hotfix..."</li>
-</ul>
+<h4>3. A - Action (60%): The "Hero" Moment</h4>
+<p>This is where most candidates fail. You must use "I," not "We." HR wants to know what <em>you</em> specifically did. 
+    <ul>
+        <li>What steps did you take?</li>
+        <li>What logic did you use?</li>
+        <li>What tools did you employ?</li>
+    </ul>
+</p>
 
-<h4>R - Result (20% - The "So What?")</h4>
-<p>Quantify the outcome. Numbers speak louder than adjectives.</p>
-<ul>
-    <li>"Restored service in 14 minutes."</li>
-    <li>"Saved an estimated $50k in lost revenue."</li>
-    <li>"Implemented a new protocol that prevented recurrence for 12 months."</li>
-</ul>
+<h4>4. R - Result (20%): The Payoff</h4>
+<p>Quantify! "I reduced crash frequency by 95% and saved the company 40 engineering hours per week."</p>
+
+<h4>5. R - Reflection (Optional but Powerful)</h4>
+<p>What did you learn? "This taught me the importance of proactive monitoring over reactive fixing." This shows the <strong>Growth Mindset</strong> HR loves.</p>
 
 <div class="tip-section">
-    <h5><i class="fas fa-bullseye"></i> Pro Tip: The "Learning" Add-on</h5>
-    <p>Add an <strong>"L"</strong> (STAR-L). Briefly mention what you learned. It shows a growth mindset and maturity.</p>
+    <h5><i class="fas fa-user-check"></i> HR Recruiter POV: The "Evidence" Check</h5>
+    <p>I am literally checking off boxes. If you give me a vague answer like 'I'm a good team player,' I can't hire you. If you tell me a STAR story about how you resolved a specific conflict, I have evidence to present to the hiring manager.</p>
+</div>
+
+<div class="links-section">
+    <h5><i class="fas fa-external-link-alt"></i> STAR Resources</h5>
+    <ul>
+        <li><a href="https://www.indeed.com/career-advice/interviewing/how-to-use-the-star-method" target="_blank">Indeed: Comprehensive Guide to STAR</a></li>
+        <li><a href="https://www.theladders.com/career-advice/how-to-use-the-star-method-to-ace-your-next-job-interview" target="_blank">The Ladders: Advanced STAR Techniques</a></li>
+    </ul>
 </div>
 '''
                 },
                 {
                     'id': 2,
-                    'title': 'Building Your Story Bank',
-                    'duration': '35 min',
+                    'title': 'Building Your 6-Story Bank',
+                    'duration': '50 min',
                     'content': '''
-<h3><i class="fas fa-database"></i> Your Personal Story Database</h3>
-<p>Don't memorize answers to 100 questions. Memorize <strong>6-8 adaptable stories</strong> that can answer <em>any</em> question.</p>
+<h3><i class="fas fa-database"></i> The "Swiss Army Knife" of Storytelling</h3>
+<p>Don't try to memorize 50 answers. Prepare <strong>6 versatile "Anchor Stories"</strong> that can be adapted to hundreds of questions.</p>
 
-<h4>The 6 Essential Stories</h4>
+<h4>The Essential 6 Stories:</h4>
 <ol>
-    <li><strong>The Conflict:</strong> A disagreement with a coworker/boss and how you resolved it diplomatically.</li>
-    <li><strong>The Failure:</strong> A genuine mistake, how you fixed it, and what you changed to prevent it.</li>
-    <li><strong>The Leadership:</strong> A time you stepped up (even without a title) to drive a result.</li>
-    <li><strong>The Innovation:</strong> A time you improved a process or saved money/time.</li>
-    <li><strong>The Pressure:</strong> Handling a tight deadline or crisis.</li>
-    <li><strong>The "Above & Beyond":</strong> Exceeding expectations for a client or team.</li>
+    <li><strong>The Big Win:</strong> A time you exceeded expectations. (Tests: Achievement, Drive)</li>
+    <li><strong>The Mistake:</strong> A time you failed and took accountability. (Tests: Integrity, Growth)</li>
+    <li><strong>The Conflict:</strong> A disagreement with a peer or boss. (Tests: Diplomacy, EQ)</li>
+    <li><strong>The Leadership:</strong> A time you took initiative without being asked. (Tests: Ownership)</li>
+    <li><strong>The Pivot:</strong> A time you had to change course quickly. (Tests: Adaptability)</li>
+    <li><strong>The Above & Beyond:</strong> A time you helped a customer or teammate. (Tests: Culture Fit)</li>
 </ol>
 
-<div class="checklist-section">
-    <h5><i class="fas fa-tasks"></i> Story Polishing Checklist</h5>
-    <ul>
-        <li>[ ] Does it have a clear conflict/challenge?</li>
-        <li>[ ] Is the "Action" section focused on ME, not WE?</li>
-        <li>[ ] Is the result quantified ($, %, hours)?</li>
-        <li>[ ] Can I tell it in under 2 minutes?</li>
-    </ul>
+<div class="tip-section">
+    <h5><i class="fas fa-lightbulb"></i> HR Recruiter POV: The "Adaptability" Test</h5>
+    <p>I might ask the same question in different ways. "Tell me about a time you failed" vs. "Tell me about a time you received tough feedback." If you have your 'Mistake' story ready, you can easily pivot it to fit either question.</p>
+</div>
+
+<div class="exercise-section">
+    <h5><i class="fas fa-journal-whills"></i> Action Item: Story Mapping</h5>
+    <p>Create a grid. Rows are your 6 stories, columns are the traits they demonstrate. Ensure every story covers at least 3 core competencies (e.g., Teamwork, Analytical Thinking, Communication).</p>
 </div>
 '''
                 },
                 {
                     'id': 3,
-                    'title': 'Mastering Common Behavioral Questions',
+                    'title': 'Handling "Weakness" & "Failure": The Honesty Test',
                     'duration': '40 min',
                     'content': '''
-<h3><i class="fas fa-comments"></i> Decoding the Questions</h3>
-<p>Interviewers ask specific questions to test specific traits. Understand the code.</p>
+<h3><i class="fas fa-shield-virus"></i> Authenticity vs. Strategy</h3>
+<p>When HR asks "What is your greatest weakness?", they aren't looking for a reason to disqualify you. They are looking for <strong>Self-Awareness</strong>. The worst answer is "I'm a perfectionist" or "I work too hard." These are "Fake Weaknesses" and HR hates them.</p>
 
-<h4>1. "Tell me about a time you failed."</h4>
-<p><strong>What they want:</strong> Self-awareness, resilience, ability to learn.</p>
-<p><strong>Red Flag:</strong> "I never fail" or "I worked too hard" (humblebrag).</p>
-<p><strong>Strategy:</strong> Admit a real mistake (not a fatal one), focus heavily on the fix and the lesson.</p>
+<h4>The Three-Part Formula for a Real Weakness</h4>
+<ol>
+    <li><strong>The Admission:</strong> State a <em>real</em> but non-essential weakness. (e.g., "I used to struggle with delegating tasks because I wanted to ensure everything was perfect.")</li>
+    <li><strong>The Action:</strong> What are you doing to fix it? (e.g., "I started using Trello to track my team's progress and set up weekly check-ins.")</li>
+    <li><strong>The Result:</strong> How has it improved? (e.g., "Now, I'm able to manage 30% more projects because I've empowered my team.")</li>
+</ol>
 
-<h4>2. "Describe a conflict with a coworker."</h4>
-<p><strong>What they want:</strong> Emotional intelligence (EQ), conflict resolution.</p>
-<p><strong>Strategy:</strong> Focus on the <em>issue</em>, not the <em>person</em>. Show you can compromise for the business goal.</p>
-
-<h4>3. "Why do you want to work here?"</h4>
-<p><strong>What they want:</strong> Cultural fit, genuine interest.</p>
-<p><strong>Strategy:</strong> Connect your personal values/goals with the company's mission. "I've always been passionate about [Mission], and I admire how you [Specific Achievement]..."</p>
+<div class="tip-section">
+    <h5><i class="fas fa-user-shield"></i> HR Recruiter POV: The Integrity Check</h5>
+    <p>We value someone who knows their limits more than someone who pretends to be perfect. A candidate who admits to a mistake and shows how they learned from it is 10x more valuable than one who blames others.</p>
+</div>
 
 <div class="links-section">
-    <h5><i class="fas fa-external-link-alt"></i> Question Banks</h5>
+    <h5><i class="fas fa-book-open"></i> Deep Dives</h5>
     <ul>
-        <li><a href="https://www.themuse.com/advice/behavioral-interview-questions-answers-examples" target="_blank">The Muse: 30 Behavioral Questions</a></li>
-        <li><a href="https://www.indeed.com/career-advice/interviewing/how-to-use-the-star-method" target="_blank">Indeed STAR Guide</a></li>
+        <li><a href="https://hbr.org/2019/03/how-to-respond-to-what-is-your-greatest-weakness" target="_blank">HBR: How to Respond to 'What is Your Greatest Weakness?'</a></li>
+        <li><a href="https://www.ted.com/talks/brene_brown_the_power_of_vulnerability" target="_blank">TED: The Power of Vulnerability (Brené Brown) - Essential for EQ</a></li>
     </ul>
 </div>
 '''
                 },
+                {
+                    'id': 4,
+                    'title': 'Conflict Resolution: Proving Emotional Intelligence',
+                    'duration': '35 min',
+                    'content': '''
+<h3><i class="fas fa-handshake"></i> Diplomacy in the Workplace</h3>
+<p>Conflict is inevitable. HR recruiters want to know: Are you a "Firefighter" or a "Firestarter"? This is a test of your <strong>Emotional Intelligence (EQ)</strong>.</p>
+
+<h4>The De-Escalation Framework</h4>
+<ul>
+    <li><strong>Step 1: Focus on the Goal:</strong> Remind the interviewer that the conflict was about the <em>work</em>, not the <em>person</em>.</li>
+    <li><strong>Step 2: Empathy First:</strong> Show you tried to understand the other person's perspective. "I sat down with them to understand why they felt the deadline was unrealistic."</li>
+    <li><strong>Step 3: The Compromise:</strong> Explain the middle ground you found.</li>
+    <li><strong>Step 4: The Professional Outcome:</strong> The project was successful and the relationship was preserved.</li>
+</ul>
+
+<div class="tip-section">
+    <h5><i class="fas fa-users"></i> HR Recruiter POV: Culture Fit vs. Culture Add</h5>
+    <p>We don't want 'Yes Men.' We want people who can disagree productively. If you can show me how you handled a disagreement without burning a bridge, you've just proven you're a high-EQ hire.</p>
+</div>
+'''
+                },
+                {
+                    'id': 5,
+                    'title': 'The "Curveball" Questions: Logic Under Pressure',
+                    'duration': '30 min',
+                    'content': '''
+<h3><i class="fas fa-brain"></i> Thinking Out Loud</h3>
+<p>"How many piano tuners are there in Chicago?" or "If you were an animal, which one would you be?" HR uses these to test your <strong>composure</strong> and <strong>logical framework</strong>.</p>
+
+<h4>Strategy for Logic Puzzles</h4>
+<ol>
+    <li><strong>Clarify:</strong> Ask a question back. "Are we including the suburbs of Chicago?"</li>
+    <li><strong>Structure:</strong> Explain your approach. "I'll start by estimating the population, then the percentage of households with pianos..."</li>
+    <li><strong>Calculate:</strong> Do the math out loud. It doesn't have to be perfect; the <em>process</em> is what matters.</li>
+</ol>
+
+<h4>Strategy for Personality Curveballs</h4>
+<p>Align your answer with the job. 
+    <br><em>Applying for Sales?</em> "I'd be a Wolf—I'm collaborative but focused on the target."
+    <br><em>Applying for Engineering?</em> "I'd be an Elephant—I have a great memory for detail and I'm very steady under pressure."</p>
+
+<div class="tip-section">
+    <h5><i class="fas fa-vial"></i> HR Recruiter POV: The Stress Test</h5>
+    <p>I don't actually care how many piano tuners there are. I want to see if you panic when you don't know the answer. Stay calm, smile, and show me your brain at work.</p>
+</div>
+'''
+                }
             ]
         },
         'technical-excellence': {
             'title': 'Technical Interview Excellence',
             'icon': '💻',
-            'description': 'Ace coding challenges and technical assessments',
+            'description': 'Master the technical assessments and coding challenges with a strategic mindset that impresses both engineers and HR.',
             'duration': '3-4 hours',
             'difficulty': 'Advanced',
             'color': '#8b5cf6',
             'lessons': [
                 {
                     'id': 1,
-                    'title': 'Technical Problem-Solving Strategy',
-                    'duration': '50 min',
+                    'title': 'The UMPIRE Method: A Framework for Coding Success',
+                    'duration': '60 min',
                     'content': '''
-<h3><i class="fas fa-chess"></i> The UMPIRE Method</h3>
-<p>Never jump straight into coding. Use a structured approach to show your thought process.</p>
+<h3><i class="fas fa-chess-knight"></i> Solving Problems, Not Just Writing Code</h3>
+<p>Technical interviews are often less about the final code and more about your <strong>problem-solving process</strong>. The UMPIRE method is used by top-tier tech companies to evaluate how candidates handle complex, ambiguous problems.</p>
 
-<h4>U - Understand</h4>
-<p>Ask clarifying questions. "Are inputs always positive?", "Can the array be empty?", "What about memory constraints?"</p>
-
-<h4>M - Match</h4>
-<p>Match the problem to a pattern: "This looks like a sliding window problem" or "This is a graph traversal."</p>
-
-<h4>P - Plan</h4>
-<p>Write pseudocode or comments. Get buy-in from the interviewer: "Does this logic look sound to you?"</p>
-
-<h4>I - Implement</h4>
-<p>Write clean code. Use descriptive variable names (<code>userIndex</code> vs <code>i</code>). Modularize with helper functions.</p>
-
-<h4>R - Review & E - Evaluate</h4>
-<p>Dry run your code with a sample case. Analyze Time (Big O) and Space complexity explicitly.</p>
+<h4>The 6 Steps of UMPIRE:</h4>
+<ul>
+    <li><strong>1. Understand:</strong> Ask clarifying questions. What are the input types? What are the constraints? (e.g., "Will the array be sorted?" "What is the maximum size?")</li>
+    <li><strong>2. Match:</strong> Match the problem to a pattern (e.g., Two Pointers, BFS, Dynamic Programming).</li>
+    <li><strong>3. Plan:</strong> Write pseudocode <em>before</em> you write a single line of real code. This shows the interviewer you have a strategy.</li>
+    <li><strong>4. Implement:</strong> Write the actual code. Keep it clean and follow naming conventions.</li>
+    <li><strong>5. Review:</strong> Walk through your code with a sample input. Spot bugs before the interviewer does.</li>
+    <li><strong>6. Evaluate:</strong> Discuss the Time and Space complexity (Big O). Can you optimize it?</li>
+</ul>
 
 <div class="tip-section">
-    <h5><i class="fas fa-comment-dots"></i> Think Out Loud</h5>
-    <p>Silence is your enemy. If you are stuck, say "I'm thinking about using a Hash Map here to optimize lookup, but I'm worried about space..." The interviewer can't help you if they don't know your thoughts.</p>
+    <h5><i class="fas fa-microchip"></i> HR Recruiter POV: The "Code Quality" Signal</h5>
+    <p>We look for 'Maintainability.' If you write messy code but it works, we might pass. We want to see if you consider edge cases (null inputs, empty arrays). This tells us if you're a 'Production-Ready' engineer or just a hobbyist.</p>
 </div>
 
 <div class="links-section">
-    <h5><i class="fas fa-code"></i> Practice Platforms</h5>
+    <h5><i class="fas fa-terminal"></i> Problem Solving Resources</h5>
     <ul>
-        <li><a href="https://leetcode.com/" target="_blank">LeetCode (Standard)</a></li>
-        <li><a href="https://www.hackerrank.com/" target="_blank">HackerRank</a></li>
-        <li><a href="https://codesignal.com/" target="_blank">CodeSignal</a></li>
+        <li><a href="https://neetcode.io/" target="_blank">NeetCode: The Best Structured DSA Path</a></li>
+        <li><a href="https://leetcode.com/discuss/general-discussion/458695/dynamic-programming-patterns" target="_blank">LeetCode: Common DP Patterns</a></li>
     </ul>
 </div>
 '''
                 },
                 {
                     'id': 2,
-                    'title': 'Data Structures & Algorithms Mastery',
-                    'duration': '60 min',
+                    'title': 'System Design: Thinking at Global Scale',
+                    'duration': '75 min',
                     'content': '''
-<h3><i class="fas fa-project-diagram"></i> Core Concepts Checklist</h3>
-<p>You must be fluent in these basics. If you stumble here, advanced topics won't save you.</p>
+<h3><i class="fas fa-server"></i> Building for Millions of Users</h3>
+<p>System design interviews test your ability to think about <strong>Trade-offs</strong>. There is no "perfect" solution; every decision has a cost.</p>
 
-<h4>Essential Data Structures</h4>
-<ul>
-    <li><strong>Arrays/Strings:</strong> Two pointers, Sliding Window.</li>
-    <li><strong>Hash Maps:</strong> O(1) lookups. Know when to use them for frequency counting.</li>
-    <li><strong>Linked Lists:</strong> Fast/Slow pointer (Floyd's Cycle Finding).</li>
-    <li><strong>Trees/Graphs:</strong> BFS vs DFS. Know when to use which (Shortest path vs Exhaustive search).</li>
-</ul>
+<h4>Core Components of a Design Answer:</h4>
+<ol>
+    <li><strong>Requirements Clarification:</strong> Functional vs. Non-Functional (e.g., Availability vs. Consistency).</li>
+    <li><strong>Back-of-the-Envelope Estimation:</strong> How much storage? How much bandwidth?</li>
+    <li><strong>High-Level Design:</strong> Load Balancers, Web Servers, Database, Cache.</li>
+    <li><strong>Detailed Deep Dive:</strong> Sharding strategies, API design, security.</li>
+</ol>
 
-<h4>The "Big O" Cheat Sheet</h4>
-<ul>
-    <li><strong>O(1):</strong> Constant (Hash Map lookup)</li>
-    <li><strong>O(log n):</strong> Logarithmic (Binary Search)</li>
-    <li><strong>O(n):</strong> Linear (Iterating an array)</li>
-    <li><strong>O(n log n):</strong> Log Linear (Efficient Sorting like Merge Sort)</li>
-    <li><strong>O(n²):</strong> Quadratic (Nested loops - avoid if possible!)</li>
-</ul>
+<div class="tip-section">
+    <h5><i class="fas fa-project-diagram"></i> HR Recruiter POV: The "Seniority" Indicator</h5>
+    <p>System design performance is how we differentiate between Junior, Mid, and Senior levels. Seniors talk about 'Single Points of Failure' and 'Scalability Bottlenecks.' Juniors focus only on the code. Show us you understand the big picture.</p>
+</div>
 
-<div class="reference-section">
-    <h5><i class="fas fa-university"></i> Top Resources</h5>
+<div class="links-section">
+    <h5><i class="fas fa-book"></i> The "Gold Standard" Resources</h5>
     <ul>
-        <li><a href="https://www.coursera.org/specializations/algorithms" target="_blank">Stanford Algorithms (Coursera)</a></li>
-        <li><a href="https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-006-introduction-to-algorithms-fall-2011/" target="_blank">MIT 6.006 Intro to Algorithms</a></li>
-        <li><a href="https://visualgo.net/en" target="_blank">VisuAlgo (Visualizing DS/A)</a></li>
+        <li><a href="https://github.com/donnemartin/system-design-primer" target="_blank">The System Design Primer (GitHub) - Must Read</a></li>
+        <li><a href="https://www.educative.io/courses/grokking-the-system-design-interview" target="_blank">Grokking the System Design Interview</a></li>
+        <li><a href="https://www.youtube.com/@SystemDesignFightClub" target="_blank">YouTube: System Design Fight Club</a></li>
     </ul>
 </div>
 '''
                 },
                 {
                     'id': 3,
-                    'title': 'System Design Fundamentals',
+                    'title': 'Data Structures & Algorithms Cheat Sheet',
                     'duration': '55 min',
                     'content': '''
-<h3><i class="fas fa-server"></i> Designing for Scale</h3>
-<p>For mid-to-senior roles, this is often the dealbreaker. Move from "making it work" to "making it scale".</p>
+<h3><i class="fas fa-brain"></i> The Toolkit of a High-Performer</h3>
+<p>You must know when and why to use specific structures. Memorization isn't enough; you need <strong>Intuition</strong>.</p>
 
-<h4>The 4-Step Framework</h4>
-<ol>
-    <li><strong>Clarify Requirements:</strong> Functional (Users can post tweets) & Non-Functional (Highly available, eventual consistency ok).</li>
-    <li><strong>High-Level Design:</strong> Draw the big boxes. Client -> Load Balancer -> Web Server -> Database.</li>
-    <li><strong>Deep Dive:</strong> Focus on the bottleneck. "How do we handle 1M writes/second?" (Sharding, Caching, Queues).</li>
-    <li><strong>Wrap Up:</strong> Discuss trade-offs. (SQL vs NoSQL, Latency vs Consistency).</li>
-</ol>
-
-<h4>Key Concepts</h4>
+<h4>The "Big 5" You Must Master:</h4>
 <ul>
-    <li><strong>Load Balancing:</strong> Nginx, HAProxy. Round-robin vs Least connections.</li>
-    <li><strong>Caching:</strong> Redis/Memcached. Cache-aside vs Write-through.</li>
-    <li><strong>Database Sharding:</strong> Horizontal vs Vertical scaling. Consistent Hashing.</li>
-    <li><strong>CAP Theorem:</strong> You can only pick 2: Consistency, Availability, Partition Tolerance.</li>
+    <li><strong>Hash Maps:</strong> The most important structure. O(1) lookup. Use it to trade space for time.</li>
+    <li><strong>Heaps (Priority Queues):</strong> Essential for "Top K" problems and scheduling.</li>
+    <li><strong>Trees & Graphs:</strong> Master DFS and BFS. Understand the difference between Dijkstra's and A*.</li>
+    <li><strong>Linked Lists:</strong> The classic test for pointer manipulation.</li>
+    <li><strong>Stacks & Queues:</strong> Understanding LIFO and FIFO for processing order.</li>
 </ul>
 
-<div class="links-section">
-    <h5><i class="fas fa-book-reader"></i> Must-Read</h5>
-    <ul>
-        <li><a href="https://github.com/donnemartin/system-design-primer" target="_blank">The System Design Primer (GitHub)</a></li>
-        <li><a href="http://highscalability.com/" target="_blank">High Scalability Blog</a></li>
-        <li><a href="https://aws.amazon.com/architecture/" target="_blank">AWS Architecture Center</a></li>
-    </ul>
+<h4>The Big O Cheat Sheet:</h4>
+<table class="table table-sm mt-3">
+    <thead><tr><th>Operation</th><th>Time</th><th>When to Use</th></tr></thead>
+    <tbody>
+        <tr><td>Binary Search</td><td>O(log n)</td><td>Searching sorted data</td></tr>
+        <tr><td>Sorting</td><td>O(n log n)</td><td>Preprocessing</td></tr>
+        <tr><td>Nested Loops</td><td>O(n²)</td><td>Avoid if possible</td></tr>
+        <tr><td>BFS/DFS</td><td>O(V+E)</td><td>Graph traversal</td></tr>
+    </tbody>
+</table>
+'''
+                },
+                {
+                    'id': 4,
+                    'title': 'Whiteboard Etiquette & Collaborative Coding',
+                    'duration': '45 min',
+                    'content': '''
+<h3><i class="fas fa-chalkboard-teacher"></i> The "Radio DJ" Technique</h3>
+<p>Never code in silence. A silent interview is a failed interview. You must narrate your thoughts.</p>
+
+<h4>Why Narrate?</h4>
+<ul>
+    <li>It lets the interviewer "see" your logic.</li>
+    <li>If you take a wrong turn, the interviewer can give you a hint. If you're silent, they can't help.</li>
+    <li>It proves you can communicate technical concepts—a key requirement for team roles.</li>
+</ul>
+
+<div class="tip-section">
+    <h5><i class="fas fa-headset"></i> HR Recruiter POV: The "Coachability" Test</h5>
+    <p>Engineers want to work with people they can mentor or collaborate with. If you are defensive when corrected or refuse to explain your logic, you're a 'Red Flag' hire, regardless of your talent.</p>
+</div>
+
+<div class="exercise-section">
+    <h5><i class="fas fa-microphone-alt"></i> Action Item: Narrated Practice</h5>
+    <p>Solve a simple LeetCode problem, but record yourself explaining <em>every single line</em> as you type it. Listen back. Do you sound clear? Confident?</p>
 </div>
 '''
                 },
+                {
+                    'id': 5,
+                    'title': 'Explaining Technical Concepts to Stakeholders',
+                    'duration': '40 min',
+                    'content': '''
+<h3><i class="fas fa-comments-dollar"></i> The Bridge Builder Skill</h3>
+<p>The best engineers can explain an "API Timeout" to a Product Manager in a way they understand. This is the skill that leads to promotions.</p>
+
+<h4>The Analogy Technique:</h4>
+<p>Use real-world examples to explain complex tech:
+    <ul>
+        <li><strong>Database Index:</strong> Like a book's index—helps you find the page without reading every chapter.</li>
+        <li><strong>API:</strong> Like a waiter in a restaurant—you (the client) tell them what you want, they go to the kitchen (server), and bring back the food.</li>
+        <li><strong>Load Balancer:</strong> Like a traffic cop—distributing cars (requests) to different lanes so no one gets stuck.</li>
+    </ul>
+</p>
+
+<div class="tip-section">
+    <h5><i class="fas fa-user-friends"></i> HR Recruiter POV: The "Leadership" Potential</h5>
+    <p>When we hire for growth, we look for 'T-Shaped' individuals—deep technical skills combined with broad communication skills. If you can bridge the gap between Tech and Business, you're on the fast track to Lead/Manager roles.</p>
+</div>
+'''
+                }
             ]
         },
         'communication-confidence': {
             'title': 'Communication & Confidence',
             'icon': '🗣️',
-            'description': 'Build unshakeable confidence and communication skills',
+            'description': 'Project authority and build rapport through advanced communication techniques that make you the obvious hire.',
             'duration': '2-3 hours',
             'difficulty': 'Intermediate',
             'color': '#f59e0b',
             'lessons': [
                 {
                     'id': 1,
-                    'title': 'Verbal Communication Excellence',
-                    'duration': '40 min',
+                    'title': 'The 3 Ps of Vocal Authority: Pace, Pitch, Pause',
+                    'duration': '45 min',
                     'content': '''
-<h3><i class="fas fa-microphone-alt"></i> Speaking with Impact</h3>
-<p>It's not just what you say, but how you say it.</p>
+<h3><i class="fas fa-microphone-alt"></i> Controlling the Room with Your Voice</h3>
+<p>In a high-stakes interview, <em>how</em> you say something is often as important as <em>what</em> you say. HR recruiters judge your leadership potential and confidence through your vocal delivery.</p>
 
-<h4>The 3 Ps of Voice</h4>
+<h4>Mastering the 3 Ps:</h4>
 <ul>
-    <li><strong>Pace:</strong> Slow down. Nervous people speed up. Speaking slowly signals confidence and authority.</li>
-    <li><strong>Pitch:</strong> End sentences with a downward inflection. Upward inflection sounds like a question (uncertainty).</li>
-    <li><strong>Pause:</strong> embrace silence. A 2-second pause before answering a tough question makes you look thoughtful, not stumped.</li>
+    <li><strong>1. Pace:</strong> Nervous candidates talk fast. Confident candidates talk at 140-160 words per minute. Slowing down signals that you are in control of your thoughts.</li>
+    <li><strong>2. Pitch:</strong> Avoid "Up-talking" (ending every sentence with a rising tone that sounds like a question). It makes you sound uncertain. Use a "Downward Inflection" to sound authoritative.</li>
+    <li><strong>3. Pause:</strong> The "Strategic Pause" (2-3 seconds) before an important point builds anticipation and shows you aren't afraid of silence. It also gives you time to breathe.</li>
 </ul>
 
-<h4>Eliminating Weak Language</h4>
-<p>Stop sabotaging yourself with "hedging" words.</p>
-<ul>
-    <li>Avoid: "I think," "Maybe," "Sort of," "Just."</li>
-    <li>Use: "I believe," "Based on my experience," "My recommendation is."</li>
-</ul>
+<div class="tip-section">
+    <h5><i class="fas fa-volume-up"></i> HR Recruiter POV: The "Gravitas" Factor</h5>
+    <p>We look for 'Executive Presence.' If a candidate is breathless and squeaky, we subconsciously worry they won't be able to handle pressure in front of clients. A steady, calm voice suggests a steady, calm mind.</p>
+</div>
 
 <div class="links-section">
-    <h5><i class="fas fa-video"></i> Video Resources</h5>
+    <h5><i class="fas fa-play-circle"></i> Voice Mastery Resources</h5>
     <ul>
-        <li><a href="https://www.ted.com/talks/julian_treasure_how_to_speak_so_that_people_want_to_listen" target="_blank">Julian Treasure: How to speak so that people want to listen</a></li>
-        <li><a href="https://www.toastmasters.org/" target="_blank">Toastmasters International</a></li>
+        <li><a href="https://www.ted.com/talks/julian_treasure_how_to_speak_so_that_people_want_to_listen" target="_blank">TED: How to Speak So People Want to Listen (Julian Treasure)</a></li>
+        <li><a href="https://hbr.org/2014/06/the-voice-of-authority" target="_blank">HBR: The Voice of Authority (Scientific Analysis)</a></li>
     </ul>
 </div>
 '''
                 },
                 {
                     'id': 2,
-                    'title': 'Building Unshakeable Confidence',
-                    'duration': '45 min',
+                    'title': 'Active Listening & Mirroring: The Rapport Secret',
+                    'duration': '40 min',
                     'content': '''
-<h3><i class="fas fa-shield-alt"></i> The Inner Game</h3>
-<p>Confidence is a skill, not a trait. You can build it.</p>
+<h3><i class="fas fa-ear-listen"></i> Becoming an Expert Listener</h3>
+<p>Interviewing is a two-way street. HR professionals want to hire someone they <em>like</em> working with. Rapport is built when the interviewer feels heard and understood.</p>
 
-<h4>Reframing the Interview</h4>
-<p>Stop thinking of it as an "Interrogation." Reframe it as a <strong>"Consultation."</strong> You are a consultant there to see if you can help solve their problems. This shifts the power dynamic to a balanced one.</p>
+<h4>Techniques for Instant Connection:</h4>
+<ul>
+    <li><strong>The "L-Shaped" Listen:</strong> Lean in slightly, Look at the speaker, and Listen for the emotion behind the words.</li>
+    <li><strong>Subtle Mirroring:</strong> If they lean back, you lean back after a few seconds. If they use specific terminology (e.g., "Our North Star metric"), use those same words in your answer. This creates a subconscious feeling of "sameness."</li>
+    <li><strong>The Clarification Loop:</strong> "So, if I understand correctly, the main challenge for this team is [X]. Is that right?" This proves you are engaged.</li>
+</ul>
 
-<h4>Physical Hacks (Amy Cuddy)</h4>
-<p><strong>Power Posing:</strong> Stand in a "Wonder Woman" or "Victory" pose for 2 minutes before the interview. It lowers cortisol (stress) and raises testosterone (confidence).</p>
-
-<h4>Handling "I Don't Know"</h4>
-<p>Never BS. If you don't know:</p>
-<p><em>"That's a great question. I don't know the specific answer offhand, but here is how I would find out / here is my hypothesis..."</em></p>
-
-<div class="reference-section">
-    <h5><i class="fas fa-book-open"></i> Mindset Reading</h5>
-    <ul>
-        <li><a href="https://www.amazon.com/Mindset-Psychology-Carol-S-Dweck/dp/0345472322" target="_blank">Mindset</a> by Carol Dweck</li>
-        <li><a href="https://www.headspace.com/" target="_blank">Headspace (Meditation for focus)</a></li>
-    </ul>
+<div class="tip-section">
+    <h5><i class="fas fa-heart"></i> HR Recruiter POV: The "Beer Test"</h5>
+    <p>It's an old cliché, but we often ask ourselves: 'Would I want to be stuck in an airport with this person for 4 hours?' If you're purely transactional and don't listen, the answer is 'No.' Show us your human side.</p>
 </div>
 '''
                 },
                 {
                     'id': 3,
-                    'title': 'Non-Verbal Communication Mastery',
-                    'duration': '35 min',
+                    'title': 'Non-Verbal Mastery: The 55-38-7 Rule',
+                    'duration': '40 min',
                     'content': '''
-<h3><i class="fas fa-user-check"></i> Silent Signals</h3>
-<p>55% of communication is non-verbal. Your body is screaming; make sure it's saying the right things.</p>
+<h3><i class="fas fa-user-check"></i> Communicating Without Words</h3>
+<p>Albert Mehrabian's famous study suggests that 55% of communication is body language, 38% is tone of voice, and only 7% is the actual words. Are your signals consistent?</p>
 
-<h4>Mirroring</h4>
-<p>Subtly mirror the interviewer's energy and posture. If they lean in, you lean in. It builds unconscious rapport.</p>
+<h4>The "Confident Candidate" Posture:</h4>
+<ul>
+    <li><strong>Open Stance:</strong> Don't cross your arms; it looks defensive. Rest your hands on the table or your lap.</li>
+    <li><strong>The "Steeple" Hand Gesture:</strong> Bringing your fingertips together shows intellectual confidence.</li>
+    <li><strong>Node & Smile:</strong> Use "Active Nods" to encourage the interviewer. It makes them feel like they are doing a good job too!</li>
+</ul>
 
-<h4>The "Steeple" Hand Gesture</h4>
-<p>Touching fingertips together (like a steeple) signals confidence and precision. Avoid hiding hands or crossing arms (defensiveness).</p>
-
-<h4>Facial Feedback</h4>
-<p>Nodding while listening shows engagement. A genuine Duchenne smile (involving the eyes) builds trust.</p>
+<div class="tip-section">
+    <h5><i class="fas fa-eye"></i> HR Recruiter POV: Spotting Incongruence</h5>
+    <p>If you say you're 'passionate about data' but you're looking at the floor with slumped shoulders, I don't believe you. Your body must tell the same story as your mouth.</p>
+</div>
 
 <div class="links-section">
-    <h5><i class="fas fa-link"></i> Further Study</h5>
+    <h5><i class="fas fa-book-open"></i> Visual Learning</h5>
     <ul>
-        <li><a href="https://www.ted.com/topics/body+language" target="_blank">TED Topics: Body Language</a></li>
-        <li><a href="https://www.amazon.com/Definitive-Book-Body-Language/dp/0553804723" target="_blank">The Definitive Book of Body Language</a></li>
+        <li><a href="https://www.scienceofpeople.com/body-language-interview-tips/" target="_blank">Science of People: 15 Body Language Tips for Interviews</a></li>
     </ul>
 </div>
 '''
                 },
+                {
+                    'id': 4,
+                    'title': 'Overcoming Imposter Syndrome & Anxiety',
+                    'duration': '50 min',
+                    'content': '''
+<h3><i class="fas fa-shield-alt"></i> The Inner Game of Success</h3>
+<p>Even the most successful executives feel like "frauds" sometimes. The key isn't to eliminate the fear; it's to manage it so it doesn't manage you.</p>
+
+<h4>Tactics to Beat the Jitters:</h4>
+<ul>
+    <li><strong>Box Breathing:</strong> 4 seconds in, 4 hold, 4 out, 4 hold. This physically resets your nervous system before you walk into the room.</li>
+    <li><strong>The "I'm Excited" Reframing:</strong> Physiologically, fear and excitement feel identical (fast heart rate, sweating). Instead of saying "I'm nervous," tell yourself "I'm excited for this opportunity."</li>
+    <li><strong>The Value-Focus:</strong> Shift your focus from "What do they think of me?" to "How can I help them solve their problems?" It takes the pressure off your ego.</li>
+</ul>
+
+<div class="tip-section">
+    <h5><i class="fas fa-award"></i> HR Recruiter POV: Why You're Already a Winner</h5>
+    <p>We are busy people. We don't interview people we don't think can do the job. If you are in the room, it means you have already passed the hardest filter. You are qualified—now just show us your personality.</p>
+</div>
+
+<div class="links-section">
+    <h5><i class="fas fa-video"></i> Mindset Shifts</h5>
+    <ul>
+        <li><a href="https://www.ted.com/talks/elizabeth_cox_what_is_imposter_syndrome_and_how_can_you_combat_it" target="_blank">TED-Ed: What is Imposter Syndrome?</a></li>
+        <li><a href="https://www.apa.org/gradpsych/2013/11/fraud" target="_blank">APA: Learning to Deal with the Imposter Syndrome</a></li>
+    </ul>
+</div>
+'''
+                },
+                {
+                    'id': 1,
+                    'title': 'The First 5 Minutes: Small Talk & "Social Lubrication"',
+                    'duration': '35 min',
+                    'content': '''
+<h3><i class="fas fa-coffee"></i> Winning the "Pre-Interview"</h3>
+<p>Small talk is the bridge between being a "Resume" and being a "Colleague." It's where the interviewer decides if they'd actually enjoy working with you for 40 hours a week.</p>
+
+<h4>3 Safe & Smart Small Talk Topics:</h4>
+<ul>
+    <li><strong>The Environment:</strong> "I love the office design here—has the team been in this space long?"</li>
+    <li><strong>The Commute/Location:</strong> "The area around here is growing so fast—any good lunch spots you recommend?"</li>
+    <li><strong>The Interviewer's Tenure:</strong> "I saw on LinkedIn you've been here for 3 years—what's been your favorite project so far?"</li>
+</ul>
+
+<div class="tip-section">
+    <h5><i class="fas fa-comment-dots"></i> HR Recruiter POV: The Cultural Indicator</h5>
+    <p>I use small talk to see if you can handle 'Unstructured Time.' Many roles involve client dinners or hallway chats. If you can't hold a basic conversation for 2 minutes, I worry about your client-facing skills.</p>
+</div>
+'''
+                }
             ]
         },
         'industry-preparation': {
             'title': 'Industry-Specific Preparation',
             'icon': '🏢',
-            'description': 'Tailored strategies for different industries and roles',
+            'description': 'Tailored strategies for different industries and roles, designed with input from specialized HR recruiters.',
             'duration': '2-3 hours',
             'difficulty': 'Advanced',
             'color': '#ef4444',
             'lessons': [
                 {
                     'id': 1,
-                    'title': 'Technology Sector Mastery',
-                    'duration': '45 min',
+                    'title': 'The Tech Sector: Bias for Action & Scale',
+                    'duration': '50 min',
                     'content': '''
-<h3><i class="fas fa-microchip"></i> Breaking into Tech</h3>
-<p>Tech moves fast. Show you can keep up.</p>
+<h3><i class="fas fa-microchip"></i> Navigating the Silicon Valley Culture</h3>
+<p>Tech companies, whether startups or FAANG/MAMA, value <strong>Autonomy, Speed, and "Extreme Ownership."</strong> HR recruiters in tech aren't just looking for coders; they are looking for "Force Multipliers"—people who make the whole team better.</p>
 
-<h4>Cultural Values</h4>
+<h4>Key Values in Tech:</h4>
 <ul>
-    <li><strong>Bias for Action:</strong> Better to ship and iterate than wait for perfection.</li>
-    <li><strong>Ownership:</strong> "You build it, you run it."</li>
-    <li><strong>Data-Driven:</strong> Opinions are nice; data is better.</li>
+    <li><strong>"Bias for Action":</strong> They'd rather you try and fail than wait for permission. Show this in your stories.</li>
+    <li><strong>Data-Driven Decision Making:</strong> Don't just say you did something; explain <em>why</em> using metrics (e.g., "Our A/B test showed a 12% increase in CTR").</li>
+    <li><strong>Scale Mindset:</strong> Can your solution handle 1 user? 1 million? 1 billion? Always mention scalability.</li>
 </ul>
 
-<h4>The Process</h4>
-<ol>
-    <li>Recruiter Screen (Culture/Basics)</li>
-    <li>Technical Screen (1 Coding problem)</li>
-    <li>Onsite Loop (3-5 rounds: Coding, System Design, Behavioral)</li>
-</ol>
-
 <div class="tip-section">
-    <h5><i class="fas fa-code-branch"></i> GitHub Matters</h5>
-    <p>For junior/mid roles, a clean GitHub with 2-3 pinned, well-documented projects works wonders. It proves passion.</p>
+    <h5><i class="fas fa-user-ninja"></i> HR Recruiter POV: The Tech Talent Search</h5>
+    <p>I don't just care about your Python skills. I care about your 'Product Sense.' Do you understand how your code impacts the user? Do you know who our competitors are? If you're a 'Code Monkey,' you're replaceable. If you're a 'Product-Minded Engineer,' you're a unicorn.</p>
 </div>
 
 <div class="links-section">
-    <h5><i class="fas fa-globe"></i> Tech Hubs</h5>
+    <h5><i class="fas fa-external-link-square-alt"></i> Tech Insider Resources</h5>
     <ul>
-        <li><a href="https://news.ycombinator.com/" target="_blank">Hacker News (Industry Pulse)</a></li>
-        <li><a href="https://www.blind.com/" target="_blank">Blind (Insider chatter)</a></li>
+        <li><a href="https://hbr.org/2019/11/how-to-land-a-job-in-tech-if-youre-not-a-techie" target="_blank">HBR: How to Land a Job in Tech</a></li>
+        <li><a href="https://www.ycombinator.com/library" target="_blank">Y Combinator: Startup School Library</a></li>
     </ul>
 </div>
 '''
                 },
                 {
                     'id': 2,
-                    'title': 'Finance & Banking Excellence',
-                    'duration': '40 min',
+                    'title': 'Finance & Banking: Precision, Rigor & Compliance',
+                    'duration': '50 min',
                     'content': '''
-<h3><i class="fas fa-chart-line"></i> Wall Street Ready</h3>
-<p>Precision, stamina, and market awareness are key.</p>
+<h3><i class="fas fa-chart-line"></i> The High-Stakes World of Global Finance</h3>
+<p>In Finance, there is <strong>Zero Tolerance for Error</strong>. Whether you're in Investment Banking, Fintech, or Corporate Finance, HR recruiters are looking for extreme attention to detail and professional stamina.</p>
 
-<h4>Key Competencies</h4>
+<h4>Core Expectations:</h4>
 <ul>
-    <li><strong>Quantitative Ability:</strong> Mental math must be sharp.</li>
-    <li><strong>Market Awareness:</strong> "Where is the S&P 500 today?", "What did the Fed do last meeting?" Have an opinion on the market.</li>
-    <li><strong>Work Ethic:</strong> Demonstrate capacity for long hours and attention to detail.</li>
+    <li><strong>Integrity Above All:</strong> You are handling people's money. Any hint of ethical ambiguity is an immediate rejection.</li>
+    <li><strong>Quantitative Rigor:</strong> You should be able to do "Mental Math" under pressure and explain complex financial concepts simply.</li>
+    <li><strong>Regulatory Awareness:</strong> Know your KYC (Know Your Customer) and AML (Anti-Money Laundering) basics if you're in Fintech.</li>
 </ul>
 
-<h4>Technical Concepts</h4>
-<ul>
-    <li><strong>Valuation:</strong> Walk me through a DCF. Comparable Comps. Precedent Transactions.</li>
-    <li><strong>Accounting:</strong> How are the 3 financial statements linked? (e.g., Depreciation increases -> Net Income down -> Cash Flow up).</li>
-</ul>
+<div class="tip-section">
+    <h5><i class="fas fa-briefcase"></i> HR Recruiter POV: The Finance "Fit"</h5>
+    <p>We look for 'Composure.' The environment can be high-pressure and the hours can be long. We want to see if you are someone who stays calm when the markets are volatile. If you're easily flustered, you won't survive the first week.</p>
+</div>
 
 <div class="links-section">
-    <h5><i class="fas fa-file-invoice-dollar"></i> Finance Resources</h5>
+    <h5><i class="fas fa-landmark"></i> Industry Guides</h5>
     <ul>
-        <li><a href="https://www.wallstreetprep.com/" target="_blank">Wall Street Prep</a></li>
-        <li><a href="https://www.bloomberg.com/" target="_blank">Bloomberg</a></li>
-        <li><a href="https://www.investopedia.com/" target="_blank">Investopedia</a></li>
+        <li><a href="https://www.investopedia.com/financial-careers-4427763" target="_blank">Investopedia: Financial Career Paths</a></li>
+        <li><a href="https://www.wallstreetoasis.com/" target="_blank">Wall Street Oasis: The IB/PE Community</a></li>
     </ul>
 </div>
 '''
                 },
                 {
                     'id': 3,
-                    'title': 'Healthcare & Life Sciences',
-                    'duration': '35 min',
+                    'title': 'Healthcare & Life Sciences: Ethics & Patient-First',
+                    'duration': '45 min',
                     'content': '''
-<h3><i class="fas fa-heartbeat"></i> Patient-First Mindset</h3>
-<p>Whether clinical or admin, the mission is life-saving.</p>
+<h3><i class="fas fa-heartbeat"></i> Innovation with a Mission</h3>
+<p>Healthcare is one of the most regulated industries in the world. HR recruiters look for a blend of <strong>Technical Excellence and Deep Empathy</strong>.</p>
 
-<h4>Core Values</h4>
+<h4>Key Areas of Focus:</h4>
 <ul>
-    <li><strong>Empathy:</strong> Understanding the patient experience.</li>
-    <li><strong>Compliance:</strong> HIPAA, FDA regulations. Rules are not suggestions here.</li>
-    <li><strong>Safety:</strong> Zero tolerance for error in critical paths.</li>
+    <li><strong>Compliance Knowledge:</strong> If you're in the US, you <em>must</em> understand HIPAA. In the EU, GDPR and clinical trial regulations.</li>
+    <li><strong>Cross-Functional Collaboration:</strong> You'll be working with doctors, researchers, patients, and insurance companies. Can you speak all those "languages"?</li>
+    <li><strong>The "Long Game":</strong> Product cycles in healthcare can take years. They look for patience and persistence.</li>
 </ul>
 
-<h4>Behavioral Focus</h4>
-<p>Expect questions on ethics ("What would you do if you saw a colleague cut a corner?") and stress management.</p>
-
-<div class="links-section">
-    <h5><i class="fas fa-user-md"></i> Industry Bodies</h5>
-    <ul>
-        <li><a href="https://www.himss.org/" target="_blank">HIMSS (Health IT)</a></li>
-        <li><a href="https://www.hfma.org/" target="_blank">HFMA (Finance)</a></li>
-    </ul>
+<div class="tip-section">
+    <h5><i class="fas fa-stethoscope"></i> HR Recruiter POV: The Mission-Alignment Test</h5>
+    <p>We ask 'Why Healthcare?' and we're looking for a deep personal connection to the field. People who are just here for the paycheck tend to burn out. We want people who are motivated by the fact that their work saves lives.</p>
 </div>
 '''
                 },
+                {
+                    'id': 4,
+                    'title': 'Consulting: The Case Interview & Problem Decomposition',
+                    'duration': '55 min',
+                    'content': '''
+<h3><i class="fas fa-lightbulb"></i> Solving the World's Hardest Problems</h3>
+<p>Management consulting (McKinsey, BCG, Bain) and specialized consulting firms value <strong>Structured Thinking</strong> above all else. They don't just want the answer; they want to see your "Mental Architecture."</p>
+
+<h4>The Case Framework Essentials:</h4>
+<ol>
+    <li><strong>Profitability Framework:</strong> Revenue (Price x Volume) - Cost (Fixed + Variable).</li>
+    <li><strong>Market Entry:</strong> Market Size, Competition, Barriers to Entry, Distribution.</li>
+    <li><strong>M&A (Mergers & Acquisitions):</strong> Why buy? Is it a good price? What are the synergies?</li>
+</ol>
+
+<div class="tip-section">
+    <h5><i class="fas fa-puzzle-piece"></i> HR Recruiter POV: The "Client-Ready" Test</h5>
+    <p>We are essentially selling your brain to our clients. When we interview you, we're asking: 'Can I put this person in front of a Fortune 500 CEO tomorrow?' Professional polish and clear, structured communication are non-negotiable.</p>
+</div>
+
+<div class="links-section">
+    <h5><i class="fas fa-graduation-cap"></i> Case Prep Mastery</h5>
+    <ul>
+        <li><a href="https://www.caseinterview.com/" target="_blank">CaseInterview.com (Victor Cheng) - The Bible of Case Prep</a></li>
+        <li><a href="https://mconsultingprep.com/" target="_blank">MConsultingPrep: Free Case Library</a></li>
+    </ul>
+</div>
+'''
+                }
             ]
         },
         'salary-negotiation': {
             'title': 'Salary Negotiation Mastery',
             'icon': '💰',
-            'description': 'Negotiate compensation packages like a professional',
+            'description': 'Maximize your lifetime earnings with professional negotiation strategies that HR recruiters respect.',
             'duration': '1-2 hours',
             'difficulty': 'Advanced',
             'color': '#06b6d4',
             'lessons': [
                 {
                     'id': 1,
-                    'title': 'Research & Market Analysis',
-                    'duration': '45 min',
+                    'title': 'Determining Your Market Value: Data-Driven Negotiation',
+                    'duration': '40 min',
                     'content': '''
-<h3><i class="fas fa-search-dollar"></i> Know Your Worth</h3>
-<p>Information is leverage. Never enter a negotiation without data.</p>
+<h3><i class="fas fa-search-dollar"></i> Knowledge is Your Greatest Leverage</h3>
+<p>Negotiation is not about what you <em>want</em>; it's about what the <em>market pays</em> for your specific set of skills. Entering a negotiation without data is like flying a plane without a dashboard.</p>
 
-<h4>Sources of Truth</h4>
+<h4>Where to Find Accurate Data:</h4>
 <ul>
-    <li><strong>Levels.fyi:</strong> The bible for tech salaries (Base + Stock + Bonus).</li>
-    <li><strong>H1B Data:</strong> Public filings of actual salaries paid to visa workers.</li>
-    <li><strong>Glassdoor/Payscale:</strong> Good for general ranges, often lag behind market.</li>
+    <li><strong>Levels.fyi:</strong> The gold standard for Tech and Finance. It tracks "Total Compensation" (TC), not just base salary.</li>
+    <li><strong>H1B Data:</strong> Search "H1B Salary Database." This is public government data showing exactly what companies pay foreign workers—it's a very accurate floor for what they'll pay anyone.</li>
+    <li><strong>LinkedIn Salary:</strong> Good for broad industry averages.</li>
+    <li><strong>Glassdoor:</strong> Useful, but often outdated. Use it as a secondary source.</li>
 </ul>
 
-<h4>Understanding Total Comp (TC)</h4>
-<p>Salary is just one piece.</p>
-<ul>
-    <li><strong>Base:</strong> Cash.</li>
-    <li><strong>Equity:</strong> RSUs (Public) or Options (Private). Understand vesting (usually 4 years).</li>
-    <li><strong>Sign-on Bonus:</strong> One-time cash. Easiest lever to pull.</li>
-    <li><strong>Benefits:</strong> 401k match, health, remote stipend.</li>
-</ul>
+<div class="tip-section">
+    <h5><i class="fas fa-user-tag"></i> HR Recruiter POV: The Data Candidate</h5>
+    <p>I respect a candidate who says, 'Based on my research for this role in New York for a company of this size, the market range is $X to $Y.' It tells me you are professional and informed. I can't argue with data, but I can argue with a 'feeling.'</p>
+</div>
 
 <div class="links-section">
-    <h5><i class="fas fa-calculator"></i> Data Tools</h5>
+    <h5><i class="fas fa-database"></i> Compensation Databases</h5>
     <ul>
-        <li><a href="https://www.levels.fyi/" target="_blank">Levels.fyi</a></li>
-        <li><a href="https://h1bdata.info/" target="_blank">H1B Salary Data</a></li>
+        <li><a href="https://www.levels.fyi/" target="_blank">Levels.fyi: Accurate Tech & Finance Salaries</a></li>
+        <li><a href="https://h1bdata.info/" target="_blank">H1B Salary Database: Public Payroll Data</a></li>
+        <li><a href="https://www.payscale.com/" target="_blank">PayScale: Personal Salary Reports</a></li>
     </ul>
 </div>
 '''
                 },
                 {
                     'id': 2,
-                    'title': 'Negotiation Strategies & Tactics',
-                    'duration': '50 min',
+                    'title': 'The "TC" Equation: Understanding Total Compensation',
+                    'duration': '45 min',
                     'content': '''
-<h3><i class="fas fa-handshake"></i> The Art of the Deal</h3>
-<p>Negotiation is a collaboration, not a fight. You both want you to work there.</p>
+<h3><i class="fas fa-gift"></i> Looking Beyond the Monthly Paycheck</h3>
+<p>In modern professional roles, the "Base Salary" might only be 60% of your actual earnings. If you only negotiate the base, you're leaving a fortune on the table.</p>
 
-<h4>Rules of Engagement</h4>
-<ol>
-    <li><strong>Don't speak first:</strong> "I'm open to competitive offers based on market rates."</li>
-    <li><strong>The Pause:</strong> When they give a number, count to 5. Silence makes them want to justify or improve it.</li>
-    <li><strong>Counter-offer:</strong> Always counter. "I'm excited about the role. Based on X and Y, I was targeting $Z. Can we get closer to that?"</li>
-</ol>
+<h4>The Components of TC:</h4>
+<ul>
+    <li><strong>Base Salary:</strong> The guaranteed monthly cash.</li>
+    <li><strong>Annual Bonus:</strong> Usually a percentage of your base (e.g., 10-20%), tied to performance.</li>
+    <li><strong>Sign-on Bonus:</strong> A one-time cash payment to get you through the door. Great for bridging "Vesting Cliffs."</li>
+    <li><strong>Equity (RSUs or Options):</strong> Shares in the company. <em>Crucial:</em> Understand the "Vesting Schedule" (usually 4 years with a 1-year cliff).</li>
+    <li><strong>Perks:</strong> Health insurance, 401k/PF matching, WFH stipends, and Learning Credits.</li>
+</ul>
 
 <div class="tip-section">
-    <h5><i class="fas fa-lightbulb"></i> The "Competing Offer"</h5>
-    <p>This is your strongest card. "Company B offered $X. I prefer you, but the gap is too large." This creates FOMO (Fear Of Missing Out).</p>
-</div>
-
-<div class="reference-section">
-    <h5><i class="fas fa-book"></i> Negotiation Bible</h5>
-    <ul>
-        <li><a href="https://www.amazon.com/Never-Split-Difference-Negotiating-Depended/dp/0062407805" target="_blank">Never Split the Difference</a> by Chris Voss</li>
-    </ul>
+    <h5><i class="fas fa-chart-pie"></i> HR Recruiter POV: The Flexibility Secret</h5>
+    <p>My budget for 'Base Salary' is often strictly capped by Finance. However, I often have much more flexibility in 'Sign-on Bonuses' or 'Stock Options.' If I can't give you $10k more in salary, I might be able to give you $20k more in stock.</p>
 </div>
 '''
                 },
                 {
                     'id': 3,
-                    'title': 'Beyond Base Salary: Total Compensation',
+                    'title': 'Handling the "Salary Expectations" Question',
                     'duration': '35 min',
                     'content': '''
-<h3><i class="fas fa-gift"></i> Hidden Value</h3>
-<p>If the base salary is capped, pull other levers.</p>
+<h3><i class="fas fa-shield-alt"></i> Protecting Your Leverage Early</h3>
+<p>If you give a number too early (like in the first recruiter call), you have lost. Give a number too high, you get disqualified. Give a number too low, you underpay yourself for years.</p>
 
-<h4>Negotiable Perks</h4>
+<h4>The "Deflection" Strategy:</h4>
 <ul>
-    <li><strong>Start Date:</strong> Take a month off between jobs?</li>
-    <li><strong>Title:</strong> "Senior Manager" vs "Manager" can mean future earnings.</li>
-    <li><strong>Education Budget:</strong> $5k/year for conferences?</li>
-    <li><strong>Severance:</strong> Protection if things go wrong.</li>
-    <li><strong>Performance Review Cycle:</strong> Ask for a review at 6 months instead of 12 (potential raise sooner).</li>
+    <li><strong>Recruiter:</strong> "What are your salary expectations?"</li>
+    <li><strong>You:</strong> "Right now, I'm more focused on finding the right fit and learning more about the role's responsibilities. I'm sure we can reach a fair agreement based on the market value of the position once we determine I'm the right candidate. Do you have a budget range for this role?"</li>
 </ul>
 
-<div class="checklist-section">
-    <h5><i class="fas fa-file-contract"></i> Offer Review Checklist</h5>
+<h4>The "Range" Strategy:</h4>
+<p>If they force you to give a number, give a <strong>$20k range</strong> based on your data. Make sure the <em>bottom</em> of your range is a number you are genuinely happy to accept.</p>
+
+<div class="tip-section">
+    <h5><i class="fas fa-user-secret"></i> HR Recruiter POV: Why We Ask Early</h5>
+    <p>We don't want to waste 10 hours of interviews only to find out you want $200k when our budget is $120k. If you're hesitant to give a number, I understand—but tell me at least that you're 'flexible based on the total package.'</p>
+</div>
+'''
+                },
+                {
+                    'id': 4,
+                    'title': 'Tactical Negotiation: The Art of the Counter-Offer',
+                    'duration': '40 min',
+                    'content': '''
+<h3><i class="fas fa-handshake"></i> Professional Negotiation Tactics</h3>
+<p>Negotiation is a collaboration, not a confrontation. Your goal is for both sides to feel like they "won."</p>
+
+<h4>Rule #1: Never Accept on the Spot</h4>
+<p>"Thank you so much for the offer! I'm really excited. Can you send the full package over in writing? I'd like to review it with my family and get back to you by [Day]."</p>
+
+<h4>Rule #2: Negotiate Once</h4>
+<p>Gather all your requests (Salary, Bonus, PTO, Start Date) and present them in <strong>one single email or call</strong>. Don't go back and forth multiple times with "one more thing."</p>
+
+<h4>Rule #3: Use Silence</h4>
+<p>When you present your counter-offer, <strong>Stop Talking</strong>. The first person to speak after a proposal usually loses. Let them sit with your request.</p>
+
+<div class="links-section">
+    <h5><i class="fas fa-play"></i> Negotiation Masterclass</h5>
     <ul>
-        <li>[ ] Is the bonus guaranteed or discretionary?</li>
-        <li>[ ] What is the vesting schedule for stock?</li>
-        <li>[ ] Is there a clawback clause on the sign-on bonus?</li>
-        <li>[ ] Get everything in writing!</li>
+        <li><a href="https://www.ted.com/talks/alex_carter_how_to_negotiate_successfully" target="_blank">TED: How to Negotiate Successfully (Alex Carter)</a></li>
+        <li><a href="https://hbr.org/2014/04/15-rules-for-negotiating-a-job-offer" target="_blank">HBR: 15 Rules for Negotiating a Job Offer (Essential)</a></li>
     </ul>
 </div>
 '''
                 },
+                {
+                    'id': 5,
+                    'title': 'The Final Review & Professional Resignation',
+                    'duration': '30 min',
+                    'content': '''
+<h3><i class="fas fa-signature"></i> Signing and Leaving with Class</h3>
+<p>Congratulations! You've secured the bag. Now, you need to ensure the transition is flawless. Your reputation in your industry is your most valuable asset.</p>
+
+<h4>Reviewing the Contract:</h4>
+<ul>
+    <li>Check the "Non-Compete" and "Non-Solicitation" clauses.</li>
+    <li>Confirm the "Notice Period."</li>
+    <li>Ensure all verbal promises (e.g., "Remote work 2 days a week") are in the written contract.</li>
+</ul>
+
+<h4>The Graceful Resignation:</h4>
+<ul>
+    <li>Tell your manager <em>personally</em> (video or in-person) before sending an email.</li>
+    <li>Keep the resignation letter brief and positive.</li>
+    <li>Offer to help with the transition. Create a "Handover Document" that makes your replacement's life easy.</li>
+    <li>Stay professional during your notice period—don't "check out" early.</li>
+</ul>
+
+<div class="tip-section">
+    <h5><i class="fas fa-door-open"></i> HR Recruiter POV: Don't Burn the Bridge</h5>
+    <p>The world is small. I've seen candidates resign rudely, only to meet their old boss as a client or interviewer 3 years later. Leave on a high note, and your old company becomes part of your lifelong network.</p>
+</div>
+'''
+                }
             ]
-        },
+        }
     }
