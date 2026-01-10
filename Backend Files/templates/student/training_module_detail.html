@@ -608,6 +608,11 @@ function updateLessonStatuses() {
 }
 
 function formatLessonContent(content) {
+    // Check if content is already HTML (starts with common tags)
+    if (content.trim().match(/^<[a-z]+.*>/i)) {
+        return content;
+    }
+
     return content
         .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
         .replace(/\n\n/g, '</p><p>')
