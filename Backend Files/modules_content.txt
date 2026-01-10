@@ -1,0 +1,974 @@
+# Comprehensive lesson content for each module
+    modules_content = {
+        'interview-fundamentals': {
+            'title': 'Interview Fundamentals',
+            'icon': '🎯',
+            'description': 'Master the essential skills every successful candidate needs',
+            'duration': '2-3 hours',
+            'difficulty': 'Beginner',
+            'color': '#6366f1',
+            'lessons': [
+                {
+                    'id': 1,
+                    'title': 'First Impressions & Professional Presence',
+                    'duration': '35 min',
+                    'content': '''
+***The 7-Second Rule: Making Every Moment Count***
+
+Research from Harvard Business School shows that interviewers form their first impression within 7 seconds of meeting you. This lesson teaches you how to maximize those crucial moments and create a lasting positive impact that sets the tone for your entire interview.
+
+**Professional Appearance Mastery**
+
+• **Dress Code Intelligence**: Research company culture thoroughly using LinkedIn employee photos, company website career pages, and Glassdoor reviews. The golden rule: dress 10-15% more formal than their standard to show respect and professionalism without appearing out of place.
+
+• **Color Psychology in Professional Attire**: Navy blue projects trustworthiness and reliability (ideal for finance/consulting), charcoal gray shows professionalism and authority (perfect for corporate roles), while black conveys sophistication (great for creative industries). Avoid bright colors that may distract from your message.
+
+• **Grooming Excellence Checklist**: Fresh haircut within 2 weeks of interview, trimmed and clean nails, minimal cologne/perfume (others should only smell it when very close), fresh breath with mints available, well-maintained and polished shoes, and wrinkle-free clothing.
+
+• **Strategic Accessories**: Conservative watch (demonstrates time management skills), professional bag or briefcase, portfolio folder with 5+ copies of resume, quality pen for note-taking, and business cards if you have them.
+
+**Body Language That Commands Respect**
+
+• **The Power Entrance**: Walk with purpose and confidence - shoulders back, head up, confident stride. Your entrance sets the tone for the entire interview. Practice walking into a room with intention and presence.
+
+• **Handshake Mastery**: Firm grip with web-to-web contact, 2-3 pumps maximum, maintain eye contact throughout, use your full hand (not just fingertips), and match their pressure without overdoing it.
+
+• **Optimal Posture**: Sit forward slightly (shows engagement), keep both feet flat on floor, hands visible on table or armrests, avoid crossing arms or legs (creates barriers), and maintain an open, approachable stance.
+
+• **Eye Contact Formula**: Maintain direct eye contact 70-80% of the time, look away naturally to avoid staring, use the triangle technique (eyes to forehead) for comfort, and remember that eye contact shows confidence and honesty.
+
+**Voice & Presence Optimization**
+
+• **Vocal Tonality**: Speak 10-15% slower than your normal pace (allows for better comprehension), use a slightly lower pitch to convey authority and confidence, vary your tone to maintain engagement, and practice breathing techniques to avoid nervous speech patterns.
+
+• **Energy Matching**: Mirror the interviewer's energy level while staying authentic to yourself. If they're formal, match that tone; if they're casual, adjust accordingly while maintaining professionalism.
+
+• **Space Awareness**: Respect personal boundaries (maintain arm's length distance), lean in slightly to show engagement without invading space, and be mindful of cultural differences in personal space preferences.
+
+💡 **Practical Exercise:**
+
+Practice your complete entrance routine daily for one week: knock confidently (3 firm knocks), enter with purpose, offer a warm greeting using their name, wait to be seated unless invited, and establish rapport within the first 30 seconds through genuine interest and enthusiasm.
+
+📚 **Essential Reading:**
+
+• "The Like Switch" by Jack Schafer - FBI techniques for building rapport
+• "Presence" by Amy Cuddy - Body language and confidence building
+• "The Charisma Myth" by Olivia Fox Cabane - Developing executive presence
+
+🔗 **Additional Resources:**
+
+• [TED Talk: Your Body Language May Shape Who You Are](https://www.ted.com/talks/amy_cuddy_your_body_language_may_shape_who_you_are)
+• [Harvard Business Review: The Science of First Impressions](https://hbr.org/2011/02/the-science-of-first-impressions)
+• [LinkedIn Learning: Executive Presence on Video Calls](https://www.linkedin.com/learning/executive-presence-on-video-conference-calls)
+
+✅ **Mastery Checklist:**
+
+• Can enter a room with confidence and presence
+• Maintains appropriate eye contact naturally
+• Demonstrates professional handshake consistently
+• Speaks with clear, confident voice tonality
+• Adapts energy level to match interviewer appropriately
+'''
+                },
+                {
+                    'id': 2,
+                    'title': 'Strategic Research & Preparation',
+                    'duration': '40 min',
+                    'content': '''
+***The Research Advantage: Outpreparing Your Competition***
+
+Thorough preparation separates good candidates from great ones. This systematic approach ensures you know more about the company than most employees and demonstrates genuine interest that interviewers notice and appreciate.
+
+**Company Intelligence Gathering**
+
+• **Financial Health Analysis**: Review annual reports (10-K forms) for revenue trends and challenges, listen to recent earnings calls for current priorities, analyze stock performance over the last 12 months, and research major investments, acquisitions, or partnerships that indicate strategic direction.
+
+• **Culture Deep-Dive**: Study employee reviews on Glassdoor for honest insights about management and work environment, analyze company social media (LinkedIn, Twitter, Instagram) for values and personality, read "About Us" and "Careers" pages for official culture statements, and look for employee testimonials and success stories.
+
+• **Recent Developments Research**: Set up Google News alerts for company mentions in the last 6 months, review press releases for official announcements and strategic initiatives, research product launches or service expansions, and note any awards, recognition, or industry rankings received.
+
+• **Leadership Research**: Study LinkedIn profiles of key executives and their backgrounds, read recent interviews or articles by leadership team, review company blog posts by team members for insights into company thinking, and research any leadership changes or new hires that might indicate direction.
+
+**Role Mastery Framework**
+
+• **Job Description Analysis**: Identify 5-7 key requirements and prepare specific examples for each, understand both required and preferred qualifications, note any skills or technologies mentioned multiple times (these are priorities), and research the reporting structure and team dynamics.
+
+• **Skills Gap Assessment**: Honestly evaluate your fit percentage (aim for 70%+ match), prepare to address any weaknesses with learning plans and transferable skills, identify unique strengths that set you apart, and prepare examples of rapid skill acquisition.
+
+• **Growth Trajectory**: Understand how this role leads to your 3-5 year career goals, research typical career progression paths in this field, identify skills you'll develop in this position, and prepare questions about advancement opportunities.
+
+• **Success Metrics**: Research how performance is measured in similar roles, understand key performance indicators (KPIs) for the position, prepare examples of how you've met similar metrics in past roles, and ask about success measurement in your interview.
+
+**Industry Context Understanding**
+
+• **Market Trends**: Research current challenges and opportunities in the industry, understand emerging technologies affecting the sector, stay informed about regulatory changes or compliance requirements, and know major industry events or conferences.
+
+• **Technology Impact**: Understand how AI, automation, or digital transformation affects this role, research new tools or platforms becoming standard in the industry, identify skills that are becoming more valuable, and prepare to discuss technology adoption.
+
+• **Future Outlook**: Study 3-5 year industry projections and implications, understand potential disruptions or growth areas, research how the company is positioning for future challenges, and prepare thoughtful questions about industry direction.
+
+✅ **24-Hour Preparation Checklist:**
+
+• Print 5 copies of resume on quality paper (32lb weight minimum)
+• Prepare 10 thoughtful questions about the role and company
+• Practice elevator pitch in 30, 60, and 90-second versions
+• Plan route with backup transportation options and arrive 15 minutes early
+• Prepare references list with current contact information
+• Review your LinkedIn profile for consistency with resume
+• Prepare portfolio with work samples if relevant to the role
+• Research interviewer backgrounds if names are provided
+• Prepare thoughtful questions that show deep company knowledge
+• Practice key stories using STAR method framework
+
+📚 **Research Sources Toolkit:**
+
+• **Primary Sources**: Company website (especially "About Us," "Careers," and "News" sections), LinkedIn company page and employee profiles, SEC filings for public companies (10-K, 10-Q reports), company annual reports and investor presentations
+
+• **Industry Intelligence**: Industry publications and trade journals, Google News alerts and recent press coverage, Crunchbase for startup funding and growth information, industry association websites and reports
+
+• **Employee Insights**: Glassdoor for employee reviews and salary information, LinkedIn for employee backgrounds and career paths, company social media presence (Twitter, Instagram, Facebook), employee blogs and thought leadership articles
+
+• **Competitive Analysis**: Competitor websites and recent news, industry analyst reports (Gartner, Forrester), market research reports, customer review sites for company products/services
+
+💡 **Pro Research Tips:**
+
+• Create a research document with sections for company, role, industry, and questions
+• Use the "People Also Viewed" section on LinkedIn to find similar companies
+• Set up Google Alerts for the company name 2 weeks before your interview
+• Check if the company has a podcast, YouTube channel, or blog for insider insights
+• Research the interviewer's background and find common connections or interests
+
+🔗 **Additional Resources:**
+
+• [SEC.gov - Public Company Filings](https://www.sec.gov/edgar/searchedgar/companysearch)
+• [Crunchbase - Startup Information](https://www.crunchbase.com/)
+• [PitchBook - Private Market Intelligence](https://pitchbook.com/)
+• [Google Trends](https://trends.google.com/)
+
+⚠️ **Research Red Flags:**
+
+• Consistently negative employee reviews mentioning same issues
+• High executive turnover or recent leadership departures
+• Declining financial performance or missed earnings
+• Negative press coverage or regulatory issues
+• Lack of recent innovation or product development
+'''
+                },
+                {
+                    'id': 3,
+                    'title': 'Mastering Different Interview Formats',
+                    'duration': '45 min',
+                    'content': '''
+***Adapting to Every Interview Style***
+
+Different interview formats require different strategies and preparation approaches. Master each format to excel regardless of the company's approach and demonstrate your adaptability and professionalism.
+
+**Phone Interview Excellence**
+
+• **Environment Setup**: Choose a quiet room with excellent cell signal, have a backup phone ready (landline or second mobile), keep notepad, pen, and water accessible, eliminate all distractions (TV, computer notifications, pets), and ensure comfortable seating with good posture support.
+
+• **Voice Optimization**: Stand while talking to improve vocal energy and breathing, smile while speaking (it's genuinely audible in your voice), speak clearly and 10-15% slower than normal conversation, use hand gestures even though they can't see you (improves vocal expression), and practice vocal warm-ups before the call.
+
+• **Strategic Preparation**: Have your resume, job description, and key talking points visible, prepare a "cheat sheet" with company facts and your STAR examples, keep water nearby to avoid dry mouth, have the interviewer's contact information ready, and test your phone's speaker quality beforehand.
+
+**Video Interview Mastery**
+
+• **Technical Setup**: Test camera and audio 30 minutes before the interview, have a backup device ready (tablet or second computer), ensure stable internet connection with ethernet cable if possible, close unnecessary applications to prevent lag and notifications, and have technical support contact information ready.
+
+• **Lighting and Visual**: Face a window or use a ring light for even, flattering lighting, avoid backlighting that creates shadows on your face, position camera at eye level (use books to adjust height if needed), ensure your face is well-lit and clearly visible, and test your setup at the same time of day as your interview.
+
+• **Background Strategy**: Choose a clean, professional background with minimal distractions, avoid personal items or family photos in view, consider a virtual background if your space isn't ideal (test it first), ensure the background isn't too busy or colorful, and have good contrast between you and the background.
+
+• **Eye Contact Technique**: Look directly at the camera lens (not the screen) when speaking, place a small arrow or reminder near your camera, practice this beforehand to make it natural, remember that looking at the screen appears as looking down to them, and maintain this even when they're speaking.
+
+**Panel Interview Strategy**
+
+• **Name and Role Management**: Write down each person's name and role as introductions are made, create a simple seating chart if helpful for reference, use names naturally throughout the conversation, ask for business cards or LinkedIn connections at the end, and remember that each person may evaluate different aspects.
+
+• **Attention Distribution**: Make eye contact with all panel members, not just the person asking questions, include everyone when giving responses by scanning the group, acknowledge each person's expertise area when relevant, gauge reactions from all members to adjust your approach, and ensure no one feels ignored or excluded.
+
+• **Question Addressing**: Start by looking at the person who asked the question, then include others in your response by making eye contact, end by looking back at the questioner for confirmation, address follow-up questions to the appropriate person, and ask clarifying questions if the source isn't clear.
+
+**Case Study and Presentation Interviews**
+
+• **Structure Framework**: Problem definition and analysis (show you understand the challenge), solution development (demonstrate your thinking process), implementation plan (prove you can execute), expected outcomes and metrics (show business acumen), and risk assessment and mitigation (display strategic thinking).
+
+• **Time Management**: Allocate time for each section and practice with a timer, leave time for questions and discussion (usually 25% of total time), prepare for both short (15-minute) and extended (45-minute) versions, have a clear agenda and stick to it, and practice smooth transitions between sections.
+
+• **Visual Communication**: Create clean, professional slides with minimal text (6x6 rule: max 6 bullet points, 6 words each), use charts and graphs to illustrate key points, prepare for technical difficulties with printed backup copies, ensure slides are readable on various screen sizes, and practice presenting without relying heavily on slides.
+
+💡 **Format-Specific Success Tips:**
+
+• **Phone**: Use a mirror to maintain good facial expressions (it affects your voice)
+• **Video**: Have a glass of water nearby but drink during their speaking time
+• **Panel**: Address the decision-maker most, but include everyone
+• **Behavioral**: Always end with what you learned or how you grew
+• **Case Study**: Ask clarifying questions to show analytical thinking
+
+📚 **Recommended Reading:**
+
+• "The Complete Guide to Virtual Interviews" by Harvard Business Review
+• "Panel Interview Success" by Career Development Center
+• "Case Interview Secrets" by Victor Cheng
+
+🔗 **Practice Resources:**
+
+• [Pramp - Free Mock Interviews](https://www.pramp.com/)
+• [InterviewBuddy - Practice Platform](https://interviewbuddy.in/)
+• [Zoom Test Meeting](https://zoom.us/test)
+
+✅ **Format Mastery Checklist:**
+
+• Comfortable with phone interviews (clear voice, good energy)
+• Video interview setup tested and professional
+• Panel interview strategy for attention management
+• STAR method responses prepared and practiced
+• Case study presentation skills developed
+• Backup plans ready for technical difficulties
+
+⚠️ **Common Format Mistakes:**
+
+• **Phone**: Forgetting to smile (affects voice quality)
+• **Video**: Looking at screen instead of camera
+• **Panel**: Focusing only on one person
+• **Case Study**: Not asking clarifying questions
+'''
+                }
+            ]
+        },
+        'behavioral-mastery': {
+            'title': 'Behavioral Interview Mastery',
+            'icon': '⭐',
+            'description': 'Perfect the STAR method and storytelling techniques',
+            'duration': '2-3 hours',
+            'difficulty': 'Intermediate',
+            'color': '#10b981',
+            'lessons': [
+                {
+                    'id': 1,
+                    'title': 'STAR Method Framework Mastery',
+                    'duration': '30 min',
+                    'content': '''
+**The STAR Method: Your Blueprint for Compelling Responses**
+
+The STAR method is the gold standard for answering behavioral interview questions. It provides structure, ensures completeness, and makes your responses memorable and impactful.
+
+**S - Situation: Setting the Stage**
+
+• **Context Creation**: Provide enough background for the interviewer to understand the scenario without overwhelming details. Include when, where, and who was involved.
+
+• **Relevance Focus**: Choose situations that are recent (within 2-3 years), relevant to the role you're applying for, and demonstrate the skills they're seeking.
+
+• **Specificity**: Avoid vague statements like "we always" or "I usually." Focus on one specific instance that showcases your abilities.
+
+**T - Task: Defining Your Role**
+
+• **Personal Responsibility**: Clearly articulate what YOU were responsible for, not what the team or organization needed to do. Use "I" statements consistently.
+
+• **Challenge Identification**: Explain the specific challenge, goal, or problem you needed to address. What made this situation difficult or important?
+
+• **Stakes and Pressure**: Help the interviewer understand why this mattered - deadlines, budget constraints, customer impact, or strategic importance.
+
+**A - Action: Your Strategic Response**
+
+• **Detailed Steps**: Describe the specific actions YOU took, not what "we" did. Break down your approach into clear, logical steps.
+
+• **Decision-Making Process**: Explain your thought process - why you chose this approach over alternatives, how you prioritized actions, what factors you considered.
+
+• **Skills Demonstration**: Highlight the specific skills, tools, or competencies you used. This is where you showcase your capabilities.
+
+• **Collaboration and Leadership**: If you worked with others, explain how you influenced, coordinated, or led the effort while maintaining focus on your contributions.
+
+**R - Result: Quantifiable Impact**
+
+• **Measurable Outcomes**: Provide specific numbers, percentages, timeframes, or other quantifiable results whenever possible. "Increased sales by 23%" is better than "improved sales."
+
+• **Multiple Benefits**: Often your actions had several positive outcomes - cost savings, time efficiency, improved relationships, process improvements.
+
+• **Learning and Growth**: What did you learn from this experience? How did it change your approach to similar situations? This shows self-awareness and continuous improvement.
+
+• **Long-term Impact**: If applicable, mention the lasting effects of your actions - did the solution become standard practice? Did it influence future decisions?
+
+**STAR Method Best Practices**
+
+• **Time Management**: Keep responses to 2-3 minutes maximum. Practice with a timer to develop natural pacing.
+
+• **Authenticity**: Use real examples from your experience. Fabricated stories are often detected and always backfire.
+
+• **Variety**: Prepare examples from different contexts - work, school, volunteer activities, personal projects - to show well-rounded experience.
+
+• **Flexibility**: Be ready to adapt your examples to different questions. One situation might demonstrate multiple competencies.
+'''
+                },
+                {
+                    'id': 2,
+                    'title': 'Building Your Story Bank',
+                    'duration': '35 min',
+                    'content': '''
+**Creating a Powerful Portfolio of Examples**
+
+Your story bank is your competitive advantage. These carefully crafted examples will serve as the foundation for answering any behavioral question with confidence and impact.
+
+**Essential Story Categories**
+
+• **Leadership Examples**: Times you led a team, project, or initiative. Include both formal leadership roles and situations where you took initiative without authority.
+
+• **Teamwork and Collaboration**: Situations where you worked effectively with others, resolved team conflicts, or contributed to group success.
+
+• **Problem-Solving and Innovation**: Complex challenges you solved, creative solutions you developed, or processes you improved.
+
+• **Adaptability and Change**: Times you successfully navigated change, learned new skills quickly, or adjusted to unexpected circumstances.
+
+• **Conflict Resolution**: Professional disagreements you resolved, difficult conversations you navigated, or tense situations you defused.
+
+• **Achievement and Excellence**: Your biggest accomplishments, times you exceeded expectations, or goals you achieved against odds.
+
+• **Learning from Failure**: Mistakes you made, lessons you learned, and how you applied those lessons to future situations.
+
+• **Customer Focus**: Times you went above and beyond for customers, resolved customer issues, or improved customer experience.
+
+**Story Development Framework**
+
+• **Choose High-Impact Examples**: Select situations with clear, measurable outcomes that demonstrate multiple skills and competencies.
+
+• **Vary Your Contexts**: Include examples from work, education, volunteer activities, and personal projects to show diverse experience.
+
+• **Recent and Relevant**: Prioritize examples from the last 2-3 years that relate to the role you're seeking.
+
+• **Complexity Levels**: Have both simple, straightforward examples and complex, multi-faceted situations in your repertoire.
+
+**Making Stories Memorable**
+
+• **Emotional Connection**: Include appropriate emotions and motivations to make your stories more engaging and human.
+
+• **Vivid Details**: Use specific details that help the interviewer visualize the situation without overwhelming them with unnecessary information.
+
+• **Clear Progression**: Structure your story with a clear beginning, middle, and end that flows logically and maintains interest.
+
+• **Unique Perspective**: Highlight what made your approach different or innovative compared to conventional solutions.
+
+**Practice and Refinement**
+
+• **Record Yourself**: Practice telling your stories aloud and record them to identify areas for improvement in pacing, clarity, and impact.
+
+• **Seek Feedback**: Share your stories with trusted colleagues, mentors, or career counselors for honest feedback and suggestions.
+
+• **Mock Interviews**: Use your stories in practice interviews to test their effectiveness and refine your delivery.
+'''
+                },
+                {
+                    'id': 3,
+                    'title': 'Mastering Common Behavioral Questions',
+                    'duration': '40 min',
+                    'content': '''
+**Strategic Responses to Frequently Asked Questions**
+
+Understanding the intent behind common behavioral questions helps you select the most appropriate examples and craft responses that directly address what interviewers want to know.
+
+**Leadership and Initiative Questions**
+
+• **"Tell me about a time you led a team"**: Focus on your leadership style, how you motivated others, and the results you achieved. Highlight both task leadership and relationship management.
+
+• **"Describe a situation where you took initiative"**: Choose an example where you identified an opportunity or problem and took action without being asked. Emphasize proactive thinking and ownership.
+
+• **"How do you motivate others?"**: Use a specific example that shows your understanding of different motivation styles and your ability to adapt your approach to individual team members.
+
+**Problem-Solving and Innovation Questions**
+
+• **"Describe a complex problem you solved"**: Walk through your analytical process, the alternatives you considered, and why you chose your specific approach. Quantify the impact.
+
+• **"Tell me about a time you had to think outside the box"**: Highlight creative thinking, unconventional approaches, and innovative solutions. Explain why traditional methods wouldn't work.
+
+• **"How do you approach learning new skills?"**: Demonstrate your learning methodology, adaptability, and commitment to continuous improvement with a specific example.
+
+**Teamwork and Collaboration Questions**
+
+• **"Describe a time you worked with a difficult team member"**: Focus on your professionalism, communication skills, and ability to find common ground while achieving team objectives.
+
+• **"Tell me about a successful team project"**: Highlight your specific contributions, how you supported team success, and the collaborative processes that led to positive outcomes.
+
+• **"How do you handle conflicts with colleagues?"**: Demonstrate emotional intelligence, conflict resolution skills, and your ability to maintain professional relationships.
+
+**Adaptability and Change Questions**
+
+• **"Describe a time you had to adapt to significant change"**: Show flexibility, positive attitude toward change, and your ability to help others navigate transitions.
+
+• **"Tell me about a time you failed"**: Choose a real failure, focus on what you learned, and demonstrate how you applied those lessons to achieve future success.
+
+• **"How do you handle pressure and tight deadlines?"**: Provide an example that shows your time management, prioritization skills, and ability to maintain quality under pressure.
+
+**Advanced Response Strategies**
+
+• **Competency Stacking**: Choose examples that demonstrate multiple relevant competencies within a single story.
+
+• **Industry Relevance**: Adapt your examples to highlight aspects most relevant to the specific industry or company.
+
+• **Role Progression**: Use examples that show increasing responsibility and impact over time.
+
+• **Cultural Fit**: Select stories that align with the company's stated values and culture.
+
+🔗 **Additional Resources:**
+
+• [The Muse - Behavioral Interview Questions](https://www.themuse.com/advice/behavioral-interview-questions-answers-examples)
+• [Indeed - Guide to STAR Method](https://www.indeed.com/career-advice/interviewing/how-to-use-the-star-method)
+'''
+                }
+            ]
+        },
+        'technical-excellence': {
+            'title': 'Technical Interview Excellence',
+            'icon': '💻',
+            'description': 'Ace coding challenges and technical assessments',
+            'duration': '3-4 hours',
+            'difficulty': 'Advanced',
+            'color': '#8b5cf6',
+            'lessons': [
+                {
+                    'id': 1,
+                    'title': 'Technical Problem-Solving Strategy',
+                    'duration': '50 min',
+                    'content': '''
+***Systematic Approach to Technical Excellence***
+
+Technical interviews test not just your coding ability, but your problem-solving process, communication skills, and ability to work under pressure. This lesson provides a proven framework for approaching any technical challenge with confidence.
+
+**The UMPIRE Method Framework**
+
+• **U - Understand**: Listen carefully to the entire problem statement, ask clarifying questions about requirements and constraints, confirm your understanding by restating the problem, identify edge cases and special scenarios, and understand the expected input/output format.
+
+• **M - Match**: Recognize the problem pattern (array manipulation, tree traversal, dynamic programming, etc.), recall similar problems you've solved before, identify the underlying data structures and algorithms needed, and consider multiple approaches before coding.
+
+• **P - Plan**: Outline your approach step-by-step before writing any code, discuss your strategy with the interviewer, estimate time and space complexity, identify potential optimizations, and plan for edge case handling.
+
+• **I - Implement**: Write clean, readable code with meaningful variable names, think aloud as you code to show your thought process, start with a working solution even if not optimal, test your code with simple examples as you go, and handle edge cases systematically.
+
+• **R - Review**: Test your solution with the provided examples, walk through your code line by line, check for off-by-one errors and boundary conditions, verify time and space complexity, and look for potential bugs or improvements.
+
+• **E - Evaluate**: Discuss alternative approaches and trade-offs, explain why you chose your specific solution, identify potential optimizations for different constraints, and demonstrate understanding of when your solution would or wouldn't work well.
+
+**Communication During Coding**
+
+• **Think Aloud Protocol**: Verbalize your thought process continuously, explain why you're choosing specific approaches, discuss trade-offs between different solutions, ask for feedback or hints when genuinely stuck, and maintain a collaborative tone throughout.
+
+• **Structured Problem-Solving**: Break complex problems into smaller, manageable pieces, solve subproblems first and then combine solutions, use helper functions to organize your code logically, and explain how pieces fit together in the larger solution.
+
+**Time Management Strategies**
+
+• **The 40-20-40 Rule**: Spend 40% of time understanding and planning, 20% implementing the core solution, and 40% testing, debugging, and optimizing. This prevents rushing into code without proper planning.
+
+• **Progressive Refinement**: Start with a brute force solution that works, then optimize for better time/space complexity, add error handling and edge case management, and finally clean up code for readability and maintainability.
+
+📚 **Essential Technical Resources:**
+
+• "Cracking the Coding Interview" by Gayle McDowell - Comprehensive interview preparation
+• "Elements of Programming Interviews" by Aziz, Lee, and Prakash - Advanced problem-solving
+• "System Design Interview" by Alex Xu - Scalability and architecture
+• "Clean Code" by Robert Martin - Code quality and best practices
+
+🔗 **Practice Platforms:**
+
+• [LeetCode - Problem Database](https://leetcode.com/)
+• [HackerRank - Skill Challenges](https://www.hackerrank.com/)
+• [CodeSignal - Assessments](https://codesignal.com/)
+• [InterviewBit - Structured Paths](https://www.interviewbit.com/)
+'''
+                },
+                {
+                    'id': 2,
+                    'title': 'Data Structures & Algorithms Mastery',
+                    'duration': '60 min',
+                    'content': '''
+***Foundation Knowledge for Technical Success***
+
+Mastering fundamental data structures and algorithms is essential for technical interviews. This comprehensive guide covers the most important concepts with practical applications and interview-focused insights.
+
+**Essential Data Structures**
+
+• **Arrays and Strings**: Master in-place manipulation techniques, understand time complexity of operations, practice two-pointer and sliding window techniques, and learn string manipulation algorithms.
+
+• **Linked Lists**: Understand singly, doubly, and circular linked lists, master pointer manipulation and edge case handling, practice reversal, merging, and cycle detection algorithms.
+
+• **Stacks and Queues**: Implement using arrays and linked lists, understand LIFO and FIFO principles, master applications like expression evaluation, and learn about deques and priority queues.
+
+• **Trees and Binary Trees**: Understand tree terminology, master tree traversals (inorder, preorder, postorder, level-order), practice binary search tree operations, and learn about balanced trees.
+
+• **Hash Tables**: Understand hash functions and collision resolution, know average O(1) and worst-case O(n) time complexities, and practice problems involving frequency counting and fast lookups.
+
+• **Graphs**: Represent graphs using adjacency lists and matrices, understand directed vs. undirected graphs, master graph traversal algorithms (DFS, BFS), and learn shortest path algorithms.
+
+**Critical Algorithms**
+
+• **Sorting Algorithms**: Master quicksort, mergesort, heapsort, and understand when to use each algorithm based on constraints.
+
+• **Searching Algorithms**: Perfect binary search and its variations, understand linear search applications, and practice search in 2D matrices.
+
+• **Graph Algorithms**: Master depth-first search (DFS) for connectivity, breadth-first search (BFS) for shortest paths, topological sorting, and union-find.
+
+• **Dynamic Programming**: Identify overlapping subproblems and optimal substructure, master both top-down and bottom-up approaches, and practice classic problems.
+
+**Time and Space Complexity Analysis**
+
+• **Big O Notation Mastery**: Understand O(1), O(log n), O(n), O(n log n), O(n²), O(2^n) complexities, analyze nested loops and recursive algorithms, and identify best, average, and worst-case scenarios.
+
+• **Space Complexity**: Distinguish between auxiliary space and total space, understand recursive call stack space, and analyze in-place vs. out-of-place algorithms.
+
+💡 **Study Strategy for DSA:**
+
+• **Week 1-2**: Master basic data structures
+• **Week 3-4**: Learn tree and graph algorithms
+• **Week 5-6**: Practice dynamic programming and greedy algorithms
+• **Week 7-8**: Advanced topics and company-specific problem patterns
+
+📚 **Recommended Study Materials:**
+
+• "Introduction to Algorithms" by Cormen (CLRS)
+• "Algorithm Design Manual" by Skiena
+• "Competitive Programming" by Halim
+• [MIT 6.006 Introduction to Algorithms](https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-006-introduction-to-algorithms-fall-2011/)
+'''
+                },
+                {
+                    'id': 3,
+                    'title': 'System Design Fundamentals',
+                    'duration': '55 min',
+                    'content': '''
+***Building Scalable Systems: From Concept to Implementation***
+
+System design interviews evaluate your ability to architect large-scale distributed systems. This lesson covers fundamental concepts, design patterns, and communication strategies essential for system design success.
+
+**System Design Interview Process**
+
+• **Requirements Clarification**: Ask about functional requirements, non-functional requirements (performance, scalability), scale expectations, and specific constraints.
+
+• **High-Level Design**: Draw major components and their interactions, show data flow between components, identify key services and databases, and get interviewer feedback.
+
+• **Detailed Design**: Deep dive into critical components, discuss data models and database schemas, explain algorithms for core functionality, and address scalability.
+
+• **Scale and Optimize**: Identify bottlenecks, propose solutions for high availability, discuss monitoring and observability, and address security considerations.
+
+**Fundamental System Design Concepts**
+
+• **Scalability Patterns**: Horizontal vs. vertical scaling, load balancing strategies, database sharding and partitioning, and caching layers.
+
+• **Reliability and Availability**: Design for fault tolerance, implement circuit breakers, plan for disaster recovery, and understand CAP theorem.
+
+• **Performance Optimization**: Identify bottlenecks, implement caching strategies, optimize database queries, and design efficient data structures.
+
+• **Data Management**: Choose between SQL and NoSQL databases, design efficient schemas, implement replication strategies, and handle data consistency.
+
+**Core System Components**
+
+• **Load Balancers**: Distribute incoming requests, implement health checks, and handle session affinity.
+
+• **Databases**: Understand ACID properties, choose appropriate database types, and implement read replicas.
+
+• **Caching Systems**: Implement multi-level caching, choose eviction policies, and handle cache invalidation.
+
+• **Message Queues**: Decouple services, implement dead letter queues, and ensure message ordering.
+
+• **Microservices Architecture**: Break monoliths into independent services, design service boundaries, and handle distributed system challenges.
+
+🔗 **Learning and Practice Platforms:**
+
+• [Grokking the System Design Interview](https://www.educative.io/courses/grokking-the-system-design-interview)
+• [System Design Primer](https://github.com/donnemartin/system-design-primer)
+• [High Scalability Blog](http://highscalability.com/)
+• [AWS Architecture Center](https://aws.amazon.com/architecture/)
+'''
+                }
+            ]
+        },
+        'communication-confidence': {
+            'title': 'Communication & Confidence',
+            'icon': '🗣️',
+            'description': 'Build unshakeable confidence and communication skills',
+            'duration': '2-3 hours',
+            'difficulty': 'Intermediate',
+            'color': '#f59e0b',
+            'lessons': [
+                {
+                    'id': 1,
+                    'title': 'Verbal Communication Excellence',
+                    'duration': '40 min',
+                    'content': '''
+***Mastering the Art of Compelling Communication***
+
+Effective verbal communication is your most powerful tool in interviews. This lesson teaches you to speak with clarity, confidence, and impact.
+
+**Voice and Delivery Mastery**
+
+• **Optimal Speaking Pace**: Speak 10-15% slower than normal conversation, pause strategically for emphasis, and vary your pace to maintain engagement.
+
+• **Volume and Projection**: Use appropriate volume for the setting, project from your diaphragm, and practice breathing exercises.
+
+• **Vocal Tonality**: Use a lower pitch for authority, vary tone for enthusiasm, and avoid uptalk (ending statements like questions).
+
+• **Articulation and Clarity**: Pronounce words clearly, avoid mumbling, and practice tongue twisters to improve articulation.
+
+**Language and Vocabulary Optimization**
+
+• **Professional Language**: Use industry-appropriate terminology, choose active voice over passive voice, and avoid filler words.
+
+• **Concise Communication**: Get to the point quickly, use the "bottom line up front" approach, and eliminate unnecessary words.
+
+• **Storytelling Structure**: Use clear beginning, middle, and end, include specific details, and connect experiences to role requirements.
+
+📚 **Communication Skills Resources:**
+
+• "Talk Like TED" by Carmine Gallo
+• "The Quick and Easy Way to Effective Speaking" by Dale Carnegie
+• "Speak With Impact" by Allison Shapira
+
+🔗 **Practice and Improvement Tools:**
+
+• [Toastmasters International](https://www.toastmasters.org/)
+• [TED Talks](https://www.ted.com/)
+'''
+                },
+                {
+                    'id': 2,
+                    'title': 'Non-Verbal Communication Mastery',
+                    'duration': '35 min',
+                    'content': '''
+***Your Silent Language: Mastering Body Language and Presence***
+
+Research shows that 55% of communication is body language. This lesson teaches you to align your non-verbal communication with your verbal message.
+
+**Posture and Physical Presence**
+
+• **Confident Posture**: Sit up straight with shoulders back, keep feet flat on the floor, lean forward slightly, and maintain an open chest.
+
+• **Strategic Positioning**: Face the interviewer directly, maintain appropriate distance, and be mindful of personal space.
+
+• **Movement and Gestures**: Use purposeful hand gestures, keep movements controlled, and avoid fidgeting.
+
+**Eye Contact and Facial Expressions**
+
+• **Strategic Eye Contact**: Maintain natural eye contact 70-80% of the time, look at the speaker, and use the triangle technique.
+
+• **Authentic Facial Expressions**: Show genuine interest, smile naturally, and match expressions to message content.
+
+**Virtual Interview Body Language**
+
+• **Camera Positioning**: Position camera at eye level, frame yourself from mid-chest up, and ensure good lighting.
+
+• **Virtual Eye Contact**: Look at the camera lens when speaking, and practice to make it natural.
+
+• **Gesture Adaptation**: Keep gestures within frame and be mindful of how they appear on camera.
+
+📚 **Body Language Resources:**
+
+• "Presence" by Amy Cuddy
+• "The Definitive Book of Body Language" by Allan and Barbara Pease
+• "What Every BODY is Saying" by Joe Navarro
+
+🔗 **Practice Tools:**
+
+• [Zoom](https://zoom.us/) - For practice
+• [TED Talks on Body Language](https://www.ted.com/topics/body+language)
+'''
+                },
+                {
+                    'id': 3,
+                    'title': 'Building Unshakeable Confidence',
+                    'duration': '45 min',
+                    'content': '''
+***Developing Authentic Confidence for Interview Success***
+
+True confidence comes from preparation, self-awareness, and mindset. This lesson provides strategies to build genuine confidence.
+
+**Understanding Confidence vs. Arrogance**
+
+• **Authentic Confidence**: Based on competence and self-awareness, includes humility, and focuses on value provided.
+
+• **Confidence Indicators**: Speaking clearly about accomplishments, asking thoughtful questions, and maintaining composure.
+
+**Mental Preparation and Mindset**
+
+• **Visualization Techniques**: Visualize successful scenarios and positive interactions daily.
+
+• **Positive Self-Talk**: Replace negative thoughts with realistic positive alternatives and use affirmations.
+
+• **Reframing Perspective**: View interviews as conversations and opportunities to learn.
+
+**Confidence During the Interview**
+
+• **Authentic Enthusiasm**: Show genuine interest, ask thoughtful questions, and let personality shine.
+
+• **Handling Uncertainty**: Admit when you don't know something, explain how you would find the answer, and show curiosity.
+
+📚 **Confidence Resources:**
+
+• "Mindset" by Carol Dweck
+• "The Confidence Code" by Kay and Shipman
+• "Daring Greatly" by Brené Brown
+
+🔗 **Confidence Building Tools:**
+
+• [Headspace](https://www.headspace.com/) - Mindfulness
+• [Coursera - Personal Development](https://www.coursera.org/browse/personal-development)
+'''
+                }
+            ]
+        },
+        'industry-preparation': {
+            'title': 'Industry-Specific Preparation',
+            'icon': '🏢',
+            'description': 'Tailored strategies for different industries and roles',
+            'duration': '2-3 hours',
+            'difficulty': 'Advanced',
+            'color': '#ef4444',
+            'lessons': [
+                {
+                    'id': 1,
+                    'title': 'Technology Sector Mastery',
+                    'duration': '45 min',
+                    'content': '''
+***Navigating Tech Interviews with Industry Expertise***
+
+The technology sector has unique interview processes. This lesson provides insider knowledge to excel in tech interviews.
+
+**Tech Industry Culture and Values**
+
+• **Innovation**: Emphasize passion for technology, ability to learn quickly, and contributions to innovation.
+
+• **Collaboration**: Showcase experience with cross-functional teams and agile methodologies.
+
+• **Adaptability**: Share examples of learning from failure and iterating quickly.
+
+**Common Tech Interview Formats**
+
+• **Technical Screens**: Prepare for coding challenges and explain thought processes.
+
+• **Coding Challenges**: Practice collaborative coding and receive feedback constructively.
+
+• **System Design**: Understand scalability and performance concepts.
+
+**Key Technical Skills**
+
+• **Programming**: Demonstrate depth in relevant languages and frameworks.
+
+• **Problem-Solving**: Show systematic approach to debugging and troubleshooting.
+
+• **SDLC**: Show understanding of version control, CI/CD, and testing.
+
+🔗 **Tech Preparation Platforms:**
+
+• [LeetCode](https://leetcode.com/)
+• [HackerRank](https://www.hackerrank.com/)
+• [Glassdoor](https://www.glassdoor.com/)
+'''
+                },
+                {
+                    'id': 2,
+                    'title': 'Finance & Banking Excellence',
+                    'duration': '40 min',
+                    'content': '''
+***Mastering Finance Industry Interviews***
+
+Finance interviews require analytical skills and market knowledge. This lesson prepares you for investment banking, asset management, and fintech.
+
+**Finance Industry Expectations**
+
+• **Analytical Skills**: Demonstrate mathematical ability and financial modeling experience.
+
+• **Attention to Detail**: Emphasize precision in calculations and reporting.
+
+• **Risk Management**: Understand financial risk types and mitigation strategies.
+
+**Technical Knowledge Areas**
+
+• **Financial Modeling**: Master DCF, comparable company analysis, and LBO modeling.
+
+• **Financial Statements**: Understand income statements, balance sheets, and cash flow.
+
+• **Market Knowledge**: Stay current with economic indicators and market trends.
+
+🔗 **Finance Resources:**
+
+• [Wall Street Prep](https://www.wallstreetprep.com/)
+• [CFA Institute](https://www.cfainstitute.org/)
+• [Bloomberg](https://www.bloomberg.com/)
+'''
+                },
+                {
+                    'id': 3,
+                    'title': 'Healthcare & Life Sciences',
+                    'duration': '35 min',
+                    'content': '''
+***Excellence in Healthcare Industry Interviews***
+
+Healthcare interviews emphasize patient care and ethics. This lesson prepares you for hospitals, pharma, and medtech.
+
+**Healthcare Industry Values**
+
+• **Patient-Centered Care**: Demonstrate commitment to patient welfare and safety.
+
+• **Ethical Decision-Making**: Understand healthcare ethics principles and privacy.
+
+• **Evidence-Based Practice**: Show commitment to continuous learning and research.
+
+**Regulatory Knowledge**
+
+• **HIPAA**: Understand patient privacy rights and confidentiality.
+
+• **Quality Assurance**: Understand accreditation standards and safety protocols.
+
+🔗 **Healthcare Resources:**
+
+• [HFMA](https://www.hfma.org/)
+• [HIMSS](https://www.himss.org/)
+'''
+                }
+            ]
+        },
+        'salary-negotiation': {
+            'title': 'Salary Negotiation Mastery',
+            'icon': '💰',
+            'description': 'Negotiate compensation packages like a professional',
+            'duration': '1-2 hours',
+            'difficulty': 'Advanced',
+            'color': '#06b6d4',
+            'lessons': [
+                {
+                    'id': 1,
+                    'title': 'Research & Market Analysis',
+                    'duration': '45 min',
+                    'content': '''
+***The Foundation of Negotiation: Knowing Your Worth***
+
+Successful negotiation starts long before the offer is made. It begins with data. Knowing the market value for your role, experience level, and location gives you the confidence and evidence needed to negotiate effectively.
+
+**Essential Research Tools**
+
+• **Salary Aggregators**:
+  - **Glassdoor**: Good for general ranges but can be outdated. Look for recent entries.
+  - **Levels.fyi**: The gold standard for tech industry compensation, including detailed breakdowns of stock and bonuses.
+  - **Payscale**: Provides detailed reports based on specific skills and experience.
+  - **LinkedIn Salary**: Leverages LinkedIn's vast network for role-specific data.
+
+**Analyzing the Compensation Package**
+
+• **Base Salary**: The fixed amount you receive every paycheck. This determines your lifestyle and future raises.
+• **Performance Bonus**: Annual or quarterly bonuses based on company or personal performance. Ask about the "target" percentage and historical payout rates.
+• **Equity/Stock Options**: Critical in tech and startups. Understand the difference between RSUs (Restricted Stock Units) and Options.
+  - *RSUs*: Actual shares given to you over time. Value = Share Price × Number of Shares.
+  - *Options*: The right to buy shares at a set price (Strike Price). Value = (Current Price - Strike Price) × Number of Shares.
+• **Signing Bonus**: A one-time payment to join. often easier to negotiate than base salary.
+
+**Cost of Living Adjustments (COLA)**
+
+• If you are relocating, use COLA calculators to compare the value of a dollar in different cities. A $100k salary in Austin, TX goes much further than in San Francisco, CA.
+• **Remote Work**: Understand how the company adjusts pay for remote roles. Some pay based on location; others pay a national rate.
+
+**Determining Your "Walk-Away" Number**
+
+• Calculate your minimum acceptable salary based on your budget and financial goals.
+• Set your "Target" number (typically 10-20% above market average if you are a strong candidate).
+• Set your "Reach" number (the ideal scenario).
+
+💡 **Pro Tip:**
+Always print out or save your research. Having a physical chart or data points in front of you during a call can boost confidence.
+
+🔗 **Research Tools:**
+• [Levels.fyi](https://www.levels.fyi/)
+• [Glassdoor Salaries](https://www.glassdoor.com/Salaries/index.htm)
+• [Payscale](https://www.payscale.com/)
+• [Blind](https://www.teamblind.com/) - Anonymous professional network for insider info
+'''
+                },
+                {
+                    'id': 2,
+                    'title': 'Negotiation Strategies & Tactics',
+                    'duration': '50 min',
+                    'content': '''
+***The Art of the Deal: Execution Strategy***
+
+Once you have an offer (or are expecting one), the negotiation phase begins. This lesson covers the tactical moves to maximize your outcome without jeopardizing the offer.
+
+**The Golden Rules of Negotiation**
+
+1.  **Never Negotiate Until You Have an Offer**: You have zero leverage until they have decided they want *you*.
+2.  **Don't Give the First Number**: If asked for salary expectations early, say: "I'm open to competitive offers based on the market and the full scope of the role. Do you have a budget range for this position?"
+3.  **Always Be Positive**: Negotiation is a collaboration, not a fight. Reiterate your excitement about the role and the team.
+
+**The "Exact Number" Technique**
+
+• Instead of saying "I want around $120k," say "Based on my research and experience, I am looking for $124,500."
+• **Why it works**: precise numbers imply deep research and calculation, making them harder to challenge than rounded numbers.
+
+**Handling the Initial Offer**
+
+• **The Pause**: When they give you a number, *pause*. Count to 5 in your head. Silence is uncomfortable, and recruiters often fill it by improving the offer or adding context.
+• **The "Ask" Script**:
+  - "Thank you for the offer. I'm really excited about the team. However, looking at the market data and the value I bring, I was expecting something in the range of [Your Target] to [Your Reach]. Can we get closer to that?"
+
+**Counter-Offers and Trade-offs**
+
+• If they can't move on Base Salary, pivot to other levers:
+  - "I understand the constraints on base salary. Could we bridge the gap with a higher signing bonus?"
+  - "Can we discuss an early performance review (6 months instead of 12)?"
+  - "Is there flexibility on the equity grant?"
+
+**Competing Offers**
+
+• The strongest leverage is a competing offer.
+• **Script**: "I have another offer from [Company B] for [Amount]. I prefer your company because of [Reason], but the financial difference is significant. If you can match this, I would sign today."
+
+⚠️ **Common Mistakes**:
+• Accepting immediately. Always ask for time to review (24-48 hours minimum).
+• Negotiating via email only. Phone calls build better rapport and allow you to read tone.
+• Being aggressive. "Take it or leave it" ultimatums usually lead to "leave it."
+
+📚 **Recommended Reading:**
+• "Never Split the Difference" by Chris Voss
+• "Getting to Yes" by Roger Fisher and William Ury
+'''
+                },
+                {
+                    'id': 3,
+                    'title': 'Beyond Base Salary: Total Compensation',
+                    'duration': '35 min',
+                    'content': '''
+***Maximizing the Full Package***
+
+Salary is just one component of your financial picture. This lesson explores the "hidden" value in employment contracts that can add tens of thousands of dollars to your total compensation.
+
+**The Benefits Stack**
+
+• **Health, Dental, Vision**: Compare premiums and deductibles. A plan with 100% employer-paid premiums can be worth $5,000-$10,000 more per year than a standard plan.
+• **401(k) Matching**: Free money. If a company matches 4% of your salary, that is effectively a 4% raise.
+• **Education/L&D Budget**: Many tech companies offer $1k-$5k per year for courses and conferences. Ask for this if it's not standard.
+
+**Work-Life Balance & Perks**
+
+• **Vacation/PTO**: If they can't pay more, ask for an extra week of vacation.
+• **Remote/Hybrid Options**: Commuting costs money and time. Negotiating 2 days remote can save $3k-$5k annually in transport/food and 200+ hours of time.
+• **Home Office Stipend**: One-time payments ($500-$1000) to set up your desk are common in remote roles.
+
+**Equity: The Long Game**
+
+• **Vesting Schedules**: Standard is 4 years with a 1-year cliff (0% in year 1, then 25% at 12 months).
+• **Refreshers**: Ask if the company provides annual stock "refreshers" to top performers.
+
+**Contract Review**
+
+• **Non-Competes**: Watch out for restrictive clauses that prevent you from working in the industry for years after leaving.
+• **IP Assignment**: Ensure the company doesn't claim ownership of your side projects or inventions created on your own time.
+
+**Closing the Deal**
+
+• Once you reach an agreement, **get it in writing**.
+• Verify every detail (salary, bonus, start date, title) matches your verbal discussion before signing.
+
+✅ **Negotiation Checklist:**
+• Researched market rate
+• Calculated "Walk-away" and "Target" numbers
+• Identified 3 non-salary items to negotiate
+• Practiced the "Ask" script
+• Reviewed benefits package detailed
+'''
+                }
+            ]
+        }
+    }

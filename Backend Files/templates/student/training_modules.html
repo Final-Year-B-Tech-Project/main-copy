@@ -1,0 +1,444 @@
+{% extends "base.html" %}
+
+{% block title %}Training Modules - AI Interview Agent{% endblock %}
+
+{% block body_class %}training-modules-page{% endblock %}
+
+{% block content %}
+<div class="content-wrapper">
+    <div class="app-container">
+        <!-- Page Header -->
+        <div class="ui-card ui-animate-fadeInUp">
+            <div class="ui-d-flex ui-justify-between ui-align-center">
+                <div>
+                    <h1 class="ui-mb-2">🎓 Interview Training Modules</h1>
+                    <p class="ui-mb-0" style="color: var(--text-muted);">Comprehensive learning paths designed to help you excel in any interview</p>
+                </div>
+                <div class="ui-d-flex ui-gap-2">
+                    <a href="{{ url_for('main.practice_interview') }}" class="ui-btn ui-btn-primary">
+                        <i class="fas fa-play"></i>Practice Interview
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistics Overview -->
+        <div class="ui-grid ui-grid-4 ui-animate-fadeInUp" style="animation-delay: 0.1s;">
+            <div class="ui-stat-card">
+                <div class="ui-stat-value">{{ modules|length }}</div>
+                <div class="ui-stat-label">Training Modules</div>
+            </div>
+            <div class="ui-stat-card">
+                <div class="ui-stat-value">{{ modules|sum(attribute='lessons_count') }}+</div>
+                <div class="ui-stat-label">Detailed Lessons</div>
+            </div>
+            <div class="ui-stat-card">
+                <div class="ui-stat-value">15+</div>
+                <div class="ui-stat-label">Hours Content</div>
+            </div>
+            <div class="ui-stat-card">
+                <div class="ui-stat-value">100%</div>
+                <div class="ui-stat-label">Success Rate</div>
+            </div>
+        </div>
+
+        <!-- Learning Path Recommendations -->
+        <div class="ui-card ui-animate-fadeInUp" style="animation-delay: 0.2s;">
+            <div class="ui-card-header">
+                <h3 class="ui-mb-0">🎯 Recommended Learning Paths</h3>
+            </div>
+            <div class="ui-grid ui-grid-3">
+                <div class="learning-path-card">
+                    <div class="path-header">
+                        <div class="path-icon">👨🎓</div>
+                        <h4>For Beginners</h4>
+                    </div>
+                    <div class="path-steps">
+                        <div class="path-step">1. Interview Fundamentals</div>
+                        <div class="path-step">2. Communication & Confidence</div>
+                        <div class="path-step">3. Behavioral Interview Mastery</div>
+                    </div>
+                    <div class="path-duration">6-8 hours total</div>
+                </div>
+                
+                <div class="learning-path-card">
+                    <div class="path-header">
+                        <div class="path-icon">💻</div>
+                        <h4>For Technical Roles</h4>
+                    </div>
+                    <div class="path-steps">
+                        <div class="path-step">1. Interview Fundamentals</div>
+                        <div class="path-step">2. Technical Interview Excellence</div>
+                        <div class="path-step">3. Industry-Specific Preparation</div>
+                    </div>
+                    <div class="path-duration">7-9 hours total</div>
+                </div>
+                
+                <div class="learning-path-card">
+                    <div class="path-header">
+                        <div class="path-icon">🏆</div>
+                        <h4>For Experienced Professionals</h4>
+                    </div>
+                    <div class="path-steps">
+                        <div class="path-step">1. Behavioral Interview Mastery</div>
+                        <div class="path-step">2. Salary Negotiation Mastery</div>
+                        <div class="path-step">3. Industry-Specific Preparation</div>
+                    </div>
+                    <div class="path-duration">5-7 hours total</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Training Modules Grid -->
+        <div class="ui-grid ui-grid-2 ui-animate-fadeInUp" style="animation-delay: 0.3s;">
+            {% for module in modules %}
+            <div class="training-module-card" data-difficulty="{{ module.difficulty }}">
+                <div class="module-header">
+                    <div class="module-icon" style="background: linear-gradient(135deg, {{ module.color }}, {{ module.color }}dd);">
+                        {{ module.icon }}
+                    </div>
+                    <div class="module-info">
+                        <h3 class="module-title">{{ module.title }}</h3>
+                        <p class="module-description">{{ module.description }}</p>
+                    </div>
+                </div>
+                
+                <div class="module-preview">
+                    <p>{{ module.preview }}</p>
+                </div>
+                
+                <div class="module-meta">
+                    <div class="meta-item">
+                        <i class="fas fa-clock"></i>
+                        <span>{{ module.duration }}</span>
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-signal"></i>
+                        <span class="difficulty-{{ module.difficulty.lower() }}">{{ module.difficulty }}</span>
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-book"></i>
+                        <span>{{ module.lessons_count }} Lessons</span>
+                    </div>
+                </div>
+                
+                <div class="module-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 0%;" id="progress-{{ module.id }}"></div>
+                    </div>
+                    <span class="progress-text" id="progress-text-{{ module.id }}">Not Started</span>
+                </div>
+                
+                <div class="module-actions">
+                    <a href="{{ url_for('student.training_module_detail', module_id=module.id) }}" class="ui-btn ui-btn-primary ui-w-full">
+                        <i class="fas fa-play"></i>Start Learning
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="ui-card ui-animate-fadeInUp" style="animation-delay: 0.4s;">
+            <div class="ui-card-header">
+                <h3 class="ui-mb-0">🚀 Ready to Practice?</h3>
+            </div>
+            <div class="ui-text-center">
+                <p class="ui-mb-3" style="color: var(--text-muted);">Apply your learning with our AI-powered practice interviews</p>
+                <div class="ui-d-flex ui-gap-2 ui-justify-center">
+                    <a href="{{ url_for('main.practice_interview') }}" class="ui-btn ui-btn-primary ui-btn-lg">
+                        <i class="fas fa-microphone"></i>Start Practice Interview
+                    </a>
+                    <a href="{{ url_for('main.student_dashboard') }}" class="ui-btn ui-btn-outline ui-btn-lg">
+                        <i class="fas fa-arrow-left"></i>Back to Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Training Modules Specific Styles */
+.learning-path-card {
+    background: linear-gradient(145deg, var(--bg-card), var(--bg-secondary));
+    border: 1px solid var(--border-violet);
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.learning-path-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px var(--shadow-violet-lg);
+}
+
+.path-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.path-icon {
+    font-size: 2rem;
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, var(--primary-violet), var(--light-violet));
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.path-header h4 {
+    margin: 0;
+    color: var(--text-white);
+    font-weight: 600;
+}
+
+.path-steps {
+    margin-bottom: 1rem;
+}
+
+.path-step {
+    padding: 0.5rem 0;
+    color: var(--text-light);
+    border-left: 2px solid var(--border-violet);
+    padding-left: 1rem;
+    margin-bottom: 0.5rem;
+    position: relative;
+}
+
+.path-step::before {
+    content: '';
+    position: absolute;
+    left: -5px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 8px;
+    height: 8px;
+    background: var(--primary-violet);
+    border-radius: 50%;
+}
+
+.path-duration {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.training-module-card {
+    background: linear-gradient(145deg, var(--bg-card), var(--bg-secondary));
+    border: 1px solid var(--border-violet);
+    border-radius: 16px;
+    padding: 2rem;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.training-module-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary-violet), var(--light-violet));
+}
+
+.training-module-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 60px var(--shadow-violet-lg);
+}
+
+.module-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.module-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.module-info {
+    flex: 1;
+}
+
+.module-title {
+    margin: 0 0 0.5rem 0;
+    color: var(--text-white);
+    font-weight: 700;
+    font-size: 1.25rem;
+}
+
+.module-description {
+    margin: 0;
+    color: var(--text-light);
+    font-size: 0.875rem;
+}
+
+.module-preview {
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: rgba(99, 102, 241, 0.05);
+    border-radius: 8px;
+    border-left: 3px solid var(--primary-violet);
+}
+
+.module-preview p {
+    margin: 0;
+    color: var(--text-light);
+    font-size: 0.875rem;
+    line-height: 1.6;
+}
+
+.module-meta {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.meta-item i {
+    color: var(--primary-violet);
+}
+
+.difficulty-beginner { color: var(--success); }
+.difficulty-intermediate { color: var(--warning); }
+.difficulty-advanced { color: var(--danger); }
+
+.module-progress {
+    margin-bottom: 1.5rem;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary-violet), var(--light-violet));
+    border-radius: 3px;
+    transition: width 0.3s ease;
+}
+
+.progress-text {
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.module-actions {
+    margin-top: auto;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .ui-grid-2 {
+        grid-template-columns: 1fr;
+    }
+    
+    .ui-grid-3 {
+        grid-template-columns: 1fr;
+    }
+    
+    .ui-grid-4 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .module-header {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .module-meta {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .ui-grid-4 {
+        grid-template-columns: 1fr;
+    }
+    
+    .training-module-card {
+        padding: 1.5rem;
+    }
+    
+    .learning-path-card {
+        padding: 1rem;
+    }
+}
+</style>
+
+<script>
+// Progress tracking functionality
+const moduleProgress = JSON.parse(localStorage.getItem('trainingProgress') || '{}');
+
+// Initialize progress display
+document.addEventListener('DOMContentLoaded', function() {
+    Object.keys(moduleProgress).forEach(moduleId => {
+        updateProgressDisplay(moduleId, moduleProgress[moduleId]);
+    });
+    
+    // Add hover effects
+    const moduleCards = document.querySelectorAll('.training-module-card');
+    moduleCards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-8px) scale(1.02)';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0) scale(1)';
+        });
+    });
+});
+
+function updateProgressDisplay(moduleId, progress) {
+    const progressBar = document.getElementById(`progress-${moduleId}`);
+    const progressText = document.getElementById(`progress-text-${moduleId}`);
+    
+    if (progressBar && progressText) {
+        progressBar.style.width = `${progress}%`;
+        
+        if (progress === 0) {
+            progressText.textContent = 'Not Started';
+        } else if (progress === 100) {
+            progressText.textContent = 'Completed';
+        } else {
+            progressText.textContent = `${Math.round(progress)}% Complete`;
+        }
+    }
+}
+
+// Save progress function
+function saveProgress() {
+    localStorage.setItem('trainingProgress', JSON.stringify(moduleProgress));
+}
+</script>
+{% endblock %}
