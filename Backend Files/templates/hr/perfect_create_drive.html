@@ -1,0 +1,206 @@
+{% extends "base.html" %}
+
+{% block title %}Create Job Drive{% endblock %}
+
+{% block content %}
+<div class="content-wrapper">
+    <div class="app-container">
+        <!-- Page Header -->
+        <div class="ui-card ui-animate-fadeInUp">
+            <div class="ui-d-flex ui-justify-between ui-align-center">
+                <div>
+                    <h1 class="ui-mb-2">Create New Job Drive</h1>
+                    <p class="ui-mb-0">Set up a new recruitment campaign to attract and interview the best candidates.</p>
+                </div>
+                <a href="{{ url_for('hr.drives') }}" class="ui-btn ui-btn-outline">
+                    <i class="fas fa-arrow-left"></i>Back to Drives
+                </a>
+            </div>
+        </div>
+
+        <!-- Form -->
+        <div class="ui-card ui-animate-fadeInUp" style="animation-delay: 0.1s; max-width: 800px; margin: 0 auto;">
+            <form method="POST" id="createDriveForm">
+                <!-- Basic Information Section -->
+                <div class="ui-mb-4">
+                    <h3 class="ui-mb-3" style="color: #8b5cf6; display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="fas fa-info-circle"></i>Basic Information
+                    </h3>
+                    <div class="ui-grid ui-grid-2">
+                        <div class="ui-form-group">
+                            <label for="title" class="ui-form-label">Job Title *</label>
+                            <input type="text" class="ui-form-control" id="title" name="title" 
+                                   placeholder="e.g., Senior Software Engineer" required>
+                            <div class="ui-form-text">Enter a clear, descriptive job title</div>
+                        </div>
+                        
+                        <div class="ui-form-group">
+                            <label for="job_role" class="ui-form-label">Job Role Category *</label>
+                            <select class="ui-form-control" id="job_role" name="job_role" required>
+                                <option value="">Select Role Category</option>
+                                <option value="Software Developer">Software Developer</option>
+                                <option value="Frontend Developer">Frontend Developer</option>
+                                <option value="Backend Developer">Backend Developer</option>
+                                <option value="Full Stack Developer">Full Stack Developer</option>
+                                <option value="Data Scientist">Data Scientist</option>
+                                <option value="DevOps Engineer">DevOps Engineer</option>
+                                <option value="Product Manager">Product Manager</option>
+                                <option value="UI/UX Designer">UI/UX Designer</option>
+                                <option value="Quality Assurance">Quality Assurance</option>
+                                <option value="Business Analyst">Business Analyst</option>
+                                <option value="Other">Other</option>
+                            </select>
+                            <div class="ui-form-text">Choose the most relevant category</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Requirements Section -->
+                <div class="ui-mb-4">
+                    <h3 class="ui-mb-3" style="color: #10b981; display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="fas fa-user-tie"></i>Requirements
+                    </h3>
+                    <div class="ui-grid ui-grid-2">
+                        <div class="ui-form-group">
+                            <label for="experience_required" class="ui-form-label">Experience Level</label>
+                            <select class="ui-form-control" id="experience_required" name="experience_required">
+                                <option value="Fresher">Fresher (0-1 years)</option>
+                                <option value="Junior">Junior (1-3 years)</option>
+                                <option value="Mid-level">Mid-level (3-5 years)</option>
+                                <option value="Senior">Senior (5+ years)</option>
+                                <option value="Any">Any Experience Level</option>
+                            </select>
+                            <div class="ui-form-text">Select the required experience level</div>
+                        </div>
+                        
+                        <div class="ui-form-group">
+                            <label for="location" class="ui-form-label">Work Location</label>
+                            <input type="text" class="ui-form-control" id="location" name="location" 
+                                   placeholder="Remote, New York, Hybrid, etc." value="Remote">
+                            <div class="ui-form-text">Specify work location or arrangement</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Job Description Section -->
+                <div class="ui-mb-4">
+                    <h3 class="ui-mb-3" style="color: #06b6d4; display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="fas fa-file-alt"></i>Job Description
+                    </h3>
+                    <div class="ui-form-group">
+                        <label for="description" class="ui-form-label">Description & Requirements</label>
+                        <textarea class="ui-form-control" id="description" name="description" rows="6" 
+                                  placeholder="Describe the role, key responsibilities, required skills, and qualifications...
+
+Example:
+We are looking for a talented Software Engineer to join our growing team. You will be responsible for:
+
+• Developing and maintaining web applications
+• Collaborating with cross-functional teams
+• Writing clean, efficient code
+• Participating in code reviews
+
+Requirements:
+• Bachelor's degree in Computer Science or related field
+• 3+ years of experience with JavaScript, React, Node.js
+• Strong problem-solving skills
+• Excellent communication abilities"></textarea>
+                        <div class="ui-form-text">Provide a detailed description to attract the right candidates</div>
+                    </div>
+                </div>
+
+                <!-- Submit Section -->
+                <div class="ui-text-center" style="padding-top: 2rem; border-top: 1px solid #4c1d95;">
+                    <div class="ui-d-flex ui-justify-center ui-gap-3">
+                        <a href="{{ url_for('hr.drives') }}" class="ui-btn ui-btn-outline ui-btn-lg">
+                            <i class="fas fa-times"></i>Cancel
+                        </a>
+                        <button type="submit" class="ui-btn ui-btn-primary ui-btn-lg" id="submitBtn">
+                            <i class="fas fa-plus"></i>Create Job Drive
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block additional_js %}
+<script>
+document.getElementById('createDriveForm').addEventListener('submit', function(e) {
+    const submitBtn = document.getElementById('submitBtn');
+    
+    // Prevent multiple submissions
+    if (submitBtn.disabled) {
+        e.preventDefault();
+        return;
+    }
+    
+    // Show loading state
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>Creating Drive...';
+    
+    // Re-enable after 10 seconds as fallback
+    setTimeout(() => {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-plus"></i>Create Job Drive';
+    }, 10000);
+});
+
+// Add form validation
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('createDriveForm');
+    const inputs = form.querySelectorAll('input[required], select[required], textarea[required]');
+    
+    inputs.forEach(input => {
+        input.addEventListener('blur', function() {
+            validateField(this);
+        });
+        
+        input.addEventListener('input', function() {
+            if (this.classList.contains('error')) {
+                validateField(this);
+            }
+        });
+    });
+    
+    function validateField(field) {
+        const isValid = field.checkValidity();
+        
+        if (isValid) {
+            field.style.borderColor = '#10b981';
+            field.classList.remove('error');
+        } else {
+            field.style.borderColor = '#ef4444';
+            field.classList.add('error');
+        }
+    }
+    
+    // Auto-resize textarea
+    const textarea = document.getElementById('description');
+    textarea.addEventListener('input', function() {
+        this.style.height = 'auto';
+        this.style.height = this.scrollHeight + 'px';
+    });
+});
+
+// Add character counter for description
+document.getElementById('description').addEventListener('input', function() {
+    const maxLength = 2000;
+    const currentLength = this.value.length;
+    
+    let counter = document.getElementById('charCounter');
+    if (!counter) {
+        counter = document.createElement('div');
+        counter.id = 'charCounter';
+        counter.className = 'ui-form-text';
+        counter.style.textAlign = 'right';
+        this.parentNode.appendChild(counter);
+    }
+    
+    counter.textContent = `${currentLength}/${maxLength} characters`;
+    counter.style.color = currentLength > maxLength ? '#ef4444' : '#94a3b8';
+});
+</script>
+{% endblock %}

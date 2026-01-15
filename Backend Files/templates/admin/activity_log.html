@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Activity Log - Admin Panel</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f8f9fa; }
+        .header { background: #2c3e50; color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .header h1 { font-size: 1.5rem; }
+        .nav-links { display: flex; gap: 1rem; }
+        .nav-links a { color: white; text-decoration: none; padding: 0.5rem 1rem; border-radius: 4px; transition: background 0.3s; }
+        .nav-links a:hover { background: rgba(255,255,255,0.1); }
+        .container { max-width: 1200px; margin: 2rem auto; padding: 0 1rem; }
+        .section { background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 2rem; }
+        .section-header { padding: 1rem 1.5rem; border-bottom: 1px solid #ecf0f1; display: flex; justify-content: space-between; align-items: center; }
+        .section-header h2 { color: #2c3e50; }
+        .section-content { padding: 1.5rem; }
+        .log-entry { padding: 0.75rem; border-left: 4px solid #3498db; margin-bottom: 0.5rem; background: #f8f9fa; border-radius: 4px; font-family: monospace; }
+        .log-entry.admin { border-left-color: #e74c3c; }
+        .log-entry.security { border-left-color: #f39c12; }
+        .log-entry.user { border-left-color: #27ae60; }
+        .btn { padding: 0.5rem 1rem; border: none; border-radius: 4px; cursor: pointer; font-size: 0.875rem; transition: all 0.3s; }
+        .btn-primary { background: #3498db; color: white; }
+        .btn-primary:hover { background: #2980b9; }
+        .btn-danger { background: #e74c3c; color: white; }
+        .btn-danger:hover { background: #c0392b; }
+        .filter-controls { display: flex; gap: 1rem; margin-bottom: 1rem; }
+        .filter-controls select { padding: 0.5rem; border: 1px solid #ddd; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📋 Activity Log</h1>
+        <div class="nav-links">
+            <a href="/admin/dashboard">Dashboard</a>
+            <a href="/admin/users">Users</a>
+            <a href="/admin/interviews">Interviews</a>
+            <a href="/admin/activity-log">Activity Log</a>
+            <a href="/admin/system-stats">System Stats</a>
+            <a href="/admin/logout">Logout</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="section">
+            <div class="section-header">
+                <h2>🔍 System Activity Log</h2>
+                <div>
+                    {% if current_user.role == 'master_admin' %}
+                    <button class="btn btn-danger" onclick="clearLogs()">🗑️ Clear All Logs</button>
+                    {% endif %}
+                    <button class="btn btn-primary" onclick="refreshLogs()">🔄 Refresh</button>
+                </div>
+            </div>
+            <div class="section-content">
+                <div class="filter-controls">
+                    <select id="logTypeFilter" onchange="filterLogs()">
+                        <option value="">All Log Types</option>
+                        <option value="admin">Admin Actions</option>
+                        <option value="security">Security Events</option>
+                        <option value="user">User Actions</option>
+                        <option value="system">System Events</option>
+                    </select>
+                </div>
+                
+                <div id="logEntries">
+                    {% if activities %}
+                        {% for activity in activities %}
+                        <div class="log-entry {% if 'ADMIN' in activity %}admin{% elif 'SECURITY' in activity %}security{% elif 'USER' in activity %}user{% endif %}">
+                            {{ activity }}
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="log-entry">
+                            No recent activity found.
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function refreshLogs() {
+            location.reload();
+        }
+
+        function clearLogs() {
+            if (confirm('Are you sure you want to clear all system logs? This action cannot be undone.')) {
+                fetch('/admin/clear-logs', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ log_type: 'all' })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('All logs cleared successfully!');
+                        location.reload();
+                    } else {
+                        alert('Error: ' + data.message);
+                    }
+                });
+            }
+        }
+
+        function filterLogs() {
+            const filter = document.getElementById('logTypeFilter').value.toLowerCase();
+            const entries = document.querySelectorAll('.log-entry');
+            
+            entries.forEach(entry => {
+                if (!filter || entry.textContent.toLowerCase().includes(filter)) {
+                    entry.style.display = 'block';
+                } else {
+                    entry.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>

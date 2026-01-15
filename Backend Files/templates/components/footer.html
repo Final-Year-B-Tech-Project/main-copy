@@ -1,0 +1,120 @@
+<footer style="background: var(--gray-800); color: var(--gray-300); margin-top: 3rem;">
+    <div class="container-fluid">
+        <div style="padding: 3rem 0 2rem 0;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
+                <!-- Company Info -->
+                <div>
+                    <div class="d-flex align-items-center mb-3">
+                        <div style="width: 32px; height: 32px; border-radius: 6px; display: flex; align-items: center; justify-content: center; margin-right: 0.75rem;">
+                            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="TalentSync" style="width: 32px; height: 32px; border-radius: 6px;">
+                        </div>
+                        <h5 style="color: white; margin: 0; font-weight: 600;">TalentSync</h5>
+                    </div>
+                    <p style="color: var(--gray-400); line-height: 1.6; margin-bottom: 1.5rem;">
+                        Revolutionizing the interview process with AI-powered assessments, 
+                        helping students practice and HR professionals find the best candidates.
+                    </p>
+                    <div style="display: flex; gap: 1rem;">
+                        <a href="#" style="color: var(--gray-400); font-size: 1.25rem; transition: color 0.2s;">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" style="color: var(--gray-400); font-size: 1.25rem; transition: color 0.2s;">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="#" style="color: var(--gray-400); font-size: 1.25rem; transition: color 0.2s;">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="#" style="color: var(--gray-400); font-size: 1.25rem; transition: color 0.2s;">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Quick Links -->
+                <div>
+                    <h6 style="color: white; font-weight: 600; margin-bottom: 1rem; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">Quick Links</h6>
+                    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                        <a href="{{ url_for('main.index') }}" style="color: var(--gray-400); text-decoration: none; font-size: 0.875rem; transition: color 0.2s;">Home</a>
+                        {% if current_user.is_authenticated %}
+                            <a href="{{ url_for('main.dashboard') }}" style="color: var(--gray-400); text-decoration: none; font-size: 0.875rem; transition: color 0.2s;">Dashboard</a>
+                            {% if current_user.user_type == 'student' %}
+                                <a href="{{ url_for('main.practice_interview') }}" style="color: var(--gray-400); text-decoration: none; font-size: 0.875rem; transition: color 0.2s;">Practice</a>
+                            {% elif current_user.user_type == 'hr' %}
+                                <a href="{{ url_for('hr.drives') }}" style="color: var(--gray-400); text-decoration: none; font-size: 0.875rem; transition: color 0.2s;">Job Drives</a>
+                            {% endif %}
+                            <a href="{{ url_for('auth.profile') }}" style="color: var(--gray-400); text-decoration: none; font-size: 0.875rem; transition: color 0.2s;">Profile</a>
+                        {% else %}
+                            <a href="{{ url_for('auth.register') }}" style="color: var(--gray-400); text-decoration: none; font-size: 0.875rem; transition: color 0.2s;">Get Started</a>
+                            <a href="{{ url_for('auth.login') }}" style="color: var(--gray-400); text-decoration: none; font-size: 0.875rem; transition: color 0.2s;">Sign In</a>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <!-- Features -->
+                <div>
+                    <h6 style="color: white; font-weight: 600; margin-bottom: 1rem; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">Features</h6>
+                    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                        <span style="color: var(--gray-400); font-size: 0.875rem;">AI Interviews</span>
+                        <span style="color: var(--gray-400); font-size: 0.875rem;">Real-time Feedback</span>
+                        <span style="color: var(--gray-400); font-size: 0.875rem;">Job Matching</span>
+                        <span style="color: var(--gray-400); font-size: 0.875rem;">Performance Analytics</span>
+                        <span style="color: var(--gray-400); font-size: 0.875rem;">Voice Recognition</span>
+                    </div>
+                </div>
+                
+                <!-- Contact -->
+                <div>
+                    <h6 style="color: white; font-weight: 600; margin-bottom: 1rem; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">Contact</h6>
+                    <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                        <div style="display: flex; align-items: center; gap: 0.75rem;">
+                            <i class="fas fa-envelope" style="color: var(--gray-500); width: 16px;"></i>
+                            <span style="color: var(--gray-400); font-size: 0.875rem;">talent.sync.sys@gmail.com</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 0.75rem;">
+                            <i class="fas fa-phone" style="color: var(--gray-500); width: 16px;"></i>
+                            <span style="color: var(--gray-400); font-size: 0.875rem;">(+91) 70289-21574</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 0.75rem;">
+                            <i class="fas fa-clock" style="color: var(--gray-500); width: 16px;"></i>
+                            <span style="color: var(--gray-400); font-size: 0.875rem;">24/7 Support</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Bottom Bar -->
+        <div style="border-top: 1px solid var(--gray-700); padding: 1.5rem 0;">
+            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+                <div style="color: var(--gray-400); font-size: 0.875rem;">
+                    © {{ current_year }} TalentSync. All rights reserved.
+                    Made with <i class="fas fa-heart" style="color: #ef4444;"></i> for better interviews.
+                </div>
+                <div style="display: flex; gap: 1rem;">
+                    <span class="badge badge-success">Secure</span>
+                    <span class="badge badge-primary">GDPR Compliant</span>
+                    <span class="badge badge-warning">AI Powered</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<style>
+footer a:hover {
+    color: var(--primary) !important;
+}
+
+@media (max-width: 768px) {
+    footer > div > div:first-child {
+        grid-template-columns: 1fr !important;
+        gap: 1.5rem !important;
+    }
+    
+    footer div[style*="justify-content: space-between"] {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        text-align: center !important;
+    }
+}
+</style>

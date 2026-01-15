@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block title %}Interview Feedback - TalentSync{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card bg-dark text-white">
+        <div class="card-header">
+            <h2>Interview Feedback - {{ session.candidate.full_name }}</h2>
+        </div>
+        <div class="card-body">
+            <!-- Overall Score -->
+            <div class="text-center mb-4">
+                <h1 class="display-1">{{ feedback.overall_score }}/100</h1>
+                <p class="lead">{{ feedback.performance_level }}</p>
+            </div>
+            
+            <!-- Scores -->
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <h5>Technical: {{ feedback.technical_score }}/100</h5>
+                    <div class="progress">
+                        <div class="progress-bar bg-info" style="width: {{ feedback.technical_score }}%"></div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <h5>Communication: {{ feedback.communication_score }}/100</h5>
+                    <div class="progress">
+                        <div class="progress-bar bg-success" style="width: {{ feedback.communication_score }}%"></div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <h5>Confidence: {{ feedback.confidence_score }}/100</h5>
+                    <div class="progress">
+                        <div class="progress-bar bg-warning" style="width: {{ feedback.confidence_score }}%"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Strengths -->
+            <div class="mb-4">
+                <h4>Strengths:</h4>
+                <ul>
+                    {% for strength in feedback.strengths %}
+                    <li>{{ strength }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            
+            <!-- Weaknesses -->
+            <div class="mb-4">
+                <h4>Areas for Improvement:</h4>
+                <ul>
+                    {% for weakness in feedback.weaknesses %}
+                    <li>{{ weakness }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            
+            <!-- Recommendations -->
+            <div class="mb-4">
+                <h4>Recommendations:</h4>
+                <ul>
+                    {% for rec in feedback.recommendations %}
+                    <li>{{ rec }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            
+            <!-- Summary -->
+            <div class="mb-4">
+                <h4>Summary:</h4>
+                <p>{{ feedback.summary }}</p>
+            </div>
+            
+            <!-- Security Report -->
+            {% if feedback.security_report %}
+            <div class="card bg-secondary mb-4">
+                <div class="card-header">
+                    <h4><i class="fas fa-shield-alt"></i> Security & Integrity Report</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <p><strong>Integrity Level:</strong> <span class="badge bg-{{ 'success' if feedback.security_report.integrity_score >= 80 else 'danger' }}">{{ feedback.security_report.integrity_level }}</span></p>
+                            <p><strong>Integrity Score:</strong> {{ feedback.security_report.integrity_score }}/100</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Tab Switches:</strong> {{ feedback.security_report.tab_switches }}</p>
+                            <p><strong>Total Violations:</strong> {{ feedback.security_report.total_violations }}</p>
+                        </div>
+                    </div>
+                    
+                    <h5>Face Detection Analysis:</h5>
+                    <ul>
+                        <li><strong>Multiple Faces Detected:</strong> {{ feedback.security_report.face_analysis.multiple_faces_detected }} times</li>
+                        <li><strong>No Face Detected:</strong> {{ feedback.security_report.face_analysis.no_face_detected }} times</li>
+                        <li><strong>Total Face Checks:</strong> {{ feedback.security_report.face_analysis.total_checks }}</li>
+                        <li><strong>Single Face (Valid):</strong> {{ feedback.security_report.face_analysis.total_checks - feedback.security_report.face_analysis.multiple_faces_detected - feedback.security_report.face_analysis.no_face_detected }} times</li>
+                    </ul>
+                    
+                    <h5>Security Issues:</h5>
+                    <ul>
+                        {% for issue in feedback.security_report.issues %}
+                        <li>{{ issue }}</li>
+                        {% endfor %}
+                    </ul>
+                    
+                    <p><strong>Recommendation:</strong> {{ feedback.security_report.recommendation }}</p>
+                </div>
+            </div>
+            {% endif %}
+            
+            <a href="{{ url_for('main.student_dashboard') }}" class="btn btn-primary">Back to Dashboard</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

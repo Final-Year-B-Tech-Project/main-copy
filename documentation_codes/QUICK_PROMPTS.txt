@@ -1,0 +1,68 @@
+═══════════════════════════════════════════════════════════════
+  QUICK DIAGRAM PROMPTS - AI INTERVIEW SYSTEM
+═══════════════════════════════════════════════════════════════
+
+📊 PROMPT 1: MAIN SYSTEM DIAGRAM (BEST FOR PRESENTATIONS)
+───────────────────────────────────────────────────────────────
+Create a flowchart for an AI Interview System showing:
+- User (Student/HR) → Web Interface → Authentication
+- Student path: Practice Interview → AI generates questions → 
+  Answer → AI evaluates → Feedback → Database
+- HR path: Create Job → Post → Schedule → AI evaluation
+- Central AI Engine (OpenRouter API) in purple
+- Database storage in blue
+- Use professional colors and clear arrows
+───────────────────────────────────────────────────────────────
+
+
+📊 PROMPT 2: SIMPLE ARCHITECTURE (BEST FOR PAPERS)
+───────────────────────────────────────────────────────────────
+Create 3-layer architecture diagram:
+Layer 1 (Frontend): Web Interface, HTML5+Bootstrap
+Layer 2 (Backend): Flask Server, Authentication, AI Service
+Layer 3 (Data): Database, File Storage
+External: OpenRouter API (dotted connection)
+Colors: Blue (frontend), Orange (backend), Green (data), 
+Purple (AI)
+───────────────────────────────────────────────────────────────
+
+
+📊 PROMPT 3: RESEARCH METHODOLOGY
+───────────────────────────────────────────────────────────────
+Create methodology flowchart with 5 phases:
+Phase 1: Problem → Literature → Requirements → Design
+Phase 2: Technology Selection (Flask, HTML5, AI, SQLite)
+Phase 3: Module Development (Auth, Student, HR, AI)
+Phase 4: Testing (Unit, Integration, UAT)
+Phase 5: Analysis → Deployment
+Use different colors for each phase
+───────────────────────────────────────────────────────────────
+
+
+📊 ULTRA-SHORT PROMPT (ANY TOOL)
+───────────────────────────────────────────────────────────────
+AI Interview System flowchart: User → Web → Auth → 
+[Student: AI Interview+Feedback | HR: Jobs+Scheduling] → 
+Database → Results. AI engine (purple) generates questions 
+and evaluates answers. Professional colors.
+───────────────────────────────────────────────────────────────
+
+
+📊 ONE-LINE PROMPT
+───────────────────────────────────────────────────────────────
+Flowchart: User→Web→Auth→[Student:Interview+AI|HR:Jobs]→DB→Results
+───────────────────────────────────────────────────────────────
+
+
+🎯 USAGE:
+1. Copy any prompt above
+2. Paste into ChatGPT/Claude/Gemini/Draw.io
+3. Add "as Mermaid code" for code output
+4. Add "as visual diagram" for image output
+
+✅ WORKS WITH:
+ChatGPT, Claude, Gemini, Copilot, Draw.io, Lucidchart, Visio
+
+═══════════════════════════════════════════════════════════════
+For detailed prompts, see: DIAGRAM_PROMPTS.md
+═══════════════════════════════════════════════════════════════

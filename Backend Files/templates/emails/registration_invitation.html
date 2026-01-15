@@ -1,0 +1,100 @@
+{% extends "emails/base_email.html" %}
+
+{% block content %}
+<div class="greeting">
+    Welcome to TalentSync! 🚀
+</div>
+
+<div class="message-content">
+    <p>We're excited to invite you to join <strong>TalentSync</strong>, the revolutionary AI-powered interview platform that's transforming how students practice and HR professionals conduct interviews.</p>
+    
+    <div class="highlight-box">
+        <h3><i class="fas fa-gift"></i> Your Invitation Details</h3>
+        <p><strong>Position:</strong> {{ job_title }}</p>
+        <p><strong>Company:</strong> {{ company_name }}</p>
+        <p><strong>Platform:</strong> TalentSync AI Interview System</p>
+        <p><strong>Status:</strong> <span class="badge">Ready to Register</span></p>
+    </div>
+    
+    <div style="text-align: center; margin: 30px 0;">
+        <a href="{{ registration_link }}" class="cta-button">
+            <i class="fas fa-user-plus"></i> Create Your Account
+        </a>
+    </div>
+    
+    <h3 style="color: #1f2937; margin: 30px 0 15px 0;">🌟 Why Choose TalentSync?</h3>
+    
+    <div class="info-grid">
+        <div class="info-item">
+            <h4><i class="fas fa-infinity"></i> Unlimited Practice</h4>
+            <p>Practice interviews as much as you want with our AI interviewer</p>
+        </div>
+        <div class="info-item">
+            <h4><i class="fas fa-brain"></i> Smart Feedback</h4>
+            <p>Get instant, personalized feedback on your performance</p>
+        </div>
+        <div class="info-item">
+            <h4><i class="fas fa-chart-line"></i> Track Progress</h4>
+            <p>Monitor your improvement with detailed analytics</p>
+        </div>
+        <div class="info-item">
+            <h4><i class="fas fa-shield-alt"></i> Fair Assessment</h4>
+            <p>Bias-free evaluations for equal opportunity</p>
+        </div>
+    </div>
+    
+    <h3 style="color: #1f2937; margin: 30px 0 15px 0;">🎯 What You'll Get:</h3>
+    <ul class="feature-list">
+        <li>Access to our advanced AI interview system</li>
+        <li>Personalized interview questions based on your role</li>
+        <li>Real-time feedback and scoring</li>
+        <li>Detailed performance analytics</li>
+        <li>Resume optimization suggestions</li>
+        <li>Interview tips and best practices</li>
+        <li>Progress tracking over time</li>
+    </ul>
+    
+    <div style="background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); border: 2px solid #10b981; border-radius: 12px; padding: 25px; margin: 25px 0; text-align: center;">
+        <h3 style="margin: 0 0 10px 0; color: #047857; font-size: 20px;">
+            <i class="fas fa-rocket"></i> Get Started in 2 Minutes!
+        </h3>
+        <p style="margin: 0; color: #065f46;">Complete your registration and start practicing immediately. No credit card required!</p>
+    </div>
+    
+    <h3 style="color: #1f2937; margin: 30px 0 15px 0;">📱 How It Works:</h3>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px; margin: 20px 0;">
+        <div style="text-align: center; padding: 15px;">
+            <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #3b82f6, #8b5cf6); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; color: white; font-weight: bold;">1</div>
+            <h4 style="margin: 0 0 5px 0; color: #1f2937;">Register</h4>
+            <p style="margin: 0; font-size: 14px; color: #6b7280;">Create your account quickly</p>
+        </div>
+        <div style="text-align: center; padding: 15px;">
+            <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #10b981, #059669); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; color: white; font-weight: bold;">2</div>
+            <h4 style="margin: 0 0 5px 0; color: #1f2937;">Practice</h4>
+            <p style="margin: 0; font-size: 14px; color: #6b7280;">Start your first interview</p>
+        </div>
+        <div style="text-align: center; padding: 15px;">
+            <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #f59e0b, #d97706); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; color: white; font-weight: bold;">3</div>
+            <h4 style="margin: 0 0 5px 0; color: #1f2937;">Improve</h4>
+            <p style="margin: 0; font-size: 14px; color: #6b7280;">Get feedback and grow</p>
+        </div>
+    </div>
+    
+    <div class="divider"></div>
+    
+    <p style="text-align: center; margin: 25px 0; font-size: 16px; color: #4b5563;">
+        <strong>Questions?</strong> Our support team is available 24/7 to help you get started.
+    </p>
+    
+    <div style="text-align: center; margin: 30px 0;">
+        <a href="{{ registration_link }}" class="cta-button">
+            <i class="fas fa-arrow-right"></i> Join TalentSync Now
+        </a>
+    </div>
+    
+    <p style="margin-top: 25px; font-style: italic; color: #6b7280; text-align: center;">
+        We're excited to help you succeed in your interview journey! 🌟
+    </p>
+</div>
+{% endblock %}
+

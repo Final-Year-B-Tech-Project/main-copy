@@ -1,0 +1,167 @@
+{% extends "base.html" %}
+
+{% block title %}Job Drives{% endblock %}
+
+{% block extra_css %}
+<style>
+    .drive-card {
+        margin-bottom: 25px;
+        padding: 25px;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .drive-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 20px;
+    }
+    
+    .drive-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin: 0;
+    }
+    
+    .drive-info {
+        margin-bottom: 15px;
+    }
+    
+    .drive-info p {
+        margin-bottom: 8px;
+        font-size: 0.95rem;
+    }
+    
+    .action-buttons {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 20px;
+    }
+    
+    .btn-sm {
+        padding: 8px 16px;
+        font-size: 0.875rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 style="color: #ffffff !important;">Job Drives</h1>
+                <a href="{{ url_for('hr.create_drive') }}" class="btn btn-primary">Create New Drive</a>
+            </div>
+        </div>
+    </div>
+    
+    {% if drives %}
+    <div class="row">
+        {% for drive in drives %}
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="drive-card">
+                <div class="drive-header">
+                    <h5 class="drive-title">{{ drive.title }}</h5>
+                    <span class="badge {% if drive.is_active %}bg-success{% else %}bg-secondary{% endif %}">
+                        {% if drive.is_active %}Active{% else %}Inactive{% endif %}
+                    </span>
+                </div>
+                
+                <div class="drive-info">
+                    <p><strong>Role:</strong> {{ drive.job_role }}</p>
+                    <p><strong>Location:</strong> {{ drive.location or 'Remote' }}</p>
+                    <p><strong>Experience:</strong> {{ drive.experience_required or 'Any' }}</p>
+                    <p><strong>Created:</strong> {{ drive.created_at.strftime('%Y-%m-%d') }}</p>
+                    
+                    {% if drive.description %}
+                    <p class="small">{{ drive.description[:100] }}{% if drive.description|length > 100 %}...{% endif %}</p>
+                    {% endif %}
+                </div>
+                
+                <div class="action-buttons">
+                    <a href="{{ url_for('hr.drive_candidates', drive_id=drive.id) }}" 
+                       class="btn btn-sm btn-primary">
+                        <i class="fas fa-users me-1"></i>View Candidates
+                    </a>
+                    
+                    <button class="btn btn-sm {% if drive.is_active %}btn-warning{% else %}btn-success{% endif %}" 
+                            onclick="toggleDrive({{ drive.id }}, {{ drive.is_active|lower }})">
+                        <i class="fas fa-{% if drive.is_active %}pause{% else %}play{% endif %} me-1"></i>
+                        {% if drive.is_active %}Pause{% else %}Resume{% endif %}
+                    </button>
+                    
+                    <button class="btn btn-sm btn-danger" 
+                            onclick="deleteDrive({{ drive.id }}, '{{ drive.title }}')">
+                        <i class="fas fa-trash me-1"></i>Delete
+                    </button>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="row">
+        <div class="col-12">
+            <div class="drive-card text-center">
+                <h4 style="color: #ffffff !important;">No Job Drives Created</h4>
+                <p style="color: #ffffff !important;">Create your first job drive to start recruiting candidates.</p>
+                <a href="{{ url_for('hr.create_drive') }}" class="btn btn-primary">Create Job Drive</a>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+function toggleDrive(driveId, isActive) {
+    fetch(`/hr/drive/${driveId}/toggle`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            is_active: !isActive
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            location.reload();
+        } else {
+            alert('Error: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred');
+    });
+}
+
+function deleteDrive(driveId, driveTitle) {
+    if (confirm(`Are you sure you want to delete "${driveTitle}"? This action cannot be undone and will also delete all associated interviews.`)) {
+        fetch(`/hr/drive/${driveId}/delete`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Job drive deleted successfully!');
+                location.reload();
+            } else {
+                alert('Error: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while deleting the job drive');
+        });
+    }
+}
+</script>
+{% endblock %}

@@ -1,0 +1,509 @@
+{% extends "base.html" %}
+
+{% block title %}Practice Interview - AI Interview Agent{% endblock %}
+
+{% block body_class %}student-practice-page{% endblock %}
+
+{% block additional_css %}
+<style>
+.student-practice-page {
+    background: linear-gradient(135deg, var(--primary-bg) 0%, var(--secondary-bg) 100%);
+    min-height: 100vh;
+    padding: 2rem 0;
+}
+
+.practice-container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.practice-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.practice-header h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 1rem;
+}
+
+.practice-header p {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.setup-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 3rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+.setup-section {
+    margin-bottom: 2rem;
+}
+
+.section-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.job-roles {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.role-card {
+    background: rgba(59, 130, 246, 0.1);
+    border: 2px solid transparent;
+    border-radius: 12px;
+    padding: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.role-card:hover {
+    border-color: var(--primary-blue);
+    background: rgba(59, 130, 246, 0.15);
+    transform: translateY(-2px);
+}
+
+.role-card.selected {
+    border-color: var(--primary-blue);
+    background: rgba(59, 130, 246, 0.2);
+}
+
+.role-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: var(--primary-blue);
+}
+
+.role-title {
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.role-description {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.feature-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: rgba(16, 185, 129, 0.1);
+    border-radius: 10px;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.feature-icon {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, var(--success-green), #059669);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1rem;
+}
+
+.feature-text {
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.start-section {
+    text-align: center;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.start-btn {
+    background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+    color: white;
+    border: none;
+    padding: 1.2rem 3rem;
+    border-radius: 50px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.start-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(59, 130, 246, 0.4);
+}
+
+.start-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.tips-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+.tips-list {
+    list-style: none;
+    padding: 0;
+}
+
+.tips-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    background: rgba(59, 130, 246, 0.05);
+    border-radius: 10px;
+}
+
+.tip-number {
+    width: 30px;
+    height: 30px;
+    background: var(--primary-blue);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+}
+
+.tip-text {
+    color: var(--text-primary);
+    line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+    .practice-header h1 {
+        font-size: 2rem;
+    }
+    
+    .setup-card, .tips-card {
+        padding: 2rem;
+        margin: 1rem;
+    }
+    
+    .job-roles {
+        grid-template-columns: 1fr;
+    }
+    
+    .features-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="student-practice-page">
+    <div class="container">
+        <div class="practice-container">
+            <!-- Header -->
+            <div class="practice-header">
+                <h1>Practice Interview</h1>
+                <p>Sharpen your interview skills with our AI-powered practice sessions. Get real-time feedback and improve your confidence.</p>
+            </div>
+
+            <!-- Setup Card -->
+            <div class="setup-card">
+                <!-- Job Role Selection -->
+                <div class="setup-section">
+                    <h3 class="section-title">
+                        <i class="fas fa-briefcase"></i>
+                        Choose Your Target Role
+                    </h3>
+                    <div class="job-roles">
+                        <div class="role-card" data-role="Software Engineer">
+                            <div class="role-icon">💻</div>
+                            <div class="role-title">Software Engineer</div>
+                            <div class="role-description">Full-stack development, algorithms, system design</div>
+                        </div>
+                        <div class="role-card" data-role="Data Scientist">
+                            <div class="role-icon">📊</div>
+                            <div class="role-title">Data Scientist</div>
+                            <div class="role-description">Machine learning, statistics, data analysis</div>
+                        </div>
+                        <div class="role-card" data-role="Product Manager">
+                            <div class="role-icon">🎯</div>
+                            <div class="role-title">Product Manager</div>
+                            <div class="role-description">Strategy, roadmaps, stakeholder management</div>
+                        </div>
+                        <div class="role-card" data-role="UI/UX Designer">
+                            <div class="role-icon">🎨</div>
+                            <div class="role-title">UI/UX Designer</div>
+                            <div class="role-description">User experience, design thinking, prototyping</div>
+                        </div>
+                        <div class="role-card" data-role="Marketing Manager">
+                            <div class="role-icon">📈</div>
+                            <div class="role-title">Marketing Manager</div>
+                            <div class="role-description">Campaigns, analytics, brand strategy</div>
+                        </div>
+                        <div class="role-card" data-role="General">
+                            <div class="role-icon">🌟</div>
+                            <div class="role-title">General Interview</div>
+                            <div class="role-description">Common interview questions for any role</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Features -->
+                <div class="setup-section">
+                    <h3 class="section-title">
+                        <i class="fas fa-star"></i>
+                        What You'll Experience
+                    </h3>
+                    <div class="features-grid">
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-microphone"></i>
+                            </div>
+                            <div class="feature-text">Voice Recognition</div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <div class="feature-text">AI Interviewer</div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="feature-text">Real-time Feedback</div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-code"></i>
+                            </div>
+                            <div class="feature-text">Code Editor</div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-draw-polygon"></i>
+                            </div>
+                            <div class="feature-text">Whiteboard</div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-video"></i>
+                            </div>
+                            <div class="feature-text">Video Recording</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Resume Upload -->
+                <div class="setup-section" id="resumeSection" style="display: none;">
+                    <h3 class="section-title">
+                        <i class="fas fa-file-pdf"></i>
+                        Upload Resume (Optional - Enhances Questions)
+                    </h3>
+                    <div style="padding: 1.5rem; background: rgba(59, 130, 246, 0.05); border-radius: 10px; border: 2px dashed rgba(59, 130, 246, 0.3);">
+                        <input type="file" id="resumeUpload" accept=".pdf" style="display: none;">
+                        <button onclick="document.getElementById('resumeUpload').click()" class="btn btn-outline-primary">
+                            <i class="fas fa-upload"></i> Choose Resume (PDF)
+                        </button>
+                        <div id="resumeStatus" style="margin-top: 1rem; color: var(--text-secondary);"></div>
+                    </div>
+                </div>
+
+                <!-- Start Section -->
+                <div class="start-section">
+                    <button class="start-btn" id="startInterviewBtn" disabled>
+                        <i class="fas fa-play"></i>
+                        Start Practice Interview
+                    </button>
+                    <p style="margin-top: 1rem; color: var(--text-secondary);">
+                        Select a role above to begin your practice session
+                    </p>
+                </div>
+            </div>
+
+            <!-- Tips Card -->
+            <div class="tips-card">
+                <h3 class="section-title">
+                    <i class="fas fa-lightbulb"></i>
+                    Interview Tips
+                </h3>
+                <ul class="tips-list">
+                    <li>
+                        <div class="tip-number">1</div>
+                        <div class="tip-text">
+                            <strong>Prepare Your Environment:</strong> Find a quiet space with good lighting and stable internet connection.
+                        </div>
+                    </li>
+                    <li>
+                        <div class="tip-number">2</div>
+                        <div class="tip-text">
+                            <strong>Test Your Equipment:</strong> Ensure your microphone and camera are working properly before starting.
+                        </div>
+                    </li>
+                    <li>
+                        <div class="tip-number">3</div>
+                        <div class="tip-text">
+                            <strong>Think Out Loud:</strong> Explain your thought process clearly, especially during technical questions.
+                        </div>
+                    </li>
+                    <li>
+                        <div class="tip-number">4</div>
+                        <div class="tip-text">
+                            <strong>Use the Tools:</strong> Don't hesitate to use the code editor and whiteboard when needed.
+                        </div>
+                    </li>
+                    <li>
+                        <div class="tip-number">5</div>
+                        <div class="tip-text">
+                            <strong>Stay Calm:</strong> Take your time to understand questions and provide thoughtful answers.
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block additional_js %}
+<script>
+let selectedRole = null;
+let hasResume = false;
+
+// Check if user has resume on page load
+fetch('/student/check-resume')
+    .then(res => res.json())
+    .then(data => {
+        hasResume = data.has_resume;
+        if (!hasResume) {
+            document.getElementById('resumeSection').style.display = 'block';
+        }
+    })
+    .catch(() => {
+        document.getElementById('resumeSection').style.display = 'block';
+    });
+
+// Resume upload
+document.getElementById('resumeUpload').addEventListener('change', async function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    
+    const statusDiv = document.getElementById('resumeStatus');
+    statusDiv.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading and parsing resume...';
+    
+    const formData = new FormData();
+    formData.append('resume', file);
+    
+    try {
+        const response = await fetch('/student/upload-resume', {
+            method: 'POST',
+            body: formData
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            statusDiv.innerHTML = `<i class="fas fa-check-circle" style="color: #10b981;"></i> Resume uploaded! Found ${data.skills.length} skills, ${data.experience_years} years experience`;
+        } else {
+            statusDiv.innerHTML = `<i class="fas fa-times-circle" style="color: #ef4444;"></i> ${data.message}`;
+        }
+    } catch (error) {
+        statusDiv.innerHTML = `<i class="fas fa-times-circle" style="color: #ef4444;"></i> Upload failed`;
+    }
+});
+
+// Role selection
+document.querySelectorAll('.role-card').forEach(card => {
+    card.addEventListener('click', function() {
+        // Remove previous selection
+        document.querySelectorAll('.role-card').forEach(c => c.classList.remove('selected'));
+        
+        // Select current card
+        this.classList.add('selected');
+        selectedRole = this.dataset.role;
+        
+        // Enable start button
+        document.getElementById('startInterviewBtn').disabled = false;
+        document.querySelector('.start-section p').textContent = `Ready to start ${selectedRole} interview practice`;
+    });
+});
+
+// Start interview
+document.getElementById('startInterviewBtn').addEventListener('click', async function() {
+    if (!selectedRole) {
+        alert('Please select a job role first');
+        return;
+    }
+    
+    this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Starting Interview...';
+    this.disabled = true;
+    
+    try {
+        const response = await fetch('/student/start-practice', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                job_role: selectedRole
+            })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            window.location.href = data.redirect_url;
+        } else {
+            throw new Error(data.message);
+        }
+    } catch (error) {
+        console.error('Error starting interview:', error);
+        alert('Failed to start interview. Please try again.');
+        this.innerHTML = '<i class="fas fa-play"></i> Start Practice Interview';
+        this.disabled = false;
+    }
+});
+</script>
+{% endblock %}

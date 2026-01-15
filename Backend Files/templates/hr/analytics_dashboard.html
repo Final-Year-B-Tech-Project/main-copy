@@ -1,0 +1,414 @@
+{% extends "base.html" %}
+
+{% block title %}HR Analytics Dashboard - AI Interview Agent{% endblock %}
+
+{% block additional_css %}
+<style>
+.analytics-dashboard {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 2rem 0;
+}
+
+.analytics-header {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.analytics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.analytics-card {
+    background: white;
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.analytics-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.chart-container {
+    height: 300px;
+    background: #f8fafc;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+.metric-value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 0.5rem;
+}
+
+.metric-label {
+    color: #64748b;
+    font-weight: 500;
+}
+
+.trend-indicator {
+    display: flex;
+    align-items: center;
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.trend-up { color: #059669; }
+.trend-down { color: #dc2626; }
+.trend-neutral { color: #64748b; }
+
+.filter-bar {
+    background: white;
+    border-radius: 15px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.filter-group {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.filter-select {
+    padding: 0.5rem 1rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background: white;
+    min-width: 150px;
+}
+
+.export-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.export-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="analytics-dashboard">
+    <div class="container">
+        <!-- Analytics Header -->
+        <div class="analytics-header">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h1>HR Analytics Dashboard</h1>
+                    <p class="mb-0 opacity-90">Comprehensive insights into your recruitment performance</p>
+                </div>
+                <div>
+                    <button class="export-btn me-2" onclick="exportAnalytics()">
+                        <i class="fas fa-download me-2"></i>Export Report
+                    </button>
+                    <a href="{{ url_for('hr.enhanced_dashboard') }}" class="btn btn-outline-light">
+                        <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="filter-bar">
+            <div class="filter-group">
+                <label class="fw-medium">Time Period:</label>
+                <select class="filter-select" id="timePeriod">
+                    <option value="7d">Last 7 Days</option>
+                    <option value="30d" selected>Last 30 Days</option>
+                    <option value="90d">Last 90 Days</option>
+                    <option value="1y">Last Year</option>
+                </select>
+
+                <label class="fw-medium">Job Drive:</label>
+                <select class="filter-select" id="jobDrive">
+                    <option value="all">All Drives</option>
+                    <option value="active">Active Only</option>
+                </select>
+
+                <label class="fw-medium">Status:</label>
+                <select class="filter-select" id="status">
+                    <option value="all">All Statuses</option>
+                    <option value="completed">Completed</option>
+                    <option value="in_progress">In Progress</option>
+                    <option value="scheduled">Scheduled</option>
+                </select>
+
+                <button class="export-btn" onclick="applyFilters()">
+                    <i class="fas fa-filter me-2"></i>Apply Filters
+                </button>
+            </div>
+        </div>
+
+        <!-- Analytics Grid -->
+        <div class="analytics-grid">
+            <!-- Interview Performance -->
+            <div class="analytics-card">
+                <h3>Interview Performance</h3>
+                <div class="chart-container">
+                    <div class="text-center">
+                        <div class="metric-value">78.5%</div>
+                        <div class="metric-label">Average Score</div>
+                        <div class="trend-indicator trend-up">
+                            <i class="fas fa-arrow-up me-1"></i>
+                            +5.2% from last month
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Candidate Pipeline -->
+            <div class="analytics-card">
+                <h3>Candidate Pipeline</h3>
+                <div class="chart-container">
+                    <div class="text-center">
+                        <div class="metric-value">156</div>
+                        <div class="metric-label">Total Candidates</div>
+                        <div class="trend-indicator trend-up">
+                            <i class="fas fa-arrow-up me-1"></i>
+                            +12 new this week
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interview Completion Rate -->
+            <div class="analytics-card">
+                <h3>Completion Rate</h3>
+                <div class="chart-container">
+                    <div class="text-center">
+                        <div class="metric-value">92.3%</div>
+                        <div class="metric-label">Interviews Completed</div>
+                        <div class="trend-indicator trend-up">
+                            <i class="fas fa-arrow-up me-1"></i>
+                            +3.1% improvement
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Time to Hire -->
+            <div class="analytics-card">
+                <h3>Time to Hire</h3>
+                <div class="chart-container">
+                    <div class="text-center">
+                        <div class="metric-value">14.2</div>
+                        <div class="metric-label">Average Days</div>
+                        <div class="trend-indicator trend-down">
+                            <i class="fas fa-arrow-down me-1"></i>
+                            -2.3 days faster
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interview Trends -->
+            <div class="analytics-card" style="grid-column: span 2;">
+                <h3>Interview Trends</h3>
+                <div class="chart-container">
+                    <div class="text-center">
+                        <i class="fas fa-chart-line fa-3x text-muted mb-3"></i>
+                        <h5 class="text-muted">Interview Trends Chart</h5>
+                        <p class="text-muted">Interactive trend analysis coming soon</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Score Distribution -->
+            <div class="analytics-card">
+                <h3>Score Distribution</h3>
+                <div class="chart-container">
+                    <div class="text-center">
+                        <i class="fas fa-chart-pie fa-3x text-muted mb-3"></i>
+                        <h5 class="text-muted">Score Distribution</h5>
+                        <p class="text-muted">Pie chart coming soon</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Top Performers -->
+            <div class="analytics-card">
+                <h3>Top Performers</h3>
+                <div style="padding: 1rem 0;">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div>
+                            <div class="fw-medium">John Doe</div>
+                            <div class="text-muted small">Software Engineer</div>
+                        </div>
+                        <div class="text-end">
+                            <div class="fw-bold text-success">95.2%</div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div>
+                            <div class="fw-medium">Jane Smith</div>
+                            <div class="text-muted small">Product Manager</div>
+                        </div>
+                        <div class="text-end">
+                            <div class="fw-bold text-success">92.8%</div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="fw-medium">Mike Johnson</div>
+                            <div class="text-muted small">Data Scientist</div>
+                        </div>
+                        <div class="text-end">
+                            <div class="fw-bold text-success">89.5%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="analytics-card">
+                <h3>Recent Activity</h3>
+                <div style="padding: 1rem 0;">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="me-3">
+                            <div style="width: 40px; height: 40px; background: #dbeafe; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #1e40af;">
+                                <i class="fas fa-user-check"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="fw-medium">Interview completed</div>
+                            <div class="text-muted small">2 hours ago</div>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="me-3">
+                            <div style="width: 40px; height: 40px; background: #dcfce7; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #166534;">
+                                <i class="fas fa-briefcase"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="fw-medium">New job drive created</div>
+                            <div class="text-muted small">1 day ago</div>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <div class="me-3">
+                            <div style="width: 40px; height: 40px; background: #fef3c7; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #92400e;">
+                                <i class="fas fa-user-plus"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="fw-medium">Candidate registered</div>
+                            <div class="text-muted small">2 days ago</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block additional_js %}
+<script>
+function applyFilters() {
+    const timePeriod = document.getElementById('timePeriod').value;
+    const jobDrive = document.getElementById('jobDrive').value;
+    const status = document.getElementById('status').value;
+    
+    // Implement filter logic
+    console.log('Applying filters:', { timePeriod, jobDrive, status });
+    
+    // Show loading state
+    showLoadingState();
+    
+    // Simulate API call
+    setTimeout(() => {
+        hideLoadingState();
+        // Update charts and data
+        updateAnalyticsData();
+    }, 1000);
+}
+
+function exportAnalytics() {
+    // Implement analytics export
+    const exportData = {
+        timestamp: new Date().toISOString(),
+        filters: {
+            timePeriod: document.getElementById('timePeriod').value,
+            jobDrive: document.getElementById('jobDrive').value,
+            status: document.getElementById('status').value
+        }
+    };
+    
+    // Create and download file
+    const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `hr-analytics-${new Date().toISOString().split('T')[0]}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
+
+function showLoadingState() {
+    const cards = document.querySelectorAll('.analytics-card');
+    cards.forEach(card => {
+        card.style.opacity = '0.6';
+        card.style.pointerEvents = 'none';
+    });
+}
+
+function hideLoadingState() {
+    const cards = document.querySelectorAll('.analytics-card');
+    cards.forEach(card => {
+        card.style.opacity = '1';
+        card.style.pointerEvents = 'auto';
+    });
+}
+
+function updateAnalyticsData() {
+    // Simulate data update
+    console.log('Analytics data updated');
+}
+
+// Initialize analytics dashboard
+document.addEventListener('DOMContentLoaded', function() {
+    // Animate cards on load
+    const cards = document.querySelectorAll('.analytics-card');
+    cards.forEach((card, index) => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        setTimeout(() => {
+            card.style.transition = 'all 0.6s ease';
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+        }, index * 100);
+    });
+});
+</script>
+{% endblock %}

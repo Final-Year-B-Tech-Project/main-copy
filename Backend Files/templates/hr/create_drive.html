@@ -1,0 +1,315 @@
+{% extends "base.html" %}
+
+{% block title %}Create Job Drive - AI Interview Agent{% endblock %}
+
+{% block body_class %}hr-create-drive-page{% endblock %}
+
+{% block additional_css %}
+<style>
+.hr-create-drive-page {
+    background: linear-gradient(135deg, var(--primary-bg) 0%, var(--secondary-bg) 100%);
+    min-height: 100vh;
+    padding: 2rem 0;
+}
+
+.create-drive-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.drive-form-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 3rem;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+.form-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.form-header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.5rem;
+}
+
+.form-header p {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+}
+
+.form-section {
+    margin-bottom: 2rem;
+}
+
+.section-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.form-control::placeholder {
+    color: var(--text-muted);
+}
+
+textarea.form-control {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.skills-input {
+    position: relative;
+}
+
+.skills-help {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-top: 0.25rem;
+}
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.btn-create {
+    background: linear-gradient(135deg, var(--success-green), #059669);
+    color: white;
+    padding: 0.875rem 2rem;
+    border: none;
+    border-radius: 25px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-create:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+}
+
+.btn-cancel {
+    background: transparent;
+    color: var(--text-secondary);
+    padding: 0.875rem 2rem;
+    border: 1px solid var(--border-color);
+    border-radius: 25px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-cancel:hover {
+    background: rgba(100, 116, 139, 0.1);
+    color: var(--text-primary);
+    text-decoration: none;
+}
+
+@media (max-width: 768px) {
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .drive-form-card {
+        padding: 2rem;
+        margin: 1rem;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="hr-create-drive-page">
+    <div class="container">
+        <div class="create-drive-container">
+            <div class="drive-form-card">
+                <div class="form-header">
+                    <h1>Create New Job Drive</h1>
+                    <p>Set up a new recruitment campaign and start interviewing candidates</p>
+                </div>
+
+                <form method="POST" id="createDriveForm">
+                    <!-- Basic Information -->
+                    <div class="form-section">
+                        <h3 class="section-title">
+                            <i class="fas fa-info-circle"></i>
+                            Basic Information
+                        </h3>
+                        
+                        <div class="form-group">
+                            <label for="title" class="form-label">Job Title *</label>
+                            <input type="text" class="form-control" id="title" name="title" 
+                                   placeholder="e.g., Senior Software Engineer" required>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="job_role" class="form-label">Job Role *</label>
+                                <input type="text" class="form-control" id="job_role" name="job_role" 
+                                       placeholder="e.g., Full Stack Developer" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="location" class="form-label">Location</label>
+                                <input type="text" class="form-control" id="location" name="location" 
+                                       placeholder="e.g., Remote, New York, etc.">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="description" class="form-label">Job Description *</label>
+                            <textarea class="form-control" id="description" name="description" 
+                                      placeholder="Describe the role, responsibilities, and what you're looking for..." required></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Requirements -->
+                    <div class="form-section">
+                        <h3 class="section-title">
+                            <i class="fas fa-clipboard-list"></i>
+                            Requirements
+                        </h3>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="experience_required" class="form-label">Experience Level</label>
+                                <select class="form-control" id="experience_required" name="experience_required">
+                                    <option value="">Select experience level</option>
+                                    <option value="fresher">Fresher (0-1 years)</option>
+                                    <option value="junior">Junior (1-3 years)</option>
+                                    <option value="mid">Mid-level (3-5 years)</option>
+                                    <option value="senior">Senior (5+ years)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="number_of_positions" class="form-label">Number of Positions</label>
+                                <input type="number" class="form-control" id="number_of_positions" 
+                                       name="number_of_positions" value="1" min="1">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="skills_required" class="form-label">Required Skills</label>
+                            <div class="skills-input">
+                                <input type="text" class="form-control" id="skills_required" name="skills_required" 
+                                       placeholder="e.g., JavaScript, React, Node.js, Python">
+                                <div class="skills-help">Separate multiple skills with commas</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Additional Details -->
+                    <div class="form-section">
+                        <h3 class="section-title">
+                            <i class="fas fa-cog"></i>
+                            Additional Details
+                        </h3>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="salary_range" class="form-label">Salary Range</label>
+                                <input type="text" class="form-control" id="salary_range" name="salary_range" 
+                                       placeholder="e.g., $80,000 - $120,000">
+                            </div>
+                            <div class="form-group">
+                                <label for="deadline" class="form-label">Application Deadline</label>
+                                <input type="datetime-local" class="form-control" id="deadline" name="deadline">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Form Actions -->
+                    <div class="form-actions">
+                        <a href="{{ url_for('main.hr_drives') }}" class="btn-cancel">
+                            <i class="fas fa-times"></i>
+                            Cancel
+                        </a>
+                        <button type="submit" class="btn-create">
+                            <i class="fas fa-plus"></i>
+                            Create Job Drive
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block additional_js %}
+<script>
+document.getElementById('createDriveForm').addEventListener('submit', function(e) {
+    const submitBtn = this.querySelector('.btn-create');
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating...';
+    submitBtn.disabled = true;
+});
+
+// Auto-resize textarea
+document.getElementById('description').addEventListener('input', function() {
+    this.style.height = 'auto';
+    this.style.height = this.scrollHeight + 'px';
+});
+</script>
+{% endblock %}

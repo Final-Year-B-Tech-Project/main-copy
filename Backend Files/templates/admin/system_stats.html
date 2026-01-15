@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>System Statistics - Admin Panel</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f8f9fa; }
+        .header { background: #2c3e50; color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .header h1 { font-size: 1.5rem; }
+        .nav-links { display: flex; gap: 1rem; }
+        .nav-links a { color: white; text-decoration: none; padding: 0.5rem 1rem; border-radius: 4px; transition: background 0.3s; }
+        .nav-links a:hover { background: rgba(255,255,255,0.1); }
+        .container { max-width: 1200px; margin: 2rem auto; padding: 0 1rem; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+        .stat-card { background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); text-align: center; }
+        .stat-card h3 { font-size: 2.5rem; color: #2c3e50; margin-bottom: 0.5rem; }
+        .stat-card p { color: #7f8c8d; font-weight: 500; font-size: 1.1rem; }
+        .stat-card.users { border-left: 4px solid #3498db; }
+        .stat-card.active { border-left: 4px solid #27ae60; }
+        .stat-card.interviews { border-left: 4px solid #e74c3c; }
+        .stat-card.recent { border-left: 4px solid #f39c12; }
+        .section { background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 2rem; }
+        .section-header { padding: 1rem 1.5rem; border-bottom: 1px solid #ecf0f1; }
+        .section-header h2 { color: #2c3e50; }
+        .section-content { padding: 1.5rem; }
+        .progress-bar { background: #ecf0f1; border-radius: 10px; overflow: hidden; margin: 0.5rem 0; }
+        .progress-fill { height: 20px; background: linear-gradient(90deg, #3498db, #2980b9); transition: width 0.3s ease; }
+        .metric-row { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 0; border-bottom: 1px solid #ecf0f1; }
+        .metric-row:last-child { border-bottom: none; }
+        .metric-label { font-weight: 500; color: #2c3e50; }
+        .metric-value { font-weight: 600; color: #3498db; }
+        .chart-placeholder { height: 200px; background: #f8f9fa; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #7f8c8d; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📊 System Statistics</h1>
+        <div class="nav-links">
+            <a href="/admin/dashboard">Dashboard</a>
+            <a href="/admin/users">Users</a>
+            <a href="/admin/interviews">Interviews</a>
+            <a href="/admin/activity-log">Activity Log</a>
+            <a href="/admin/system-stats">System Stats</a>
+            <a href="/admin/logout">Logout</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Overview Statistics -->
+        <div class="stats-grid">
+            <div class="stat-card users">
+                <h3>{{ stats.total_users }}</h3>
+                <p>Total Users</p>
+            </div>
+            <div class="stat-card active">
+                <h3>{{ stats.active_users }}</h3>
+                <p>Active Users</p>
+            </div>
+            <div class="stat-card interviews">
+                <h3>{{ stats.completed_interviews }}</h3>
+                <p>Completed Interviews</p>
+            </div>
+            <div class="stat-card recent">
+                <h3>{{ stats.recent_registrations }}</h3>
+                <p>New Users (7 days)</p>
+            </div>
+        </div>
+
+        <!-- User Distribution -->
+        <div class="section">
+            <div class="section-header">
+                <h2>👥 User Distribution</h2>
+            </div>
+            <div class="section-content">
+                <div class="metric-row">
+                    <div class="metric-label">Students</div>
+                    <div class="metric-value">{{ stats.students }}</div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: {{ (stats.students / stats.total_users * 100) if stats.total_users > 0 else 0 }}%;"></div>
+                </div>
+
+                <div class="metric-row">
+                    <div class="metric-label">HR Users</div>
+                    <div class="metric-value">{{ stats.hr_users }}</div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: {{ (stats.hr_users / stats.total_users * 100) if stats.total_users > 0 else 0 }}%;"></div>
+                </div>
+
+                <div class="metric-row">
+                    <div class="metric-label">Administrators</div>
+                    <div class="metric-value">{{ stats.admins }}</div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: {{ (stats.admins / stats.total_users * 100) if stats.total_users > 0 else 0 }}%;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Interview Statistics -->
+        <div class="section">
+            <div class="section-header">
+                <h2>🎤 Interview Statistics</h2>
+            </div>
+            <div class="section-content">
+                <div class="metric-row">
+                    <div class="metric-label">Total Interviews</div>
+                    <div class="metric-value">{{ stats.total_interviews }}</div>
+                </div>
+
+                <div class="metric-row">
+                    <div class="metric-label">Completed Interviews</div>
+                    <div class="metric-value">{{ stats.completed_interviews }}</div>
+                </div>
+
+                <div class="metric-row">
+                    <div class="metric-label">Completion Rate</div>
+                    <div class="metric-value">
+                        {% if stats.total_interviews > 0 %}
+                        {{ "%.1f"|format((stats.completed_interviews / stats.total_interviews * 100)) }}%
+                        {% else %}
+                        0%
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="metric-row">
+                    <div class="metric-label">Recent Interviews (7 days)</div>
+                    <div class="metric-value">{{ stats.recent_interviews }}</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- System Health -->
+        <div class="section">
+            <div class="section-header">
+                <h2>🔧 System Health</h2>
+            </div>
+            <div class="section-content">
+                <div class="metric-row">
+                    <div class="metric-label">Active Users Ratio</div>
+                    <div class="metric-value">
+                        {% if stats.total_users > 0 %}
+                        {{ "%.1f"|format((stats.active_users / stats.total_users * 100)) }}%
+                        {% else %}
+                        0%
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="metric-row">
+                    <div class="metric-label">New Registrations (7 days)</div>
+                    <div class="metric-value">{{ stats.recent_registrations }}</div>
+                </div>
+
+                <div class="metric-row">
+                    <div class="metric-label">System Status</div>
+                    <div class="metric-value" style="color: #27ae60;">🟢 Operational</div>
+                </div>
+
+                <div class="metric-row">
+                    <div class="metric-label">Database Status</div>
+                    <div class="metric-value" style="color: #27ae60;">🟢 Connected</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Activity Trends -->
+        <div class="section">
+            <div class="section-header">
+                <h2>📈 Activity Trends</h2>
+            </div>
+            <div class="section-content">
+                <div class="chart-placeholder">
+                    📊 Activity Chart Placeholder<br>
+                    <small>Future enhancement: Real-time activity graphs</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="section">
+            <div class="section-header">
+                <h2>⚡ Quick Actions</h2>
+            </div>
+            <div class="section-content">
+                <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                    <button onclick="location.href='/admin/users'" style="padding: 1rem 2rem; background: #3498db; color: white; border: none; border-radius: 8px; cursor: pointer;">
+                        👥 Manage Users
+                    </button>
+                    <button onclick="location.href='/admin/interviews'" style="padding: 1rem 2rem; background: #e74c3c; color: white; border: none; border-radius: 8px; cursor: pointer;">
+                        🎤 View Interviews
+                    </button>
+                    <button onclick="location.href='/admin/activity-log'" style="padding: 1rem 2rem; background: #f39c12; color: white; border: none; border-radius: 8px; cursor: pointer;">
+                        📋 Activity Log
+                    </button>
+                    {% if current_user.role == 'master_admin' %}
+                    <button onclick="clearLogs()" style="padding: 1rem 2rem; background: #95a5a6; color: white; border: none; border-radius: 8px; cursor: pointer;">
+                        🗑️ Clear Logs
+                    </button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function clearLogs() {
+            if (confirm('Are you sure you want to clear all system logs?')) {
+                fetch('/admin/clear-logs', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ log_type: 'all' })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Logs cleared successfully!');
+                        location.reload();
+                    } else {
+                        alert('Error: ' + data.message);
+                    }
+                });
+            }
+        }
+
+        // Auto-refresh every 30 seconds
+        setTimeout(() => {
+            location.reload();
+        }, 30000);
+    </script>
+</body>
+</html>

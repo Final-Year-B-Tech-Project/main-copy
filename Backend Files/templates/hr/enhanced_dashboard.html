@@ -1,0 +1,726 @@
+{% extends "base.html" %}
+
+{% block body_class %}hr-dashboard-page{% endblock %}
+
+{% block title %}HR Dashboard - AI Interview Agent{% endblock %}
+
+{% block additional_css %}
+<style>
+/* Override with violet theme */
+:root {
+    --hr-primary: #6366f1;
+    --hr-secondary: #8b5cf6;
+    --hr-success: #10b981;
+    --hr-warning: #f59e0b;
+    --hr-danger: #ef4444;
+    --hr-info: #06b6d4;
+    --hr-light: #ffffff;
+    --hr-dark: #0f0f23;
+    --hr-gradient-1: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    --hr-gradient-2: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
+    --hr-gradient-3: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+    --hr-gradient-4: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
+
+/* Force white text everywhere */
+* {
+    color: #ffffff !important;
+}
+
+.hr-dashboard {
+    background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+    min-height: 100vh;
+    padding: 2rem 0;
+}
+
+.dashboard-header {
+    background: linear-gradient(145deg, #1a1a2e, #16213e);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    border: 1px solid #4c1d95;
+    color: white !important;
+    box-shadow: 0 8px 32px rgba(99, 102, 241, 0.1);
+}
+
+.dashboard-header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(45deg, #fff, #e2e8f0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.dashboard-header .subtitle {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    margin-bottom: 1.5rem;
+}
+
+.quick-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.quick-action-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 50px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+}
+
+.quick-action-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+    color: white;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    background: linear-gradient(145deg, #1a1a2e, #16213e);
+    border: 1px solid #4c1d95;
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 10px 30px rgba(99, 102, 241, 0.1);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--gradient);
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.stat-card.drives::before { background: var(--hr-gradient-1); }
+.stat-card.interviews::before { background: var(--hr-gradient-2); }
+.stat-card.completed::before { background: var(--hr-gradient-3); }
+.stat-card.pending::before { background: var(--hr-gradient-4); }
+
+.stat-header {
+    display: flex;
+    justify-content: between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.stat-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: white;
+    margin-bottom: 1rem;
+}
+
+.stat-icon.drives { background: var(--hr-gradient-1); }
+.stat-icon.interviews { background: var(--hr-gradient-2); }
+.stat-icon.completed { background: var(--hr-gradient-3); }
+.stat-icon.pending { background: var(--hr-gradient-4); }
+
+.stat-number {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--hr-dark);
+    margin-bottom: 0.5rem;
+}
+
+.stat-label {
+    color: var(--hr-secondary);
+    font-weight: 500;
+    margin-bottom: 1rem;
+}
+
+.stat-change {
+    display: flex;
+    align-items: center;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.stat-change.positive { color: var(--hr-success); }
+.stat-change.negative { color: var(--hr-danger); }
+
+.content-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.main-content, .sidebar-content {
+    background: linear-gradient(145deg, #1a1a2e, #16213e);
+    border: 1px solid #4c1d95;
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 10px 30px rgba(99, 102, 241, 0.1);
+}
+
+.section-header {
+    display: flex;
+    justify-content: between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #f1f5f9;
+}
+
+.section-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--hr-dark);
+    margin: 0;
+}
+
+.interview-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.interview-table th,
+.interview-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.interview-table th {
+    background: #f8fafc;
+    font-weight: 600;
+    color: var(--hr-secondary);
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.interview-table tr:hover {
+    background: #f8fafc;
+}
+
+.status-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.status-badge.completed { background: #dcfce7; color: #166534; }
+.status-badge.in-progress { background: #fef3c7; color: #92400e; }
+.status-badge.scheduled { background: #dbeafe; color: #1e40af; }
+.status-badge.cancelled { background: #fee2e2; color: #991b1b; }
+
+.score-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+.score-badge.excellent { background: #dcfce7; color: #166534; }
+.score-badge.good { background: #fef3c7; color: #92400e; }
+.score-badge.average { background: #fef3c7; color: #92400e; }
+.score-badge.poor { background: #fee2e2; color: #991b1b; }
+
+.action-btn {
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.action-btn.primary {
+    background: var(--hr-primary);
+    color: white;
+}
+
+.action-btn.primary:hover {
+    background: #1d4ed8;
+    color: white;
+}
+
+.action-btn.secondary {
+    background: #f1f5f9;
+    color: var(--hr-secondary);
+}
+
+.action-btn.secondary:hover {
+    background: #e2e8f0;
+    color: var(--hr-dark);
+}
+
+.recent-activity {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.activity-item {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid #f1f5f9;
+    transition: all 0.2s ease;
+}
+
+.activity-item:hover {
+    background: #f8fafc;
+}
+
+.activity-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1rem;
+    font-size: 1rem;
+}
+
+.activity-icon.interview { background: #dbeafe; color: #1e40af; }
+.activity-icon.drive { background: #dcfce7; color: #166534; }
+.activity-icon.candidate { background: #fef3c7; color: #92400e; }
+
+.activity-content {
+    flex: 1;
+}
+
+.activity-title {
+    font-weight: 500;
+    color: var(--hr-dark);
+    margin-bottom: 0.25rem;
+}
+
+.activity-time {
+    font-size: 0.875rem;
+    color: var(--hr-secondary);
+}
+
+.empty-state {
+    text-align: center;
+    padding: 3rem 2rem;
+    color: var(--hr-secondary);
+}
+
+.empty-state-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+.empty-state h3 {
+    margin-bottom: 0.5rem;
+    color: var(--hr-dark);
+}
+
+.analytics-widget {
+    background: linear-gradient(145deg, #1a1a2e, #16213e);
+    border: 1px solid #4c1d95;
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 10px 30px rgba(99, 102, 241, 0.1);
+    margin-bottom: 2rem;
+}
+
+.chart-container {
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8fafc;
+    border-radius: 10px;
+    margin-top: 1rem;
+}
+
+@media (max-width: 768px) {
+    .content-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .quick-actions {
+        justify-content: center;
+    }
+    
+    .dashboard-header h1 {
+        font-size: 2rem;
+    }
+}
+
+.floating-action {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 60px;
+    height: 60px;
+    background: var(--hr-gradient-1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-decoration: none;
+    font-size: 1.5rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.floating-action:hover {
+    transform: scale(1.1);
+    color: white;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="hr-dashboard">
+    <div class="container">
+        <!-- Dashboard Header -->
+        <div class="dashboard-header">
+            <h1>HR Command Center</h1>
+            <p class="subtitle">Welcome back, {{ current_user.first_name }}! Manage your recruitment pipeline with ease.</p>
+            <div class="quick-actions">
+                <a href="{{ url_for('main.create_drive') }}" class="quick-action-btn">
+                    <i class="fas fa-plus me-2"></i>New Job Drive
+                </a>
+                <a href="{{ url_for('main.hr_drives') }}" class="quick-action-btn">
+                    <i class="fas fa-briefcase me-2"></i>Manage Drives
+                </a>
+                <a href="#" class="quick-action-btn" onclick="showBulkActions()">
+                    <i class="fas fa-users me-2"></i>Bulk Actions
+                </a>
+                <a href="#" class="quick-action-btn" onclick="showAnalytics()">
+                    <i class="fas fa-chart-line me-2"></i>Analytics
+                </a>
+            </div>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card drives">
+                <div class="stat-icon drives">
+                    <i class="fas fa-briefcase"></i>
+                </div>
+                <div class="stat-number">{{ total_drives }}</div>
+                <div class="stat-label">Active Job Drives</div>
+                <div class="stat-change positive">
+                    <i class="fas fa-arrow-up me-1"></i>
+                    +12% from last month
+                </div>
+            </div>
+
+            <div class="stat-card interviews">
+                <div class="stat-icon interviews">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="stat-number">{{ total_interviews }}</div>
+                <div class="stat-label">Total Interviews</div>
+                <div class="stat-change positive">
+                    <i class="fas fa-arrow-up me-1"></i>
+                    +8% from last week
+                </div>
+            </div>
+
+            <div class="stat-card completed">
+                <div class="stat-icon completed">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="stat-number">{{ completed_interviews }}</div>
+                <div class="stat-label">Completed Interviews</div>
+                <div class="stat-change positive">
+                    <i class="fas fa-arrow-up me-1"></i>
+                    +15% completion rate
+                </div>
+            </div>
+
+            <div class="stat-card pending">
+                <div class="stat-icon pending">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="stat-number">{{ total_interviews - completed_interviews }}</div>
+                <div class="stat-label">Pending Reviews</div>
+                <div class="stat-change">
+                    <i class="fas fa-minus me-1"></i>
+                    Awaiting action
+                </div>
+            </div>
+        </div>
+
+        <!-- Content Grid -->
+        <div class="content-grid">
+            <!-- Main Content -->
+            <div class="main-content">
+                <div class="section-header">
+                    <h2 class="section-title">Recent Interview Sessions</h2>
+                    <div>
+                        <button class="action-btn secondary me-2" onclick="filterInterviews()">
+                            <i class="fas fa-filter me-1"></i>Filter
+                        </button>
+                        <button class="action-btn primary" onclick="exportData()">
+                            <i class="fas fa-download me-1"></i>Export
+                        </button>
+                    </div>
+                </div>
+
+                {% if recent_interviews %}
+                <div class="table-responsive">
+                    <table class="interview-table">
+                        <thead>
+                            <tr>
+                                <th>Candidate</th>
+                                <th>Position</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Score</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for interview in recent_interviews %}
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="candidate-avatar me-3">
+                                            <div style="width: 40px; height: 40px; background: var(--hr-gradient-1); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">
+                                                {{ interview.candidate.first_name[0] }}{{ interview.candidate.last_name[0] }}
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="fw-medium">{{ interview.candidate.first_name }} {{ interview.candidate.last_name }}</div>
+                                            <div class="text-muted small">{{ interview.candidate.email }}</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="fw-medium">{{ interview.job_drive.title if interview.job_drive else 'Practice Interview' }}</div>
+                                    <div class="text-muted small">{{ interview.job_drive.job_role if interview.job_drive else 'General' }}</div>
+                                </td>
+                                <td>
+                                    <div>{{ interview.created_at.strftime('%b %d, %Y') }}</div>
+                                    <div class="text-muted small">{{ interview.created_at.strftime('%I:%M %p') }}</div>
+                                </td>
+                                <td>
+                                    {% if interview.status == 'completed' %}
+                                        <span class="status-badge completed">Completed</span>
+                                    {% elif interview.status == 'terminated' %}
+                                        <span class="status-badge cancelled">Terminated</span>
+                                    {% elif interview.status == 'in_progress' %}
+                                        <span class="status-badge in-progress">In Progress</span>
+                                    {% elif interview.status == 'cancelled' %}
+                                        <span class="status-badge cancelled">Cancelled</span>
+                                    {% else %}
+                                        <span class="status-badge scheduled">Scheduled</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if interview.overall_score %}
+                                        {% set score = interview.overall_score %}
+                                        {% if score >= 85 %}
+                                            <span class="score-badge excellent">{{ "%.0f"|format(score) }}%</span>
+                                        {% elif score >= 70 %}
+                                            <span class="score-badge good">{{ "%.0f"|format(score) }}%</span>
+                                        {% elif score >= 50 %}
+                                            <span class="score-badge average">{{ "%.0f"|format(score) }}%</span>
+                                        {% else %}
+                                            <span class="score-badge poor">{{ "%.0f"|format(score) }}%</span>
+                                        {% endif %}
+                                    {% else %}
+                                        <span class="text-muted">-</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <div class="d-flex gap-2">
+                                        {% if interview.status in ['completed', 'terminated'] %}
+                                            <a href="{{ url_for('main.interview_feedback', session_id=interview.id) }}" 
+                                               class="action-btn primary">
+                                                <i class="fas fa-eye me-1"></i>View
+                                            </a>
+                                        {% endif %}
+                                        <button class="action-btn secondary" onclick="showCandidateDetails({{ interview.candidate.id }})">
+                                            <i class="fas fa-user me-1"></i>Profile
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="empty-state">
+                    <div class="empty-state-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>No interviews yet</h3>
+                    <p>Create your first job drive to start interviewing candidates.</p>
+                    <a href="{{ url_for('main.create_drive') }}" class="action-btn primary">
+                        <i class="fas fa-plus me-2"></i>Create Job Drive
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Sidebar Content -->
+            <div class="sidebar-content">
+                <div class="section-header">
+                    <h3 class="section-title">Recent Activity</h3>
+                </div>
+                
+                <div class="recent-activity">
+                    <div class="activity-item">
+                        <div class="activity-icon interview">
+                            <i class="fas fa-user-check"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-title">New interview completed</div>
+                            <div class="activity-time">2 hours ago</div>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-item">
+                        <div class="activity-icon drive">
+                            <i class="fas fa-briefcase"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-title">Job drive created</div>
+                            <div class="activity-time">1 day ago</div>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-item">
+                        <div class="activity-icon candidate">
+                            <i class="fas fa-user-plus"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-title">New candidate registered</div>
+                            <div class="activity-time">2 days ago</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analytics Widget -->
+        <div class="analytics-widget">
+            <div class="section-header">
+                <h3 class="section-title">Interview Performance Analytics</h3>
+                <button class="action-btn secondary" onclick="showDetailedAnalytics()">
+                    <i class="fas fa-expand me-1"></i>View Details
+                </button>
+            </div>
+            <div class="chart-container">
+                <div class="text-center">
+                    <i class="fas fa-chart-line fa-3x text-muted mb-3"></i>
+                    <h5 class="text-muted">Analytics Dashboard</h5>
+                    <p class="text-muted">Interactive charts and insights coming soon</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Action Button -->
+    <a href="{{ url_for('main.create_drive') }}" class="floating-action" title="Create New Job Drive">
+        <i class="fas fa-plus"></i>
+    </a>
+</div>
+{% endblock %}
+
+{% block additional_js %}
+<script>
+function showBulkActions() {
+    // Implement bulk actions modal
+    alert('Bulk actions feature coming soon!');
+}
+
+function showAnalytics() {
+    // Implement analytics modal
+    alert('Detailed analytics feature coming soon!');
+}
+
+function filterInterviews() {
+    // Implement interview filtering
+    alert('Interview filtering feature coming soon!');
+}
+
+function exportData() {
+    // Implement data export
+    alert('Data export feature coming soon!');
+}
+
+function showCandidateDetails(candidateId) {
+    // Implement candidate details modal
+    alert(`Candidate details for ID: ${candidateId} coming soon!`);
+}
+
+function showDetailedAnalytics() {
+    // Implement detailed analytics view
+    alert('Detailed analytics view coming soon!');
+}
+
+// Add some interactive animations
+document.addEventListener('DOMContentLoaded', function() {
+    // Animate stat cards on load
+    const statCards = document.querySelectorAll('.stat-card');
+    statCards.forEach((card, index) => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        setTimeout(() => {
+            card.style.transition = 'all 0.6s ease';
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+        }, index * 100);
+    });
+    
+    // Add hover effects to table rows
+    const tableRows = document.querySelectorAll('.interview-table tbody tr');
+    tableRows.forEach(row => {
+        row.addEventListener('mouseenter', function() {
+            this.style.transform = 'scale(1.01)';
+            this.style.transition = 'all 0.2s ease';
+        });
+        
+        row.addEventListener('mouseleave', function() {
+            this.style.transform = 'scale(1)';
+        });
+    });
+});
+</script>
+{% endblock %}

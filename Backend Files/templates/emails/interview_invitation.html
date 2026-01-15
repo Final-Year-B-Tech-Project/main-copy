@@ -1,0 +1,58 @@
+{% extends "emails/base_email.html" %}
+
+{% block content %}
+<div class="greeting">
+    Hello {{ candidate_name }}! 🎉
+</div>
+
+<div class="message-content">
+    <p>Congratulations! You have been shortlisted for an exciting opportunity at <strong>{{ company_name }}</strong>. We're thrilled to invite you to participate in our innovative AI-powered interview process.</p>
+    
+    <div class="highlight-box">
+        <h3><i class="fas fa-briefcase"></i> Interview Details</h3>
+        <p><strong>Position:</strong> {{ job_title }}</p>
+        <p><strong>Company:</strong> {{ company_name }}</p>
+        <p><strong>Interview Type:</strong> AI-Powered Voice Interview</p>
+        <p><strong>Estimated Duration:</strong> 30-45 minutes</p>
+        <p><strong>Status:</strong> <span class="badge">Ready to Start</span></p>
+    </div>
+    
+    <p>Our AI interviewer will conduct a comprehensive evaluation of your skills, experience, and cultural fit. This innovative approach ensures a fair, unbiased, and thorough assessment process.</p>
+    
+    <div style="text-align: center; margin: 30px 0;">
+        <a href="{{ interview_link }}" class="cta-button">
+            <i class="fas fa-video"></i> Start Your Interview Now
+        </a>
+    </div>
+    
+    <div class="info-grid">
+        <div class="info-item">
+            <h4><i class="fas fa-clock"></i> What to Expect</h4>
+            <p>Professional questions tailored to your role, real-time feedback, and comprehensive evaluation</p>
+        </div>
+        <div class="info-item">
+            <h4><i class="fas fa-headphones"></i> Requirements</h4>
+            <p>Stable internet connection, quiet environment, microphone, and speakers/headphones</p>
+        </div>
+    </div>
+    
+    <h3 style="color: #1f2937; margin: 30px 0 15px 0;">📋 Interview Tips for Success:</h3>
+    <ul class="feature-list">
+        <li>Find a quiet, well-lit environment for your interview</li>
+        <li>Test your microphone and speakers before starting</li>
+        <li>Speak clearly and at a moderate pace</li>
+        <li>Provide specific examples in your responses</li>
+        <li>Take your time to think before answering</li>
+        <li>Be authentic and showcase your personality</li>
+    </ul>
+    
+    <div class="divider"></div>
+    
+    <p><strong>Need help?</strong> If you encounter any technical issues or have questions, please contact our support team immediately. We're here to ensure you have the best interview experience possible.</p>
+    
+    <p style="margin-top: 25px; font-style: italic; color: #6b7280;">
+        Good luck with your interview! We're excited to learn more about you and your potential contribution to our team.
+    </p>
+</div>
+{% endblock %}
+

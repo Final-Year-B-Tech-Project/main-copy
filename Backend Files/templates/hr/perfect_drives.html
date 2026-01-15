@@ -1,0 +1,208 @@
+{% extends "base.html" %}
+
+{% block title %}Job Drives{% endblock %}
+
+{% block content %}
+<div class="content-wrapper">
+    <div class="app-container">
+        <!-- Page Header -->
+        <div class="ui-card ui-animate-fadeInUp">
+            <div class="ui-d-flex ui-justify-between ui-align-center">
+                <div>
+                    <h1 class="ui-mb-2">Job Drives</h1>
+                    <p class="ui-mb-0">Manage your recruitment campaigns and track candidate progress.</p>
+                </div>
+                <a href="{{ url_for('hr.create_drive') }}" class="ui-btn ui-btn-primary ui-btn-lg">
+                    <i class="fas fa-plus"></i>Create New Drive
+                </a>
+            </div>
+        </div>
+
+        {% if drives %}
+        <!-- Drives Grid -->
+        <div class="ui-grid ui-grid-auto ui-animate-fadeInUp" style="animation-delay: 0.1s;">
+            {% for drive in drives %}
+            <div class="ui-card ui-card-compact" style="animation-delay: {{ loop.index0 * 0.1 }}s;">
+                <div class="ui-d-flex ui-justify-between ui-align-start ui-mb-3">
+                    <div style="flex: 1;">
+                        <h4 class="ui-mb-2">{{ drive.title }}</h4>
+                        <div class="ui-d-flex ui-align-center ui-gap-2 ui-mb-2">
+                            <span class="ui-badge ui-badge-info">
+                                <i class="fas fa-briefcase"></i>{{ drive.job_role }}
+                            </span>
+                            <span class="ui-badge {% if drive.is_active %}ui-badge-success{% else %}ui-badge-secondary{% endif %}">
+                                <i class="fas fa-{% if drive.is_active %}check{% else %}pause{% endif %}"></i>
+                                {% if drive.is_active %}Active{% else %}Inactive{% endif %}
+                            </span>
+                        </div>
+                        {% if drive.description %}
+                        <p class="ui-mb-3" style="color: #94a3b8; font-size: 0.875rem; line-height: 1.5;">
+                            {{ drive.description[:120] }}{% if drive.description|length > 120 %}...{% endif %}
+                        </p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Drive Stats -->
+                <div class="ui-grid ui-grid-3 ui-mb-3" style="gap: 1rem;">
+                    <div class="ui-text-center ui-p-2" style="background: rgba(99, 102, 241, 0.1); border-radius: 8px;">
+                        <div style="font-weight: 700; color: #8b5cf6;">{{ drive.experience_required or 'Any' }}</div>
+                        <div style="font-size: 0.75rem; color: #94a3b8;">Experience</div>
+                    </div>
+                    <div class="ui-text-center ui-p-2" style="background: rgba(16, 185, 129, 0.1); border-radius: 8px;">
+                        <div style="font-weight: 700; color: #10b981;">{{ drive.location or 'Remote' }}</div>
+                        <div style="font-size: 0.75rem; color: #94a3b8;">Location</div>
+                    </div>
+                    <div class="ui-text-center ui-p-2" style="background: rgba(6, 182, 212, 0.1); border-radius: 8px;">
+                        <div style="font-weight: 700; color: #06b6d4;">{{ drive.created_at.strftime('%m/%d') }}</div>
+                        <div style="font-size: 0.75rem; color: #94a3b8;">Created</div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="ui-d-flex ui-gap-2" style="flex-wrap: wrap;">
+                    <a href="{{ url_for('hr.drive_candidates', drive_id=drive.id) }}" 
+                       class="ui-btn ui-btn-primary" style="flex: 1; padding: 0.875rem 1rem; height: 48px; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-users"></i>View Candidates
+                    </a>
+                    <button class="ui-btn {% if drive.is_active %}pause-btn{% else %}ui-btn-success{% endif %}" 
+                            onclick="toggleDrive({{ drive.id }}, {{ drive.is_active|lower }})" 
+                            style="flex: 1; padding: 0.875rem 1rem; height: 48px; {% if drive.is_active %}background: #f59e0b !important; color: #000000 !important;{% endif %} display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-{% if drive.is_active %}pause{% else %}play{% endif %}"></i>
+                        {% if drive.is_active %}Pause{% else %}Resume{% endif %}
+                    </button>
+                    <button class="ui-btn ui-btn-danger" 
+                            onclick="deleteDrive({{ drive.id }}, '{{ drive.title }}')" 
+                            style="flex: 1; padding: 0.875rem 1rem; height: 48px; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-trash"></i>Delete
+                    </button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <!-- Empty State -->
+        <div class="ui-card ui-animate-fadeInUp" style="animation-delay: 0.1s;">
+            <div class="ui-empty-state">
+                <div class="ui-empty-icon">
+                    <i class="fas fa-briefcase"></i>
+                </div>
+                <div class="ui-empty-title">No Job Drives Created</div>
+                <div class="ui-empty-text">Create your first job drive to start recruiting candidates and managing interviews.</div>
+                <a href="{{ url_for('hr.create_drive') }}" class="ui-btn ui-btn-primary ui-btn-lg">
+                    <i class="fas fa-plus"></i>Create Your First Job Drive
+                </a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block additional_js %}
+<script>
+function toggleDrive(driveId, isActive) {
+    const action = isActive ? 'pause' : 'resume';
+    const message = isActive ? 'Are you sure you want to pause this job drive?' : 'Are you sure you want to resume this job drive?';
+    
+    if (confirm(message)) {
+        fetch(`/hr/drive/${driveId}/toggle`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ is_active: !isActive })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Show success message
+                showNotification('Job drive ' + action + 'd successfully!', 'success');
+                setTimeout(() => location.reload(), 1000);
+            } else {
+                showNotification('Error: ' + data.message, 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showNotification('An error occurred. Please try again.', 'error');
+        });
+    }
+}
+
+function deleteDrive(driveId, driveTitle) {
+    if (confirm(`Are you sure you want to delete "${driveTitle}"?\n\nThis action cannot be undone and will also delete all associated interviews.`)) {
+        fetch(`/hr/drive/${driveId}/delete`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showNotification('Job drive deleted successfully!', 'success');
+                setTimeout(() => location.reload(), 1000);
+            } else {
+                showNotification('Error: ' + data.message, 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showNotification('An error occurred while deleting the job drive', 'error');
+        });
+    }
+}
+
+function showNotification(message, type) {
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.className = `ui-alert ui-alert-${type === 'success' ? 'success' : 'danger'}`;
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 9999;
+        min-width: 300px;
+        animation: slideInRight 0.3s ease-out;
+    `;
+    notification.innerHTML = `
+        <div class="ui-d-flex ui-align-center ui-gap-2">
+            <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+            <span>${message}</span>
+        </div>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    // Remove after 3 seconds
+    setTimeout(() => {
+        notification.style.animation = 'fadeOut 0.3s ease-out';
+        setTimeout(() => notification.remove(), 300);
+    }, 3000);
+}
+
+// Add CSS for animations
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideInRight {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+    @keyframes fadeOut {
+        from { opacity: 1; }
+        to { opacity: 0; }
+    }
+`;
+document.head.appendChild(style);
+
+// Add staggered animation to drive cards
+document.addEventListener('DOMContentLoaded', function() {
+    const driveCards = document.querySelectorAll('.ui-card-compact');
+    driveCards.forEach((card, index) => {
+        card.style.animationDelay = `${index * 0.1}s`;
+        card.classList.add('ui-animate-fadeInUp');
+    });
+});
+</script>
+{% endblock %}

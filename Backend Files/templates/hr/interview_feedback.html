@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+
+{% block title %}Interview Feedback - AI Interview Agent{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h2>Interview Assessment Results</h2>
+                    <p class="text-muted mb-0">{{ session.candidate.first_name }} {{ session.candidate.last_name }} - {{ session.job_drive.title if session.job_drive else 'Practice Interview' }}</p>
+                </div>
+                <a href="{{ url_for('main.hr_dashboard') }}" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Assessment Summary -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="fas fa-chart-bar me-2"></i>Assessment Summary</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="text-center">
+                                <h3 class="text-primary">{{ "%.1f"|format(session.overall_score or 0) }}%</h3>
+                                <p class="text-muted">Overall Score</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="text-center">
+                                <h3 class="text-info">{{ "%.1f"|format(session.technical_score or 0) }}%</h3>
+                                <p class="text-muted">Technical Skills</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="text-center">
+                                <h3 class="text-success">{{ "%.1f"|format(session.communication_score or 0) }}%</h3>
+                                <p class="text-muted">Communication</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="text-center">
+                                <h3 class="text-warning">{{ "%.1f"|format(session.confidence_score or 0) }}%</h3>
+                                <p class="text-muted">Confidence</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hiring Recommendation -->
+    <div class="row mb-4">
+        <div class="col-12">
+            {% set overall_score = session.overall_score or 0 %}
+            {% if overall_score >= 75 %}
+                {% set recommendation = "RECOMMENDED" %}
+                {% set rec_class = "success" %}
+                {% set rec_icon = "thumbs-up" %}
+            {% elif overall_score >= 60 %}
+                {% set recommendation = "CONSIDER" %}
+                {% set rec_class = "warning" %}
+                {% set rec_icon = "question-circle" %}
+            {% else %}
+                {% set recommendation = "NOT RECOMMENDED" %}
+                {% set rec_class = "danger" %}
+                {% set rec_icon = "thumbs-down" %}
+            {% endif %}
+            
+            <div class="alert alert-{{ rec_class }} text-center">
+                <h4><i class="fas fa-{{ rec_icon }} me-2"></i>Hiring Recommendation: {{ recommendation }}</h4>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detailed Feedback -->
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header bg-success text-white">
+                    <h6 class="mb-0"><i class="fas fa-plus-circle me-2"></i>Strengths</h6>
+                </div>
+                <div class="card-body">
+                    {% if feedback and feedback.strengths %}
+                        <ul class="list-unstyled">
+                            {% for strength in feedback.strengths %}
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>{{ strength }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="text-muted">No specific strengths identified.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header bg-warning text-white">
+                    <h6 class="mb-0"><i class="fas fa-exclamation-triangle me-2"></i>Areas for Improvement</h6>
+                </div>
+                <div class="card-body">
+                    {% if feedback and feedback.weaknesses %}
+                        <ul class="list-unstyled">
+                            {% for weakness in feedback.weaknesses %}
+                                <li class="mb-2"><i class="fas fa-minus text-warning me-2"></i>{{ weakness }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="text-muted">No specific areas for improvement identified.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Summary -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h6 class="mb-0"><i class="fas fa-file-alt me-2"></i>Assessment Summary</h6>
+                </div>
+                <div class="card-body">
+                    <p>{{ feedback.summary if feedback and feedback.summary else 'Assessment completed successfully.' }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Interview Details -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0"><i class="fas fa-info-circle me-2"></i>Interview Details</h6>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Candidate:</strong> {{ session.candidate.first_name }} {{ session.candidate.last_name }}</p>
+                            <p><strong>Email:</strong> {{ session.candidate.email }}</p>
+                            <p><strong>Position:</strong> {{ session.job_drive.title if session.job_drive else 'Practice Interview' }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Interview Date:</strong> {{ session.created_at.strftime('%Y-%m-%d %H:%M') }}</p>
+                            <p><strong>Duration:</strong> {{ (session.duration // 60) if session.duration else 0 }} minutes</p>
+                            <p><strong>Status:</strong> 
+                                <span class="badge bg-success">{{ session.status.title() }}</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

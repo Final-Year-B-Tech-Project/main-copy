@@ -1,0 +1,213 @@
+{% extends "base.html" %}
+
+{% block title %}Interview Feedback - {{ session.job_role }}{% endblock %}
+
+{% block additional_css %}
+<style>
+.feedback-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.score-card {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.score-circle {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    margin: 0 auto 10px;
+}
+
+.score-excellent { background: #28a745; }
+.score-good { background: #17a2b8; }
+.score-average { background: #ffc107; color: #333; }
+.score-poor { background: #dc3545; }
+
+.transcript-section {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.qa-pair {
+    border-bottom: 1px solid #dee2e6;
+    padding: 15px 0;
+}
+
+.qa-pair:last-child {
+    border-bottom: none;
+}
+
+.question-text {
+    font-weight: bold;
+    color: #495057;
+    margin-bottom: 8px;
+}
+
+.answer-text {
+    color: #6c757d;
+    line-height: 1.6;
+}
+
+.recommendation-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 10px;
+    padding: 25px;
+    margin-top: 20px;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="feedback-container">
+    <div class="text-center mb-4">
+        <h2>Interview Feedback</h2>
+        <p class="text-muted">{{ session.job_role }} Position</p>
+        <p class="text-muted">Duration: {{ session.total_duration // 60 }}m {{ session.total_duration % 60 }}s</p>
+    </div>
+
+    <!-- Overall Score -->
+    <div class="score-card text-center">
+        <h4>Overall Performance</h4>
+        <div class="score-circle {% if feedback.overall_score >= 80 %}score-excellent{% elif feedback.overall_score >= 60 %}score-good{% elif feedback.overall_score >= 40 %}score-average{% else %}score-poor{% endif %}">
+            {{ feedback.overall_score or 70 }}%
+        </div>
+        <p>{{ feedback.pass_fail_recommendation or 'needs_improvement' | title }}</p>
+    </div>
+
+    <!-- Detailed Scores -->
+    <div class="row">
+        <div class="col-md-4">
+            <div class="score-card text-center">
+                <h6>Technical Skills</h6>
+                <div class="score-circle {% if feedback.technical_score >= 70 %}score-good{% else %}score-average{% endif %}">
+                    {{ feedback.technical_score or 65 }}%
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="score-card text-center">
+                <h6>Communication</h6>
+                <div class="score-circle {% if feedback.communication_score >= 70 %}score-good{% else %}score-average{% endif %}">
+                    {{ feedback.communication_score or 75 }}%
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="score-card text-center">
+                <h6>Confidence</h6>
+                <div class="score-circle {% if feedback.confidence_score >= 70 %}score-good{% else %}score-average{% endif %}">
+                    {{ feedback.confidence_score or 70 }}%
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Strengths & Weaknesses -->
+    <div class="row">
+        <div class="col-md-6">
+            <div class="score-card">
+                <h5 class="text-success"><i class="fas fa-check-circle"></i> Strengths</h5>
+                <ul>
+                    {% for strength in feedback.strengths or ['Completed interview', 'Engaged throughout'] %}
+                    <li>{{ strength }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="score-card">
+                <h5 class="text-warning"><i class="fas fa-exclamation-triangle"></i> Areas for Improvement</h5>
+                <ul>
+                    {% for weakness in feedback.weaknesses or ['Provide more detail', 'Include examples'] %}
+                    <li>{{ weakness }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detailed Analysis -->
+    {% if feedback.detailed_analysis %}
+    <div class="score-card">
+        <h5>Detailed Analysis</h5>
+        {% for category, analysis in feedback.detailed_analysis.items() %}
+        <div class="mb-3">
+            <h6 class="text-primary">{{ category.replace('_', ' ').title() }}</h6>
+            <p>{{ analysis }}</p>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Recommendations -->
+    <div class="recommendation-card">
+        <h5><i class="fas fa-lightbulb"></i> Recommendations</h5>
+        <ul class="mb-0">
+            {% for rec in feedback.recommendations or ['Practice STAR method', 'Prepare specific examples'] %}
+            <li>{{ rec }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Interview Transcript -->
+    {% if transcript %}
+    <div class="transcript-section">
+        <h5><i class="fas fa-file-alt"></i> Interview Transcript</h5>
+        {% for qa in transcript %}
+        <div class="qa-pair">
+            <div class="question-text">
+                <i class="fas fa-question-circle text-primary"></i> 
+                Question {{ qa.question_number }} ({{ qa.phase | title }} Phase):
+            </div>
+            <div class="mb-2">{{ qa.question }}</div>
+            <div class="answer-text">
+                <i class="fas fa-user text-success"></i> Your Answer:
+            </div>
+            <div>{{ qa.answer or 'No response provided' }}</div>
+            <small class="text-muted">
+                Response time: {{ qa.time_taken }}s | Score: {{ qa.score or 0 }}/10
+            </small>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Summary -->
+    <div class="score-card">
+        <h5>Summary</h5>
+        <p>{{ feedback.summary or 'Interview completed successfully with areas for improvement identified.' }}</p>
+        
+        {% if feedback.next_steps %}
+        <h6 class="mt-3">Next Steps</h6>
+        <p>{{ feedback.next_steps }}</p>
+        {% endif %}
+    </div>
+
+    <!-- Actions -->
+    <div class="text-center mt-4">
+        <a href="{{ url_for('main.student_dashboard') }}" class="btn btn-primary">
+            <i class="fas fa-arrow-left"></i> Back to Dashboard
+        </a>
+        <button onclick="window.print()" class="btn btn-outline-secondary">
+            <i class="fas fa-print"></i> Print Feedback
+        </button>
+    </div>
+</div>
+{% endblock %}

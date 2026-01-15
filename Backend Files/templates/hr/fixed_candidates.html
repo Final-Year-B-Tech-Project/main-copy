@@ -1,0 +1,532 @@
+{% extends "base.html" %}
+
+{% block title %}Candidates - {{ drive.title }}{% endblock %}
+
+{% block additional_css %}
+<style>
+/* Violet Theme with Perfect Structure */
+.candidates-container {
+    padding: 2rem 0;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+}
+
+.page-header {
+    background: linear-gradient(145deg, #1a1a2e, #16213e);
+    border: 1px solid #4c1d95;
+    border-radius: 16px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 8px 32px rgba(99, 102, 241, 0.1);
+}
+
+.content-card {
+    background: linear-gradient(145deg, #1a1a2e, #16213e);
+    border: 1px solid #4c1d95;
+    border-radius: 16px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 8px 32px rgba(99, 102, 241, 0.1);
+    color: #ffffff !important;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.stat-item {
+    background: rgba(99, 102, 241, 0.1);
+    border: 1px solid #4c1d95;
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.stat-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(99, 102, 241, 0.2);
+}
+
+.stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #8b5cf6;
+    margin-bottom: 0.5rem;
+}
+
+.stat-label {
+    font-size: 0.875rem;
+    color: #e2e8f0;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.interview-table {
+    background: transparent !important;
+    color: #ffffff !important;
+}
+
+.interview-table th {
+    background: linear-gradient(135deg, #1a1a2e, #16213e) !important;
+    border-color: #4c1d95 !important;
+    color: #ffffff !important;
+    font-weight: 600;
+    padding: 1rem;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.interview-table td {
+    border-color: #4c1d95 !important;
+    color: #ffffff !important;
+    padding: 1rem;
+    vertical-align: middle;
+}
+
+.interview-table tbody tr:hover {
+    background: rgba(99, 102, 241, 0.1) !important;
+}
+
+.candidate-avatar {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+.status-badge {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.status-completed { background: linear-gradient(135deg, #10b981, #059669); }
+.status-progress { background: linear-gradient(135deg, #f59e0b, #d97706); }
+.status-scheduled { background: linear-gradient(135deg, #06b6d4, #0891b2); }
+.status-cancelled { background: linear-gradient(135deg, #ef4444, #dc2626); }
+
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.btn-action {
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border: none;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-primary-action {
+    background: linear-gradient(135deg, #6366f1, #4338ca);
+    color: white;
+}
+
+.btn-primary-action:hover {
+    background: linear-gradient(135deg, #4338ca, #3730a3);
+    transform: translateY(-1px);
+    color: white;
+}
+
+.btn-success-action {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+}
+
+.btn-success-action:hover {
+    background: linear-gradient(135deg, #059669, #047857);
+    transform: translateY(-1px);
+    color: white;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+}
+
+.empty-icon {
+    font-size: 4rem;
+    color: #8b5cf6;
+    margin-bottom: 2rem;
+}
+
+.modal-content {
+    background: linear-gradient(145deg, #1a1a2e, #16213e) !important;
+    border: 1px solid #4c1d95 !important;
+    color: #ffffff !important;
+}
+
+.modal-header {
+    border-bottom: 1px solid #4c1d95 !important;
+}
+
+.modal-footer {
+    border-top: 1px solid #4c1d95 !important;
+}
+
+.form-control, .form-select {
+    background: rgba(26, 26, 46, 0.8) !important;
+    border: 1px solid #4c1d95 !important;
+    color: #ffffff !important;
+    border-radius: 8px !important;
+}
+
+.form-control:focus, .form-select:focus {
+    background: rgba(26, 26, 46, 0.9) !important;
+    border-color: #6366f1 !important;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1) !important;
+    color: #ffffff !important;
+}
+
+.form-label {
+    color: #ffffff !important;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.form-text {
+    color: #e2e8f0 !important;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+    }
+    
+    .btn-action {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* All text white */
+h1, h2, h3, h4, h5, h6, p, span, div, label, small, td, th {
+    color: #ffffff !important;
+}
+
+.text-muted {
+    color: #e2e8f0 !important;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="candidates-container">
+    <div class="container-fluid">
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <h1 class="mb-2">{{ drive.title }}</h1>
+                    <p class="mb-3">{{ drive.job_role }} • {{ drive.location or 'Remote' }}</p>
+                    {% if drive.description %}
+                    <p class="mb-0">{{ drive.description }}</p>
+                    {% endif %}
+                </div>
+                <a href="{{ url_for('hr.drives') }}" class="btn btn-outline-light">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Drives
+                </a>
+            </div>
+        </div>
+
+        <!-- Statistics -->
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-value">{{ drive.experience_required or 'Any' }}</div>
+                <div class="stat-label">Experience Level</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">
+                    <span class="badge {% if drive.is_active %}status-completed{% else %}status-cancelled{% endif %}">
+                        {% if drive.is_active %}Active{% else %}Inactive{% endif %}
+                    </span>
+                </div>
+                <div class="stat-label">Drive Status</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">{{ interviews|length }}</div>
+                <div class="stat-label">Total Interviews</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">{{ interviews|selectattr('status', 'equalto', 'completed')|list|length }}</div>
+                <div class="stat-label">Completed</div>
+            </div>
+        </div>
+
+        <!-- Interviews Table -->
+        <div class="content-card">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3>Interview Sessions</h3>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#bulkScheduleModal">
+                        <i class="fas fa-users me-2"></i>Bulk Schedule
+                    </button>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#scheduleModal">
+                        <i class="fas fa-plus me-2"></i>Schedule Interview
+                    </button>
+                </div>
+            </div>
+
+            {% if interviews %}
+            <div class="table-responsive">
+                <table class="table interview-table">
+                    <thead>
+                        <tr>
+                            <th>Candidate</th>
+                            <th>Email</th>
+                            <th>Status</th>
+                            <th>Scheduled</th>
+                            <th>Score</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for interview in interviews %}
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="candidate-avatar me-3">
+                                        {{ interview.candidate.first_name[0] }}{{ interview.candidate.last_name[0] }}
+                                    </div>
+                                    <div>
+                                        <div class="fw-medium">{{ interview.candidate.full_name }}</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>{{ interview.candidate.email }}</td>
+                            <td>
+                                <span class="status-badge 
+                                    {% if interview.status == 'completed' %}status-completed
+                                    {% elif interview.status == 'in_progress' %}status-progress
+                                    {% elif interview.status == 'scheduled' %}status-scheduled
+                                    {% else %}status-cancelled{% endif %}">
+                                    <i class="fas fa-{% if interview.status == 'completed' %}check{% elif interview.status == 'in_progress' %}play{% elif interview.status == 'scheduled' %}clock{% else %}times{% endif %} me-1"></i>
+                                    {{ interview.status.title() }}
+                                </span>
+                            </td>
+                            <td>
+                                {% if interview.scheduled_time %}
+                                    {{ interview.scheduled_time.strftime('%m/%d %H:%M') }}
+                                {% else %}
+                                    <span class="text-muted">Not set</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if interview.overall_score %}
+                                    <span class="badge status-completed">{{ "%.0f"|format(interview.overall_score) }}%</span>
+                                {% else %}
+                                    <span class="text-muted">-</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <div class="action-buttons">
+                                    {% if interview.status == 'completed' %}
+                                        <a href="{{ url_for('main.interview_feedback', session_id=interview.id) }}" 
+                                           class="btn-action btn-primary-action">
+                                            <i class="fas fa-eye"></i>View Results
+                                        </a>
+                                    {% elif interview.status == 'scheduled' %}
+                                        <a href="{{ url_for('main.interview_interface', session_id=interview.id) }}?link={{ interview.interview_link }}" 
+                                           class="btn-action btn-success-action" target="_blank">
+                                            <i class="fas fa-external-link-alt"></i>Interview Link
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="empty-state">
+                <div class="empty-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h4>No Interviews Scheduled</h4>
+                <p class="text-muted mb-4">Start by scheduling interviews with candidates for this job drive.</p>
+                <button class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#scheduleModal">
+                    <i class="fas fa-plus me-2"></i>Schedule First Interview
+                </button>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Schedule Interview Modal -->
+<div class="modal fade" id="scheduleModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Schedule Interview</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="scheduleForm">
+                    <div class="mb-3">
+                        <label for="candidateEmail" class="form-label">Candidate Email</label>
+                        <input type="email" class="form-control" id="candidateEmail" required>
+                        <div class="form-text">Enter the email of a registered student</div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="scheduleInterview()">Schedule Interview</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bulk Schedule Modal -->
+<div class="modal fade" id="bulkScheduleModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Bulk Schedule Interviews</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="bulkScheduleForm">
+                    <div class="mb-3">
+                        <label for="bulkCandidateEmails" class="form-label">Candidate Emails</label>
+                        <textarea class="form-control" id="bulkCandidateEmails" rows="6" 
+                                  placeholder="Enter candidate emails, one per line:
+
+example1@email.com
+example2@email.com
+example3@email.com" required></textarea>
+                        <div class="form-text">Enter emails of registered students, one per line</div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-success" onclick="bulkScheduleInterviews()">Schedule All Interviews</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block additional_js %}
+<script>
+function scheduleInterview() {
+    const email = document.getElementById('candidateEmail').value;
+    
+    if (!email) {
+        alert('Please enter candidate email');
+        return;
+    }
+    
+    fetch('/hr/schedule-interview', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            drive_id: {{ drive.id }},
+            candidate_email: email
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Interview scheduled successfully!');
+            location.reload();
+        } else {
+            alert('Error: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred');
+    });
+}
+
+function bulkScheduleInterviews() {
+    const emailsText = document.getElementById('bulkCandidateEmails').value;
+    
+    if (!emailsText.trim()) {
+        alert('Please enter candidate emails');
+        return;
+    }
+    
+    const emails = emailsText.split('\n')
+        .map(email => email.trim())
+        .filter(email => email.length > 0);
+    
+    if (emails.length === 0) {
+        alert('Please enter at least one valid email');
+        return;
+    }
+    
+    const button = event.target;
+    button.disabled = true;
+    button.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Scheduling...';
+    
+    fetch('/hr/bulk-schedule-interview', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            drive_id: {{ drive.id }},
+            candidate_emails: emails,
+            scheduled_time: new Date().toISOString()
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            let message = data.message;
+            if (data.failed && data.failed.length > 0) {
+                message += '\n\nFailed to schedule for:';
+                data.failed.forEach(fail => {
+                    message += `\n- ${fail.email}: ${fail.reason}`;
+                });
+            }
+            alert(message);
+            location.reload();
+        } else {
+            alert('Error: ' + data.message);
+            button.disabled = false;
+            button.innerHTML = 'Schedule All Interviews';
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred');
+        button.disabled = false;
+        button.innerHTML = 'Schedule All Interviews';
+    });
+}
+</script>
+{% endblock %}
