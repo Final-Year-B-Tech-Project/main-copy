@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proctoring System Test</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="mb-0">
+                            <i class="fas fa-video me-2"></i>Proctoring System Test
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="mb-3">
+                                    <h5>Camera Feed</h5>
+                                    <video id="video" autoplay muted style="width: 100%; max-width: 640px; border: 2px solid #007bff; border-radius: 8px;"></video>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <button id="startTest" class="btn btn-success me-2">
+                                        <i class="fas fa-play me-1"></i>Start Test
+                                    </button>
+                                    <button id="stopTest" class="btn btn-danger me-2" disabled>
+                                        <i class="fas fa-stop me-1"></i>Stop Test
+                                    </button>
+                                    <button id="testAPI" class="btn btn-info">
+                                        <i class="fas fa-flask me-1"></i>Test API
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h6 class="mb-0">Detection Results</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div id="results">
+                                            <p class="text-muted">Start test to see results...</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="card mt-3">
+                                    <div class="card-header">
+                                        <h6 class="mb-0">Violations</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div id="violations">
+                                            <p class="text-muted">No violations detected</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let video = document.getElementById('video');
+        let canvas = document.createElement('canvas');
+        let stream = null;
+        let testInterval = null;
+        let isTestRunning = false;
+
+        // Initialize camera
+        async function initCamera() {
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { width: 640, height: 480 }, 
+                    audio: false 
+                });
+                video.srcObject = stream;
+                
+                video.onloadedmetadata = () => {
+                    canvas.width = video.videoWidth;
+                    canvas.height = video.videoHeight;
+                };
+                
+                return true;
+            } catch (error) {
+                console.error('Camera error:', error);
+                alert('Camera access required for testing');
+                return false;
+            }
+        }
+
+        // Test API endpoint
+        async function testAPI() {
+            try {
+                const response = await fetch('/api/proctoring/test');
+                const data = await response.json();
+                
+                if (data.success) {
+                    alert('✅ Proctoring API is working!\\n\\nModels loaded:\\n' + 
+                          '• Face Detection: ' + (data.models_loaded.face_detection ? '✅' : '❌') + '\\n' +
+                          '• MediaPipe: ' + (data.models_loaded.mediapipe ? '✅' : '❌') + '\\n' +
+                          '• YOLO: ' + (data.models_loaded.yolo ? '✅' : '❌'));
+                } else {
+                    alert('❌ API Test Failed: ' + data.error);
+                }
+            } catch (error) {
+                console.error('API test error:', error);
+                alert('❌ Failed to connect to proctoring API');
+            }
+        }
+
+        // Start test
+        async function startTest() {
+            if (!await initCamera()) return;
+            
+            // Create a dummy session for testing
+            const testSessionId = 999999;
+            
+            try {
+                // Start proctoring session
+                const response = await fetch('/api/proctoring/start', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ interview_session_id: testSessionId })
+                });
+                
+                // Note: This will fail because session doesn't exist, but we can still test frame processing
+                console.log('Start response:', await response.json());
+            } catch (error) {
+                console.log('Expected error for test session:', error);
+            }
+            
+            isTestRunning = true;
+            document.getElementById('startTest').disabled = true;
+            document.getElementById('stopTest').disabled = false;
+            
+            // Start processing frames
+            testInterval = setInterval(processFrame, 3000);
+            
+            document.getElementById('results').innerHTML = '<p class="text-success">Test running...</p>';
+        }
+
+        // Stop test
+        function stopTest() {
+            isTestRunning = false;
+            
+            if (testInterval) {
+                clearInterval(testInterval);
+                testInterval = null;
+            }
+            
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+                stream = null;
+            }
+            
+            document.getElementById('startTest').disabled = false;
+            document.getElementById('stopTest').disabled = true;
+            document.getElementById('results').innerHTML = '<p class="text-muted">Test stopped</p>';
+        }
+
+        // Process frame
+        async function processFrame() {
+            if (!isTestRunning || !video.videoWidth) return;
+            
+            try {
+                // Capture frame
+                const context = canvas.getContext('2d');
+                context.drawImage(video, 0, 0);
+                const frameData = canvas.toDataURL('image/jpeg', 0.8);
+                
+                // Send for processing (this will fail without valid session, but tests the endpoint)
+                const response = await fetch('/api/proctoring/process_frame', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        interview_session_id: 999999,
+                        frame: frameData
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success && data.results) {
+                    displayResults(data.results);
+                } else {
+                    console.log('Frame processing response:', data);
+                    document.getElementById('results').innerHTML = 
+                        '<p class="text-warning">Frame processing test - check console for details</p>';
+                }
+                
+            } catch (error) {
+                console.error('Frame processing error:', error);
+                document.getElementById('results').innerHTML = 
+                    '<p class="text-danger">Frame processing error: ' + error.message + '</p>';
+            }
+        }
+
+        // Display results
+        function displayResults(results) {
+            const resultsDiv = document.getElementById('results');
+            const violationsDiv = document.getElementById('violations');
+            
+            resultsDiv.innerHTML = `
+                <div class="small">
+                    <div><strong>Faces:</strong> ${results.face_count || 0}</div>
+                    <div><strong>Gaze:</strong> ${results.gaze_direction || 'Unknown'}</div>
+                    <div><strong>Blink:</strong> ${results.blink_status || 'Unknown'}</div>
+                    <div><strong>Mouth:</strong> ${results.mouth_status || 'Unknown'}</div>
+                    <div><strong>Head:</strong> ${results.head_pose || 'Unknown'}</div>
+                    <div><strong>Objects:</strong> ${results.objects ? results.objects.length : 0}</div>
+                    <div><strong>Suspicious:</strong> ${results.suspicious_objects ? results.suspicious_objects.length : 0}</div>
+                </div>
+            `;
+            
+            if (results.violations && results.violations.length > 0) {
+                violationsDiv.innerHTML = results.violations.map(v => 
+                    `<div class="alert alert-warning alert-sm py-1 px-2 mb-1">${v}</div>`
+                ).join('');
+            }
+        }
+
+        // Event listeners
+        document.getElementById('startTest').addEventListener('click', startTest);
+        document.getElementById('stopTest').addEventListener('click', stopTest);
+        document.getElementById('testAPI').addEventListener('click', testAPI);
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Proctoring test page loaded');
+        });
+    </script>
+</body>
+</html>

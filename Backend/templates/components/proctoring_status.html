@@ -1,0 +1,29 @@
+<!-- Proctoring Status Indicator -->
+<div id="proctoringStatus" class="position-fixed" style="top: 10px; left: 10px; z-index: 9998; background: rgba(0,0,0,0.8); padding: 10px; border-radius: 8px; color: white; font-size: 12px; min-width: 200px;">
+    <div class="d-flex align-items-center mb-2">
+        <div id="proctoringIndicator" class="status-indicator me-2" style="width: 8px; height: 8px; border-radius: 50%; background: #6b7280;"></div>
+        <strong>Proctoring System</strong>
+    </div>
+    <div id="proctoringInfo">
+        <div>Status: <span id="proctoringStatusText">Initializing...</span></div>
+        <div>Faces: <span id="faceCount">-</span></div>
+        <div>Violations: <span id="violationCount">0</span></div>
+        <div>Frame: <span id="frameCount">0</span></div>
+    </div>
+</div>
+
+<style>
+.proctoring-active { background: #10b981 !important; }
+.proctoring-warning { background: #f59e0b !important; }
+.proctoring-violation { background: #ef4444 !important; }
+.proctoring-inactive { background: #6b7280 !important; }
+
+#proctoringStatus {
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+#proctoringStatus:hover {
+    background: rgba(0,0,0,0.9) !important;
+}
+</style>

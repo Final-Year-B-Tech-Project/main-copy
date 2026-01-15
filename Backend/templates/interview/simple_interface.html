@@ -1,0 +1,653 @@
+{% extends "base.html" %}
+
+{% block title %}Practice Interview{% endblock %}
+
+{% block additional_css %}
+<style>
+    body {
+        font-family: 'Inter', sans-serif;
+        background: #0f172a;
+        color: white;
+        margin: 0;
+        padding: 0;
+    }
+
+    .interview-container {
+        max-width: 800px;
+        margin: 2rem auto;
+        padding: 2rem;
+        background: #1e293b;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .proctoring-container {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 240px;
+        background: #1e293b;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        overflow: hidden;
+        z-index: 1000;
+        border: 2px solid #3b82f6;
+        transition: all 0.3s ease;
+    }
+
+    .proctoring-video {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+        background: #000;
+    }
+
+    .proctoring-status {
+        padding: 8px 12px;
+        background: rgba(0, 0, 0, 0.8);
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        font-size: 0.8rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .status-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #22c55e;
+        display: inline-block;
+        margin-right: 6px;
+        animation: pulse-dot 1s infinite;
+    }
+
+    @keyframes pulse-dot {
+        0% {
+            opacity: 1;
+        }
+
+        50% {
+            opacity: 0.5;
+        }
+
+        100% {
+            opacity: 1;
+        }
+    }
+
+    .violation-overlay {
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 2000;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        pointer-events: none;
+    }
+
+    .violation-alert {
+        background: rgba(239, 68, 68, 0.9);
+        color: white;
+        padding: 12px 24px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        font-weight: 600;
+        animation: slide-down 0.3s ease-out;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    @keyframes slide-down {
+        from {
+            transform: translateY(-100%);
+            opacity: 0;
+        }
+
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+
+
+    .interview-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .interview-title {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #3b82f6;
+        margin-bottom: 0.5rem;
+    }
+
+    .question-section {
+        background: rgba(59, 130, 246, 0.1);
+        border-radius: 12px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        border: 1px solid rgba(59, 130, 246, 0.2);
+    }
+
+    .question-number {
+        font-size: 0.9rem;
+        color: #94a3b8;
+        margin-bottom: 1rem;
+    }
+
+    .question-text {
+        font-size: 1.2rem;
+        line-height: 1.6;
+        color: #e2e8f0;
+        margin-bottom: 2rem;
+    }
+
+    .answer-section {
+        background: rgba(16, 185, 129, 0.1);
+        border-radius: 12px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        border: 1px solid rgba(16, 185, 129, 0.2);
+    }
+
+    .recording-status {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+        font-size: 0.9rem;
+        color: #6ee7b7;
+    }
+
+    .answer-display {
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 8px;
+        padding: 1rem;
+        min-height: 100px;
+        margin-bottom: 1rem;
+    }
+
+    .answer-text {
+        color: #cbd5e1;
+        font-size: 1rem;
+        line-height: 1.4;
+    }
+
+    .controls {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-top: 2rem;
+    }
+
+    .btn {
+        padding: 0.8rem 2rem;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+        background: #3b82f6;
+        color: white;
+    }
+
+    .btn-success {
+        background: #10b981;
+        color: white;
+    }
+
+    .btn-secondary {
+        background: #6b7280;
+        color: white;
+    }
+
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+    }
+
+    .progress {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 4px;
+        height: 8px;
+        margin-bottom: 2rem;
+        overflow: hidden;
+    }
+
+    .progress-bar {
+        background: #3b82f6;
+        height: 100%;
+        transition: width 0.3s ease;
+    }
+
+    .recording {
+        animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+
+        0%,
+        100% {
+            opacity: 1;
+        }
+
+        50% {
+            opacity: 0.5;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="interview-container">
+    <div class="interview-header">
+        <div class="interview-title">Practice Interview</div>
+        <div class="progress">
+            <div class="progress-bar" id="progressBar" style="width: 0%"></div>
+        </div>
+    </div>
+
+    <!-- Proctoring UI -->
+    <div class="proctoring-container" id="proctoringContainer">
+        <video id="proctoringVideo" class="proctoring-video" autoplay muted playsinline></video>
+        <div class="proctoring-status">
+            <span><span class="status-dot"></span>Proctoring Active</span>
+            <i class="fas fa-shield-alt"></i>
+        </div>
+    </div>
+    <div class="violation-overlay" id="violationOverlay"></div>
+    <canvas id="proctoringCanvas" style="display: none;"></canvas>
+    <div class="question-number" id="questionNumber">Question 1 of 5</div>
+    <div class="question-text" id="questionText">
+        Tell me about yourself and your background.
+    </div>
+</div>
+
+<div class="answer-section">
+    <div class="recording-status" id="recordingStatus">
+        <i class="fas fa-microphone"></i> Ready to record
+    </div>
+    <div class="answer-display">
+        <div class="answer-text" id="answerText">
+            Click "Start Recording" and speak your answer...
+        </div>
+    </div>
+</div>
+
+<div class="controls">
+    <button class="btn btn-primary" id="recordBtn">
+        <i class="fas fa-microphone"></i> Start Recording
+    </button>
+    <button class="btn btn-success" id="nextBtn" style="display: none;">
+        <i class="fas fa-arrow-right"></i> Next Question
+    </button>
+    <button class="btn btn-secondary" id="finishBtn" style="display: none;">
+        <i class="fas fa-check"></i> Finish Interview
+    </button>
+</div>
+</div>
+
+<script>
+    class SimpleInterview {
+        constructor(sessionId) {
+            this.sessionId = sessionId;
+            this.currentQuestion = 0;
+            this.isRecording = false;
+            this.recognition = null;
+            this.answers = [];
+
+            this.questions = [
+                "Tell me about yourself and your background.",
+                "What interests you about this role?",
+                "Describe a challenging project you've worked on.",
+                "How do you handle working under pressure?",
+                "Do you have any questions for us?"
+            ];
+
+            this.initializeElements();
+            this.initializeVoiceRecognition();
+            this.initializeEventListeners();
+
+            // Proctoring initialization
+            this.proctoring = {
+                video: document.getElementById('proctoringVideo'),
+                canvas: document.getElementById('proctoringCanvas'),
+                container: document.getElementById('proctoringContainer'),
+                overlay: document.getElementById('violationOverlay'),
+                interval: null,
+                stream: null,
+                isActive: false,
+                warningCount: 0
+            };
+
+            this.initializeProctoring();
+        }
+
+        async initializeProctoring() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    video: { width: 320, height: 240 },
+                    audio: false
+                });
+                this.proctoring.video.srcObject = stream;
+                this.proctoring.stream = stream;
+
+                // Start proctoring session backend
+                const response = await fetch('/api/proctoring/start', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ interview_session_id: this.sessionId })
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    this.proctoring.isActive = true;
+                    this.startProctoringLoop();
+                } else {
+                    console.error('Failed to start proctoring session:', data.error);
+                    this.showViolation('Failed to initialize proctoring system', true);
+                }
+
+            } catch (error) {
+                console.error('Camera access denied:', error);
+                this.showViolation('Camera access required for interview', true);
+            }
+        }
+
+        startProctoringLoop() {
+            // Process frames every 3 seconds
+            this.proctoring.interval = setInterval(async () => {
+                if (!this.proctoring.isActive) return;
+
+                try {
+                    const ctx = this.proctoring.canvas.getContext('2d');
+                    this.proctoring.canvas.width = 320;
+                    this.proctoring.canvas.height = 240;
+                    ctx.drawImage(this.proctoring.video, 0, 0, 320, 240);
+                    const frameData = this.proctoring.canvas.toDataURL('image/jpeg', 0.6);
+
+                    const response = await fetch('/api/proctoring/process_frame', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            interview_session_id: this.sessionId,
+                            frame: frameData
+                        })
+                    });
+
+                    const data = await response.json();
+                    if (data.success && data.results && data.results.violations) {
+                        this.handleViolations(data.results.violations);
+                    }
+                } catch (error) {
+                    console.error('Proctoring loop error:', error);
+                }
+            }, 3000);
+        }
+
+        handleViolations(violations) {
+            if (!violations || violations.length === 0) return;
+
+            violations.forEach(violation => {
+                // Check for critical violations
+                const isCritical = violation.includes('CRITICAL') || violation.includes('phone') || violation.includes('Multiple people');
+
+                this.showViolation(violation);
+
+                if (isCritical) {
+                    // Immediate stop for critical violations
+                    this.stopInterviewBecauseViolation(violation);
+                }
+            });
+
+            // Accumulate warnings
+            this.proctoring.warningCount += violations.length;
+            if (this.proctoring.warningCount > 5) {
+                this.stopInterviewBecauseViolation("Too many behavioral violations");
+            }
+        }
+
+        showViolation(message, persistent = false) {
+            const alert = document.createElement('div');
+            alert.className = 'violation-alert';
+            alert.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${message}`;
+            this.proctoring.overlay.appendChild(alert);
+
+            if (!persistent) {
+                setTimeout(() => {
+                    alert.style.opacity = '0';
+                    setTimeout(() => alert.remove(), 300);
+                }, 5000);
+            }
+        }
+
+        async stopInterviewBecauseViolation(reason) {
+            if (!this.proctoring.isActive) return;
+            this.proctoring.isActive = false;
+            clearInterval(this.proctoring.interval);
+
+            const overlay = document.createElement('div');
+            overlay.style.cssText = `
+                position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 9999;
+                display: flex; flex-direction: column; align-items: center; justify-content: center;
+                color: white; text-align: center;
+            `;
+            overlay.innerHTML = `
+                <i class="fas fa-ban" style="font-size: 5rem; color: #ef4444; margin-bottom: 2rem;"></i>
+                <h1>Interview Terminated</h1>
+                <p style="font-size: 1.5rem; color: #cbd5e1; margin-bottom: 2rem;">${reason}</p>
+                <p>Redirecting to dashboard...</p>
+            `;
+            document.body.appendChild(overlay);
+
+            // Stop proctoring session
+            try {
+                await fetch('/api/proctoring/stop', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ interview_session_id: this.sessionId })
+                });
+            } catch (e) { console.error(e); }
+
+            setTimeout(() => {
+                window.location.href = '/dashboard';
+            }, 5000);
+        }
+
+        initializeElements() {
+            this.elements = {
+                questionNumber: document.getElementById('questionNumber'),
+                questionText: document.getElementById('questionText'),
+                recordingStatus: document.getElementById('recordingStatus'),
+                answerText: document.getElementById('answerText'),
+                recordBtn: document.getElementById('recordBtn'),
+                nextBtn: document.getElementById('nextBtn'),
+                finishBtn: document.getElementById('finishBtn'),
+                progressBar: document.getElementById('progressBar')
+            };
+        }
+
+        initializeVoiceRecognition() {
+            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                this.recognition = new SpeechRecognition();
+                this.recognition.continuous = true;
+                this.recognition.interimResults = true;
+                this.recognition.lang = 'en-US';
+
+                this.recognition.onstart = () => {
+                    this.isRecording = true;
+                    this.elements.recordBtn.innerHTML = '<i class="fas fa-stop"></i> Stop Recording';
+                    this.elements.recordBtn.classList.add('recording');
+                    this.elements.recordingStatus.innerHTML = '<i class="fas fa-microphone"></i> Listening...';
+                };
+
+                this.recognition.onresult = (event) => {
+                    let transcript = '';
+                    for (let i = event.resultIndex; i < event.results.length; i++) {
+                        transcript += event.results[i][0].transcript;
+                    }
+                    this.elements.answerText.textContent = transcript || 'Speak your answer...';
+                };
+
+                this.recognition.onend = () => {
+                    this.isRecording = false;
+                    this.elements.recordBtn.innerHTML = '<i class="fas fa-microphone"></i> Start Recording';
+                    this.elements.recordBtn.classList.remove('recording');
+                    this.elements.recordingStatus.innerHTML = '<i class="fas fa-check-circle"></i> Recording complete';
+
+                    if (this.elements.answerText.textContent.trim()) {
+                        this.answers[this.currentQuestion] = this.elements.answerText.textContent;
+                        this.showNextButton();
+                    }
+                };
+            } else {
+                this.elements.recordingStatus.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Voice recording not supported';
+            }
+        }
+
+        initializeEventListeners() {
+            this.elements.recordBtn.addEventListener('click', () => this.toggleRecording());
+            this.elements.nextBtn.addEventListener('click', () => this.nextQuestion());
+            this.elements.finishBtn.addEventListener('click', () => this.finishInterview());
+        }
+
+        toggleRecording() {
+            if (!this.recognition) return;
+
+            if (this.isRecording) {
+                this.recognition.stop();
+            } else {
+                this.recognition.start();
+            }
+        }
+
+        showNextButton() {
+            if (this.currentQuestion < this.questions.length - 1) {
+                this.elements.nextBtn.style.display = 'inline-block';
+            } else {
+                this.elements.finishBtn.style.display = 'inline-block';
+            }
+        }
+
+        async nextQuestion() {
+            this.currentQuestion++;
+
+            // Get adaptive next question based on previous answer
+            const previousAnswer = this.answers[this.currentQuestion - 1];
+            const nextQuestion = await this.getAdaptiveQuestion(previousAnswer);
+
+            if (nextQuestion) {
+                this.questions[this.currentQuestion] = nextQuestion;
+            }
+
+            this.updateQuestion();
+            this.elements.nextBtn.style.display = 'none';
+            this.elements.finishBtn.style.display = 'none';
+            this.elements.answerText.textContent = 'Click "Start Recording" and speak your answer...';
+            this.elements.recordingStatus.innerHTML = '<i class="fas fa-microphone"></i> Ready to record';
+        }
+
+        async getAdaptiveQuestion(previousAnswer) {
+            try {
+                const response = await fetch('/api/generate-next-question', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        session_id: this.sessionId,
+                        previous_answer: previousAnswer,
+                        question_number: this.currentQuestion + 1
+                    })
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    return data.question;
+                }
+            } catch (error) {
+                console.log('Using predefined question');
+            }
+            return null;
+        }
+
+        updateQuestion() {
+            const questionNum = this.currentQuestion + 1;
+            this.elements.questionNumber.textContent = `Question ${questionNum} of ${this.questions.length}`;
+            this.elements.questionText.textContent = this.questions[this.currentQuestion];
+
+            const progress = (questionNum / this.questions.length) * 100;
+            this.elements.progressBar.style.width = progress + '%';
+
+            // Speak the question
+            if ('speechSynthesis' in window) {
+                speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(this.questions[this.currentQuestion]);
+                utterance.rate = 0.9;
+                speechSynthesis.speak(utterance);
+            }
+        }
+
+        async finishInterview() {
+            try {
+                const response = await fetch(`/adaptive-interview/${this.sessionId}/complete`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        answers: this.answers,
+                        completed: true
+                    })
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    window.location.href = data.redirect_url;
+                } else {
+                    alert('Interview completed! Redirecting to dashboard...');
+                    window.location.href = '/dashboard';
+                }
+            } catch (error) {
+                alert('Interview completed! Redirecting to dashboard...');
+
+                // Stop proctoring
+                if (this.proctoring && this.proctoring.isActive) {
+                    this.proctoring.isActive = false;
+                    clearInterval(this.proctoring.interval);
+                    await fetch('/api/proctoring/stop', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ interview_session_id: this.sessionId })
+                    });
+                }
+
+                window.location.href = '/dashboard';
+            }
+        }
+    }
+
+    // Initialize when page loads
+    document.addEventListener('DOMContentLoaded', function () {
+        const sessionId = {{ session.id }
+    };
+    window.interview = new SimpleInterview(sessionId);
+});
+</script>
+{% endblock %}

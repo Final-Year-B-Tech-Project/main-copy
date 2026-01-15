@@ -1,0 +1,349 @@
+{% extends "base.html" %}
+
+{% block title %}Eligible Candidates - {{ drive.title }}{% endblock %}
+
+{% block additional_css %}
+<style>
+.candidate-card {
+    border: 1px solid #dee2e6;
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.candidate-card:hover {
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+}
+
+.score-circle {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: white;
+}
+
+.score-excellent { background: linear-gradient(135deg, #28a745, #20c997); }
+.score-good { background: linear-gradient(135deg, #17a2b8, #6f42c1); }
+.score-average { background: linear-gradient(135deg, #ffc107, #fd7e14); }
+.score-poor { background: linear-gradient(135deg, #dc3545, #e83e8c); }
+
+.skill-badge {
+    background: #e3f2fd;
+    color: #1976d2;
+    padding: 0.25rem 0.75rem;
+    border-radius: 15px;
+    font-size: 0.85rem;
+    margin: 0.25rem;
+    display: inline-block;
+}
+
+.skill-missing {
+    background: #ffebee;
+    color: #d32f2f;
+    padding: 0.25rem 0.75rem;
+    border-radius: 15px;
+    font-size: 0.85rem;
+    margin: 0.25rem;
+    display: inline-block;
+}
+
+.requirements-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 15px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h2>⭐ Shortlisted Candidates</h2>
+                    <p class="text-muted">{{ drive.title }} - {{ total_shortlisted }} candidates shortlisted (50%+ score)</p>
+                </div>
+                <a href="{{ url_for('hr.drives') }}" class="btn btn-outline-primary">
+                    <i class="fas fa-arrow-left"></i> Back to Drives
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Job Requirements Summary -->
+    {% if job_requirements %}
+    <div class="requirements-card">
+        <h4>📋 Job Requirements</h4>
+        <div class="row mt-3">
+            <div class="col-md-6">
+                <p><strong>Experience:</strong> {{ job_requirements.min_experience_years }}-{{ job_requirements.max_experience_years }} years</p>
+                <p><strong>Level:</strong> {{ job_requirements.experience_level.title() }}</p>
+                <p><strong>Location:</strong> {{ job_requirements.location_type.title() }}</p>
+            </div>
+            <div class="col-md-6">
+                {% if job_requirements.required_skills %}
+                    <p><strong>Required Skills:</strong></p>
+                    <div>
+                        <span class="badge bg-light text-dark me-1">Python</span>
+                        <span class="badge bg-light text-dark me-1">JavaScript</span>
+                        <span class="badge bg-light text-dark me-1">React</span>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Statistics -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h3 class="text-primary">{{ total_shortlisted }}</h3>
+                    <p class="mb-0">Shortlisted Candidates</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h3 class="text-success">{{ candidates | length }}</h3>
+                    <p class="mb-0">Ready for Interview</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h3 class="text-info">{{ (candidates | map(attribute='score.overall_score') | sum / candidates | length) | round(1) if candidates else 0 }}%</h3>
+                    <p class="mb-0">Average Score</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h3 class="text-warning">{{ candidates | selectattr('score.overall_score', 'ge', 75) | list | length }}</h3>
+                    <p class="mb-0">High Scorers (75%+)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Candidates List -->
+    {% if candidates %}
+        {% for candidate in candidates %}
+        <div class="candidate-card">
+            <div class="row align-items-center">
+                <!-- Candidate Info -->
+                <div class="col-md-4">
+                    <div class="d-flex align-items-center">
+                        <div class="me-3">
+                            {% if candidate.user.profile_photo %}
+                                <img src="{{ url_for('static', filename=candidate.user.profile_photo) }}" 
+                                     class="rounded-circle" width="50" height="50" alt="Profile">
+                            {% else %}
+                                <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center" 
+                                     style="width: 50px; height: 50px; color: white;">
+                                    {{ candidate.user.first_name[0] }}{{ candidate.user.last_name[0] }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div>
+                            <h6 class="mb-1">{{ candidate.user.full_name }}</h6>
+                            <p class="text-muted mb-0">{{ candidate.user.email }}</p>
+                            <small class="text-muted">
+                                {{ candidate.profile.university or 'University not specified' }}
+                            </small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Score -->
+                <div class="col-md-2 text-center">
+                    <div class="score-circle {{ 'score-excellent' if candidate.score.overall_score >= 85 else 'score-good' if candidate.score.overall_score >= 70 else 'score-average' if candidate.score.overall_score >= 50 else 'score-poor' }}">
+                        {{ candidate.score.overall_score | round(1) }}%
+                    </div>
+                </div>
+
+                <!-- Score Breakdown -->
+                <div class="col-md-4">
+                    <div class="row text-center">
+                        <div class="col-6">
+                            <small class="text-muted">Skills</small><br>
+                            <strong class="text-primary">{{ candidate.score.skill_match_score | round(1) }}%</strong>
+                        </div>
+                        <div class="col-6">
+                            <small class="text-muted">Experience</small><br>
+                            <strong class="text-success">{{ candidate.score.experience_score | round(1) }}%</strong>
+                        </div>
+                    </div>
+                    <div class="row text-center mt-2">
+                        <div class="col-6">
+                            <small class="text-muted">Education</small><br>
+                            <strong class="text-info">{{ candidate.score.education_score | round(1) }}%</strong>
+                        </div>
+                        <div class="col-6">
+                            <small class="text-muted">Other</small><br>
+                            <strong class="text-warning">{{ candidate.score.other_score | round(1) }}%</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="col-md-2 text-end">
+                    {% if candidate.score.is_shortlisted %}
+                        <span class="badge bg-success mb-2">Shortlisted</span><br>
+                    {% endif %}
+                    <button class="btn btn-primary btn-sm" onclick="scheduleInterview({{ candidate.user.id }}, '{{ candidate.user.email }}')">
+                        <i class="fas fa-calendar"></i> Interview
+                    </button>
+                    <button class="btn btn-outline-info btn-sm mt-1" onclick="viewDetails({{ candidate.user.id }})">
+                        <i class="fas fa-eye"></i> Details
+                    </button>
+                </div>
+            </div>
+
+            <!-- Skills Breakdown -->
+            <div class="row mt-3">
+                <div class="col-md-6">
+                    {% if candidate.skill_matches %}
+                        <h6 class="text-success">✅ Matched Skills ({{ candidate.skill_matches | length }})</h6>
+                        <div>
+                            {% for skill in candidate.skill_matches[:8] %}
+                                <span class="skill-badge">{{ skill.skill }} ({{ skill.candidate_proficiency }})</span>
+                            {% endfor %}
+                            {% if candidate.skill_matches | length > 8 %}
+                                <span class="skill-badge bg-secondary text-white">+{{ candidate.skill_matches | length - 8 }} more</span>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="col-md-6">
+                    {% if candidate.missing_skills %}
+                        <h6 class="text-danger">❌ Missing Skills ({{ candidate.missing_skills | length }})</h6>
+                        <div>
+                            {% for skill in candidate.missing_skills[:6] %}
+                                <span class="skill-missing">{{ skill.skill }}</span>
+                            {% endfor %}
+                            {% if candidate.missing_skills | length > 6 %}
+                                <span class="skill-missing">+{{ candidate.missing_skills | length - 6 }} more</span>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="text-center py-5">
+            <i class="fas fa-star fa-3x text-muted mb-3"></i>
+            <h4>No Shortlisted Candidates</h4>
+            <p class="text-muted">No candidates meet the 50% shortlisting threshold for this job drive.</p>
+            <p class="text-muted">Consider reviewing job requirements or lowering the threshold.</p>
+        </div>
+    {% endif %}
+</div>
+
+<!-- Interview Scheduling Modal -->
+<div class="modal fade" id="interviewModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Schedule Interview</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="interviewForm">
+                    <input type="hidden" id="candidateId">
+                    <input type="hidden" id="candidateEmail">
+                    <div class="mb-3">
+                        <label class="form-label">Candidate</label>
+                        <input type="text" class="form-control" id="candidateName" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Interview Date & Time</label>
+                        <input type="datetime-local" class="form-control" id="interviewDateTime" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Interview Type</label>
+                        <select class="form-select" id="interviewType">
+                            <option value="technical">Technical Interview</option>
+                            <option value="behavioral">Behavioral Interview</option>
+                            <option value="final">Final Round</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="confirmSchedule()">Schedule Interview</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block additional_js %}
+<script>
+function scheduleInterview(userId, email) {
+    document.getElementById('candidateId').value = userId;
+    document.getElementById('candidateEmail').value = email;
+    document.getElementById('candidateName').value = email;
+    
+    // Set default time to tomorrow at 10 AM
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    tomorrow.setHours(10, 0, 0, 0);
+    document.getElementById('interviewDateTime').value = tomorrow.toISOString().slice(0, 16);
+    
+    new bootstrap.Modal(document.getElementById('interviewModal')).show();
+}
+
+function confirmSchedule() {
+    const candidateEmail = document.getElementById('candidateEmail').value;
+    const interviewType = document.getElementById('interviewType').value;
+    
+    fetch('/hr/schedule-interview', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            drive_id: {{ drive.id }},
+            candidate_email: candidateEmail,
+            interview_type: interviewType
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Interview scheduled successfully!');
+            bootstrap.Modal.getInstance(document.getElementById('interviewModal')).hide();
+        } else {
+            alert('Error: ' + data.message);
+        }
+    })
+    .catch(error => {
+        alert('Error: ' + error.message);
+    });
+}
+
+function viewDetails(userId) {
+    // This would open a detailed candidate profile
+    alert(`Viewing detailed profile for candidate ${userId} - This would show full resume, skills, and scoring breakdown`);
+}
+</script>
+{% endblock %}

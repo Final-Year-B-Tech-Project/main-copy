@@ -1,0 +1,559 @@
+{% extends "base.html" %}
+
+{% block title %}Interview Session - AI Interview Agent{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h4 class="mb-0">
+                            <i class="fas fa-microphone me-2"></i>Interview Session
+                        </h4>
+                        <div>
+                            <span class="badge bg-light text-dark me-2">
+                                Question <span id="currentQuestion">1</span> of <span id="totalQuestions">{{ questions|length }}</span>
+                            </span>
+                            <span class="badge bg-warning me-2" id="timer">00:00</span>
+                            <button id="submitInterviewBtn" class="btn btn-success btn-sm d-none" onclick="submitInterview()">
+                                <i class="fas fa-check me-1"></i>Submit Interview
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    {% if session.status == 'scheduled' %}
+                        <!-- Start Interview -->
+                        <div id="startSection" class="text-center py-5">
+                            <div class="mb-4">
+                                <i class="fas fa-microphone-alt fa-4x text-primary mb-3"></i>
+                                <h2 class="text-primary mb-3">AI Voice Interview</h2>
+                                <div class="alert alert-info mx-auto" style="max-width: 600px;">
+                                    <h5><i class="fas fa-info-circle me-2"></i>Interview Instructions</h5>
+                                    <ul class="text-start mb-0">
+                                        <li>This interview contains <strong>{{ questions|length }} questions</strong></li>
+                                        <li>Use the <strong>"Start Speaking"</strong> button to record your answers</li>
+                                        <li>Speak clearly and at a moderate pace</li>
+                                        <li>You can replay questions using the <strong>"Repeat Question"</strong> button</li>
+                                        <li>Take your time - there's no rush</li>
+                                    </ul>
+                                </div>
+                                <div class="alert alert-warning mx-auto" style="max-width: 600px;">
+                                    <h6><i class="fas fa-exclamation-triangle me-2"></i>Important Security Notice</h6>
+                                    <p class="mb-2 small">
+                                        <strong>The interview will enter fullscreen mode for security.</strong><br>
+                                        Exiting fullscreen will automatically submit and terminate your interview.
+                                    </p>
+                                    <p class="mb-0 small">
+                                        <strong>🔒 AI Proctoring is Active:</strong><br>
+                                        • Your camera will monitor for face detection and suspicious activity<br>
+                                        • Looking away frequently or having multiple people may trigger violations<br>
+                                        • Unauthorized objects (phones, books) will be detected<br>
+                                        • <span class="text-danger">3 violations will automatically terminate the interview</span><br>
+                                        • All activities are recorded for review
+                                    </p>
+                                </div>
+                            </div>
+                            <button id="startBtn" class="btn btn-success btn-lg px-5 py-3">
+                                <i class="fas fa-play me-2"></i>Begin Interview
+                            </button>
+                        </div>
+                    {% endif %}
+
+                    <!-- Interview Questions -->
+                    <div id="interviewSection" class="d-none">
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <div class="question-container">
+                                    <div class="mb-4">
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <h4 class="text-primary mb-0">
+                                                <i class="fas fa-question-circle me-2"></i>
+                                                Question <span id="questionNumber">1</span>
+                                            </h4>
+                                            <span class="badge bg-primary fs-6">Voice Interview</span>
+                                        </div>
+                                        <div class="card border-primary">
+                                            <div class="card-body bg-light">
+                                                <p id="questionText" class="mb-0 fs-5 fw-medium text-dark">Loading question...</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Voice Controls -->
+                                    <div class="mb-4">
+                                        <div class="card border-0 bg-primary bg-opacity-10">
+                                            <div class="card-body text-center">
+                                                <h6 class="text-primary mb-3">
+                                                    <i class="fas fa-headset me-2"></i>Voice Controls
+                                                </h6>
+                                                <div class="btn-group" role="group">
+                                                    <button id="listenBtn" class="btn btn-danger btn-lg">
+                                                        <i class="fas fa-microphone me-2"></i>Start Speaking
+                                                    </button>
+                                                    <button id="stopBtn" class="btn btn-secondary btn-lg" disabled>
+                                                        <i class="fas fa-stop me-2"></i>Stop Recording
+                                                    </button>
+                                                    <button id="playBtn" class="btn btn-info btn-lg">
+                                                        <i class="fas fa-volume-up me-2"></i>Repeat Question
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <label for="answerText" class="form-label fw-bold">
+                                            <i class="fas fa-comment-dots me-2"></i>Your Answer (Voice Transcription)
+                                        </label>
+                                        <textarea id="answerText" class="form-control border-primary" rows="8" 
+                                                placeholder="Click 'Start Speaking' and your voice will be transcribed here automatically..." readonly></textarea>
+                                        <div class="mt-2 d-flex justify-content-between align-items-center">
+                                            <span id="listeningStatus" class="badge bg-secondary fs-6">
+                                                <i class="fas fa-circle me-1"></i>Ready to listen
+                                            </span>
+                                            <small class="text-muted">
+                                                <i class="fas fa-lightbulb me-1"></i>Tip: Speak clearly for better transcription
+                                            </small>
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex justify-content-between">
+                                        <button id="prevBtn" class="btn btn-outline-secondary" disabled>
+                                            <i class="fas fa-arrow-left me-2"></i>Previous
+                                        </button>
+                                        <div>
+                                            <button id="clearBtn" class="btn btn-outline-warning me-2">
+                                                <i class="fas fa-eraser me-2"></i>Clear Answer
+                                            </button>
+                                            <button id="nextBtn" class="btn btn-primary">
+                                                Next<i class="fas fa-arrow-right ms-2"></i>
+                                            </button>
+                                            <button id="finishBtn" class="btn btn-success d-none">
+                                                <i class="fas fa-check me-2"></i>Finish Interview
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h6 class="mb-0">Progress</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="progress mb-3">
+                                            <div id="progressBar" class="progress-bar" style="width: 0%"></div>
+                                        </div>
+                                        <div id="questionList" class="question-nav">
+                                            <!-- Question navigation will be populated here -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block additional_js %}
+<script src="{{ url_for('static', filename='js/fullscreen-security.js') }}"></script>
+<script src="{{ url_for('static', filename='js/proctoring_system/proctoring.js') }}"></script>
+<script>
+const sessionId = {{ session.id }};
+const questions = {{ questions|tojson }};
+let currentQuestionIndex = 0;
+let answers = {};
+let startTime = null;
+let securitySystem = null;
+let proctoringSuite = null;
+
+// Voice recognition setup
+let recognition = null;
+let isListening = false;
+let speechSynthesis = window.speechSynthesis;
+
+// Initialize
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Questions loaded:', questions);
+    if (questions && questions.length > 0) {
+        document.getElementById('totalQuestions').textContent = questions.length;
+        setupQuestionNavigation();
+    } else {
+        console.error('No questions available');
+        alert('Error: No interview questions available. Please try again.');
+    }
+    setupVoiceRecognition();
+    setupVoiceControls();
+    setupCustomSecurity();
+    
+    // Initialize proctoring system
+    proctoringSuite = new ProctoringSuite(sessionId);
+});
+
+// Setup voice recognition
+function setupVoiceRecognition() {
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        recognition = new SpeechRecognition();
+        recognition.continuous = true;
+        recognition.interimResults = true;
+        recognition.lang = 'en-US';
+        
+        recognition.onstart = function() {
+            isListening = true;
+            document.getElementById('listeningStatus').innerHTML = '<i class="fas fa-circle text-danger me-1"></i>Recording...';
+            document.getElementById('listeningStatus').className = 'badge bg-danger fs-6';
+            document.getElementById('listenBtn').disabled = true;
+            document.getElementById('stopBtn').disabled = false;
+        };
+        
+        recognition.onresult = function(event) {
+            let finalTranscript = '';
+            let interimTranscript = '';
+            
+            for (let i = event.resultIndex; i < event.results.length; i++) {
+                const transcript = event.results[i][0].transcript;
+                if (event.results[i].isFinal) {
+                    finalTranscript += transcript;
+                } else {
+                    interimTranscript += transcript;
+                }
+            }
+            
+            const currentAnswer = answers[currentQuestionIndex] || '';
+            const newAnswer = currentAnswer + finalTranscript;
+            answers[currentQuestionIndex] = newAnswer;
+            document.getElementById('answerText').value = newAnswer + interimTranscript;
+        };
+        
+        recognition.onend = function() {
+            isListening = false;
+            document.getElementById('listeningStatus').innerHTML = '<i class="fas fa-circle me-1"></i>Ready to listen';
+            document.getElementById('listeningStatus').className = 'badge bg-secondary fs-6';
+            document.getElementById('listenBtn').disabled = false;
+            document.getElementById('stopBtn').disabled = true;
+            saveAnswer();
+        };
+        
+        recognition.onerror = function(event) {
+            console.error('Speech recognition error:', event.error);
+            document.getElementById('listeningStatus').innerHTML = '<i class="fas fa-exclamation-triangle me-1"></i>Error: ' + event.error;
+            document.getElementById('listeningStatus').className = 'badge bg-warning fs-6';
+            isListening = false;
+            document.getElementById('listenBtn').disabled = false;
+            document.getElementById('stopBtn').disabled = true;
+        };
+    } else {
+        document.getElementById('listeningStatus').innerHTML = '<i class="fas fa-exclamation-triangle me-1"></i>Voice recognition not supported';
+        document.getElementById('listeningStatus').className = 'badge bg-warning fs-6';
+        document.getElementById('listenBtn').disabled = true;
+        alert('Voice recognition is not supported in this browser. Please use Chrome, Edge, or Safari for the best experience.');
+    }
+}
+
+// Setup voice controls
+function setupVoiceControls() {
+    document.getElementById('listenBtn').addEventListener('click', startListening);
+    document.getElementById('stopBtn').addEventListener('click', stopListening);
+    document.getElementById('playBtn').addEventListener('click', speakQuestion);
+    document.getElementById('clearBtn').addEventListener('click', clearAnswer);
+}
+
+// Voice control functions
+function startListening() {
+    if (recognition && !isListening) {
+        recognition.start();
+    }
+}
+
+function stopListening() {
+    if (recognition && isListening) {
+        recognition.stop();
+    }
+}
+
+function speakQuestion() {
+    const question = questions[currentQuestionIndex];
+    const text = question.question || question.text || question || 'No question available';
+    
+    if (speechSynthesis) {
+        speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.rate = 0.8;
+        utterance.pitch = 1;
+        utterance.volume = 1;
+        speechSynthesis.speak(utterance);
+    } else {
+        alert('Text-to-speech not supported in this browser');
+    }
+}
+
+function clearAnswer() {
+    answers[currentQuestionIndex] = '';
+    document.getElementById('answerText').value = '';
+    saveAnswer();
+}
+
+// Start interview
+document.getElementById('startBtn').addEventListener('click', function() {
+    if (!questions || questions.length === 0) {
+        alert('Error: No questions available for this interview.');
+        return;
+    }
+    
+    fetch(`/interview/${sessionId}/start`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            document.getElementById('startSection').classList.add('d-none');
+            document.getElementById('interviewSection').classList.remove('d-none');
+            document.getElementById('submitInterviewBtn').classList.remove('d-none');
+            startTime = new Date();
+            startTimer();
+            loadQuestion(0);
+            
+            // Start proctoring
+            if (proctoringSuite) {
+                proctoringSuite.startProctoring().catch(error => {
+                    console.error('Failed to start proctoring:', error);
+                    // Continue with interview even if proctoring fails
+                });
+            }
+            
+            // Activate custom security system
+            if (securitySystem) {
+                securitySystem.activate();
+            }
+        } else {
+            alert('Error starting interview: ' + (data.message || 'Unknown error'));
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Failed to start interview. Please try again.');
+    });
+});
+
+// Setup question navigation
+function setupQuestionNavigation() {
+    const questionList = document.getElementById('questionList');
+    questions.forEach((q, index) => {
+        const btn = document.createElement('button');
+        btn.className = 'btn btn-outline-secondary btn-sm me-1 mb-1';
+        btn.textContent = index + 1;
+        btn.onclick = () => loadQuestion(index);
+        questionList.appendChild(btn);
+    });
+}
+
+// Load question
+function loadQuestion(index) {
+    if (index < 0 || index >= questions.length) {
+        console.error('Invalid question index:', index);
+        return;
+    }
+    
+    currentQuestionIndex = index;
+    const question = questions[index];
+    console.log('Loading question:', question);
+    
+    document.getElementById('questionNumber').textContent = index + 1;
+    document.getElementById('currentQuestion').textContent = index + 1;
+    
+    // Get question text with better fallback
+    const questionText = question.question || question.text || question || `Question ${index + 1}`;
+    document.getElementById('questionText').textContent = questionText;
+    document.getElementById('answerText').value = answers[index] || '';
+    
+    // Update navigation
+    document.getElementById('prevBtn').disabled = index === 0;
+    document.getElementById('nextBtn').classList.toggle('d-none', index === questions.length - 1);
+    document.getElementById('finishBtn').classList.toggle('d-none', index !== questions.length - 1);
+    
+    // Update progress
+    const progress = ((index + 1) / questions.length) * 100;
+    document.getElementById('progressBar').style.width = progress + '%';
+    
+    // Update question navigation
+    document.querySelectorAll('#questionList button').forEach((btn, i) => {
+        btn.className = i === index ? 'btn btn-primary btn-sm me-1 mb-1' : 'btn btn-outline-secondary btn-sm me-1 mb-1';
+        if (answers[i]) btn.classList.add('border-success');
+    });
+    
+    // Automatically speak the question
+    setTimeout(() => speakQuestion(), 500);
+}
+
+// Save answer
+function saveAnswer() {
+    const answer = document.getElementById('answerText').value;
+    answers[currentQuestionIndex] = answer;
+    
+    fetch(`/interview/${sessionId}/submit-answer`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            question_id: currentQuestionIndex,
+            answer: answer
+        })
+    });
+    
+    // Update question navigation to show answered
+    const btn = document.querySelectorAll('#questionList button')[currentQuestionIndex];
+    if (answer.trim()) {
+        btn.classList.add('border-success');
+    } else {
+        btn.classList.remove('border-success');
+    }
+}
+
+// Navigation
+document.getElementById('prevBtn').addEventListener('click', () => {
+    saveAnswer();
+    loadQuestion(currentQuestionIndex - 1);
+});
+
+document.getElementById('nextBtn').addEventListener('click', () => {
+    saveAnswer();
+    loadQuestion(currentQuestionIndex + 1);
+});
+
+// Remove this line as saveBtn doesn't exist
+
+// Submit interview function (can be called from header button or finish button)
+function submitInterview(forced = false, securityViolation = null) {
+    if (forced || confirm('Are you sure you want to submit your interview? This action cannot be undone.')) {
+        saveAnswer();
+        
+        // Stop proctoring
+        if (proctoringSuite && proctoringSuite.isProctoring()) {
+            proctoringSuite.stopProctoring().catch(error => {
+                console.error('Failed to stop proctoring:', error);
+            });
+        }
+        
+        // Deactivate security system
+        if (securitySystem) {
+            securitySystem.deactivate();
+        }
+        
+        // Disable submit buttons to prevent double submission
+        document.getElementById('submitInterviewBtn').disabled = true;
+        const finishBtn = document.getElementById('finishBtn');
+        if (finishBtn) finishBtn.disabled = true;
+        
+        const submitData = {
+            security_violation: securityViolation,
+            auto_submitted: forced && securityViolation
+        };
+        
+        fetch(`/interview/${sessionId}/complete`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(submitData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                if (!forced) {
+                    alert('Interview submitted successfully! Redirecting to results...');
+                }
+                window.location.href = data.redirect_url;
+            } else {
+                alert('Error submitting interview: ' + (data.message || 'Unknown error'));
+                // Re-enable buttons on error
+                document.getElementById('submitInterviewBtn').disabled = false;
+                if (finishBtn) finishBtn.disabled = false;
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            if (!forced) {
+                alert('Failed to submit interview. Please try again.');
+                // Re-enable buttons on error
+                document.getElementById('submitInterviewBtn').disabled = false;
+                if (finishBtn) finishBtn.disabled = false;
+            } else {
+                // Force redirect even on error for security
+                window.location.href = '/dashboard';
+            }
+        });
+    }
+}
+
+// Finish interview (last question)
+document.getElementById('finishBtn').addEventListener('click', submitInterview);
+
+// Timer
+function startTimer() {
+    setInterval(() => {
+        if (startTime) {
+            const elapsed = Math.floor((new Date() - startTime) / 1000);
+            const minutes = Math.floor(elapsed / 60);
+            const seconds = elapsed % 60;
+            document.getElementById('timer').textContent = 
+                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+    }, 1000);
+}
+
+// Custom security system setup
+function setupCustomSecurity() {
+    securitySystem = new FullscreenSecurity({
+        maxWarnings: 2,
+        onAutoSubmit: (reason) => {
+            console.log('Auto-submitting due to security violation:', reason);
+            submitInterview(true, reason);
+        },
+        onWarning: (reason, warningCount) => {
+            console.log(`Security warning ${warningCount}: ${reason}`);
+            // Log the warning for analytics
+            fetch(`/interview/${sessionId}/security-warning`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    reason: reason,
+                    warning_count: warningCount,
+                    timestamp: new Date().toISOString()
+                })
+            }).catch(error => console.error('Failed to log security warning:', error));
+        }
+    });
+}
+
+// Voice-based system - answers are saved when voice recognition ends
+</script>
+{% endblock %}
+
+{% block additional_css %}
+<style>
+.question-nav button {
+    width: 40px;
+    height: 40px;
+}
+
+.question-container {
+    min-height: 500px;
+}
+
+#timer {
+    font-family: 'Courier New', monospace;
+    font-size: 1.1em;
+}
+
+.progress {
+    height: 8px;
+}
+</style>
+{% endblock %}
