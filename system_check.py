@@ -23,6 +23,17 @@ def check_system_health():
     if sys.version_info < (3, 7):
         issues.append("Python 3.7+ required")
     
+    # Load environment variables
+    try:
+        from dotenv import load_dotenv
+        dotenv_path = Path("ai_interview_system/.env")
+        if dotenv_path.exists():
+            load_dotenv(dotenv_path)
+        else:
+            load_dotenv()
+    except ImportError:
+        pass
+
     # Check project structure
     print("\n📁 Project Structure:")
     required_files = [
@@ -31,8 +42,8 @@ def check_system_health():
         "ai_interview_system/Backend Files/app/models.py",
         "ai_interview_system/Backend Files/app/ai_service.py",
         "ai_interview_system/Backend Files/app/email_service.py",
-        "ai_interview_system/Backend Files/app/adaptive_interview.py",
-        "ai_interview_system/Backend Files/templates/interview/adaptive_interface.html",
+        "ai_interview_system/Backend Files/app/adaptive_api.py",
+        "ai_interview_system/Backend Files/templates/interview/fullscreen_interview.html",
         "ai_interview_system/Backend Files/run.py"
     ]
     
@@ -77,7 +88,7 @@ def check_system_health():
     
     # Check database
     print("\n🗄️  Database:")
-    db_path = Path("ai_interview_system/Backend Files/instance/interview_system.db")
+    db_path = Path("ai_interview_system/Backend Files/interview_agent.db")
     if db_path.exists():
         print(f"  ✅ Database exists: {db_path}")
         print(f"  📊 Size: {db_path.stat().st_size} bytes")
